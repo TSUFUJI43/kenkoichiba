@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>日記 - 健康市場 うにのきもち</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="site">
+
+    <!-- ヘッダー -->
+    <header>
+
+        <div class="header-deco">✽✽✽</div>
+
+        <h1>
+            <img src="images/logo.png" alt="健康市場 うにのきもち">
+        </h1>
+
+        <p class="subtitle">
+            - kenkoichiba uninokimochi -
+        </p>
+
+        <div class="header-deco">✽✽✽</div>
+
+    </header>
+
+
+    <div class="layout">
+
+        <!-- 左メニュー -->
+        <aside class="menu">
+
+            <h2>✽ メニュー ✽</h2>
+
+            <nav>
+
+                <a href="index.html">トップ</a>
+
+                <a href="gallery.html">ギャラリー</a>
+
+                <a href="diary.html">日記</a>
+
+                <a href="about.html">情報</a>
+
+                <p class="admin-link">
+                    <a href="write.html">[管理者専用]</a>
+                </p>
+
+            </nav>
+
+        </aside>
+
+
+    <main>
+
+        <p>
+            <a href="diary.html">← 日記一覧に戻る</a>
+        </p>
+
+
+        <article id="diary-detail">
+
+            <p>日記を読み込み中……</p>
+
+        </article>
+
+    </main>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase.js"></script>
+
+<script>
+
+const diaryDetail =
+    document.getElementById("diary-detail");
+
+
+const users = {
+
+    "0cb63a34-76a9-4f23-bc94-b8bc63d68050": {
+        name: "つふじ",
+        icon: "images/uni.jpg"
+    },
+
+    "a9e9319a-f9e8-4bc7-8b1f-f6b07d2950e0": {
+        name: "健康法",
+        icon: "images/kenkou.jpg"
+    }
+
+};
+
+
+function escapeHtml(text) {
+
+    const div = document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}
+
+
+function formatDate(dateString) {
+
+    const date = new Date(dateString);
+
+    return date.toLocaleString("ja-JP", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+
+}
+
+
+async function loadDiaryDetail() {
+
+    const params =
+        new URLSearchParams(window.location.search);
+
+    const diaryId = params.get("id");
+
+
+    if (!diaryId) {
+
+        diaryDetail.innerHTML =
+            "<p>日記が見つかりませんでした。</p>";
+
+        return;
+
+    }
+
+
+    const {
+        data: {
+            user
+        }
+    } = await window.mySupabase.auth.getUser();
+
+
+    const {
+        data: diary,
+        error
+    } = await window.mySupabase
+
+        .from("diary")
+
+        .select(
+            "id, title, content, user_id, created_at, image_url"
+        )
+
+        .eq("id", diaryId)
+
+        .single();
+
+
+    if (error) {
+
+        console.error(error);
+
+        diaryDetail.innerHTML =
+            "<p>日記を読み込めませんでした。</p>";
+
+        return;
+
+    }
+
+
+    const author = users[diary.user_id] || {
+
+        name: "不明",
+
+        icon: "images/logo.png"
+
+    };
+
+
+    const isMine =
+        user && diary.user_id === user.id;
+
+
+    let imageHtml = "";
+
+
+    if (diary.image_url) {
+
+        imageHtml = `
+
+            <div class="diary-detail-image">
+
+                <img
+                    src="${diary.image_url}"
+                    alt="日記の画像"
+                >
+
+            </div>
+
+        `;
+
+    }
+
+
+    let buttons = "";
+
+
+    if (isMine) {
+
+        buttons = `
+
+            <div class="diary-actions">
+
+                <button
+                    type="button"
+                    id="edit-button"
+                >
+                    編集
+                </button>
+
+                <button
+                    type="button"
+                    id="delete-button"
+                >
+                    削除
+                </button>
+
+            </div>
+
+        `;
+
+    }
+
+
+    diaryDetail.innerHTML = `
+
+        <div class="diary-author">
+
+            <img
+                src="${author.icon}"
+                alt="${escapeHtml(author.name)}"
+            >
+
+            <span>
+                ${escapeHtml(author.name)}
+            </span>
+
+        </div>
+
+
+        <div class="diary-entry-date">
+
+            ${formatDate(diary.created_at)}
+
+        </div>
+
+
+        <h1>
+
+            ${escapeHtml(diary.title)}
+
+        </h1>
+
+
+        ${imageHtml}
+
+
+        <div class="diary-detail-content">
+
+            <p>
+
+                ${escapeHtml(diary.content)
+                    .replace(/\n/g, "<br>")}
+
+            </p>
+
+        </div>
+
+
+        ${buttons}
+
+    `;
+
+
+    const editButton =
+        document.getElementById("edit-button");
+
+
+    if (editButton) {
+
+        editButton.addEventListener(
+            "click",
+            function() {
+
+                window.location.href =
+                    "edit.html?id=" + diary.id;
+
+            }
+        );
+
+    }
+
+
+    const deleteButton =
+        document.getElementById("delete-button");
+
+
+    if (deleteButton) {
+
+        deleteButton.addEventListener(
+            "click",
+            async function() {
+
+                const result =
+                    confirm("この日記を削除する？");
+
+
+                if (!result) {
+
+                    return;
+
+                }
+
+
+                const {
+                    error
+                } = await window.mySupabase
+
+                    .from("diary")
+
+                    .delete()
+
+                    .eq("id", diary.id);
+
+
+                if (error) {
+
+                    console.error(error);
+
+                    alert(
+                        "日記を削除できませんでした。"
+                    );
+
+                    return;
+
+                }
+
+
+                window.location.href =
+                    "diary.html";
+
+            }
+        );
+
+    }
+
+}
+
+
+loadDiaryDetail();
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>日記を書く - 健康市場 うにのきもち</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+</head>
+
+<body>
+
+<div class="site">
+
+    <header>
+        <div class="header-deco">✽✽✽</div>
+
+        <h1>
+            <img src="images/logo.png" alt="健康市場 うにのきもち">
+        </h1>
+
+        <p class="subtitle">- kenkoichiba uninokimochi -</p>
+
+        <div class="header-deco">✽✽✽</div>
+    </header>
+
+    <div class="layout">
+
+        <aside class="menu">
+
+            <h2>✽ メニュー ✽</h2>
+
+            <nav>
+                <a href="index.html">トップ</a>
+                <a href="gallery.html">ギャラリー</a>
+                <a href="diary.html">日記</a>
+                <a href="about.html">情報</a>
+            </nav>
+
+        </aside>
+
+        <main>
+
+            <section>
+
+                <h2>＊ 日記を書く ＊</h2>
+
+                <div style="padding: 25px;">
+
+                    <p id="login-status">
+                        ログイン状態を確認中……
+                    </p>
+
+                    <form id="post-form" style="display: none;">
+
+                        <p>
+                            <label>
+                                タイトル<br>
+                                <input
+                                    type="text"
+                                    id="title"
+                                    required
+                                    style="width: 100%; padding: 8px;"
+                                >
+                            </label>
+                        </p>
+
+                        <p>
+                            <label>
+                                本文<br>
+                                <textarea
+                                    id="content"
+                                    required
+                                    rows="12"
+                                    style="width: 100%; padding: 8px; resize: vertical;"
+                                ></textarea>
+                            </label>
+                        </p>
+
+                        <p>
+                            <button type="submit">
+                                日記を投稿する
+                            </button>
+                        </p>
+
+                    </form>
+
+                    <p id="message"></p>
+
+                </div>
+
+            </section>
+
+            <p class="more">
+                → <a href="diary.html">日記を見る</a>
+            </p>
+
+        </main>
+
+    </div>
+
+    <footer>
+        ✽ 健康市場 うにのきもち ✽
+    </footer>
+
+</div>
+
+
+<script>
+
+const postForm = document.getElementById("post-form");
+const loginStatus = document.getElementById("login-status");
+const message = document.getElementById("message");
+
+let currentUser = null;
+
+
+// ログイン状態を確認
+async function checkLogin() {
+
+    const { data, error } = await window.mySupabase.auth.getUser();
+
+    if (error || !data.user) {
+
+        loginStatus.textContent =
+            "ログインしていません。日記を書くにはログインしてください。";
+
+        return;
+    }
+
+    currentUser = data.user;
+
+    loginStatus.textContent =
+        "ログイン中です。日記を書いてみよう！";
+
+    postForm.style.display = "block";
+}
+
+
+// 投稿
+postForm.addEventListener("submit", async (event) => {
+
+    event.preventDefault();
+
+    const title = document.getElementById("title").value;
+    const content = document.getElementById("content").value;
+
+    message.textContent = "投稿中……";
+
+    const { error } = await window.mySupabase
+        .from("diary")
+        .insert({
+            title: title,
+            content: content,
+            user_id: currentUser.id
+        });
+
+    if (error) {
+
+        console.error(error);
+
+        message.textContent =
+            "投稿できませんでした：" + error.message;
+
+        return;
+    }
+
+    message.textContent = "投稿完了！";
+
+    postForm.reset();
+
+});
+
+
+// ページを開いたらログイン確認
+checkLogin();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>健康市場 うにのきもち</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+
+    <div class="site">
+
+
+        <header>
+
+            <div class="header-deco">✽✽✽</div>
+
+           <h1>
+    <img src="images/logo.png" alt="健康市場 うにのきもち">
+</h1>
+            <p class="subtitle">
+                - kenkoichiba uninokimochi -
+            </p>
+
+            <div class="header-deco">✽✽✽</div>
+
+        </header>
+
+
+        <div class="layout">
+
+
+            <!-- メニュー -->
+
+            <aside class="menu">
+
+                <h2>✽ メニュー ✽</h2>
+
+                <nav>
+                    <a href="index.html">トップ</a>
+                     <a href="gallery.html">ギャラリー</a>
+                    <a href="diary.html">日記</a>
+                    <a href="about.html">情報</a>
+                </nav>
+
+            </aside>
+
+
+            <!-- らくがき -->
+
+            <main>
+
+            <section>
+                <h2>＊ らくがき ＊</h2>
+
+<div class="rakugaki-grid">
+
+    <button class="rakugaki-item" data-image="images/rakugaki/001.png">
+        <img src="images/rakugaki/001.png" alt="らくがき 001">
+    </button>
+
+    <button class="rakugaki-item" data-image="images/rakugaki/002.png">
+        <img src="images/rakugaki/002.png" alt="らくがき 002">
+    </button>
+
+    <button class="rakugaki-item" data-image="images/rakugaki/003.png">
+        <img src="images/rakugaki/003.png" alt="らくがき 003">
+    </button>
+
+    <button class="rakugaki-item" data-image="images/rakugaki/004.png">
+        <img src="images/rakugaki/004.png" alt="らくがき 004">
+    </button>
+
+</div>
+            </section>
+
+            <!-- 画像を拡大表示する部分 -->
+<dialog id="rakugaki-modal">
+
+    <button id="rakugaki-close" type="button">×</button>
+
+    <img id="rakugaki-large" src="" alt="拡大表示">
+
+</dialog>
+
+                <footer>
+         ✽　since 2026　｜　健康市場 うにのきもち　｜　✽
+                </footer>
+
+            </main>
+
+        </div>
+
+    </div>
+
+</body>
+
+<script>
+
+const rakugakiItems = document.querySelectorAll(".rakugaki-item");
+
+const modal = document.getElementById("rakugaki-modal");
+const largeImage = document.getElementById("rakugaki-large");
+const closeButton = document.getElementById("rakugaki-close");
+
+
+/* 画像をクリックしたとき */
+
+rakugakiItems.forEach(item => {
+
+    item.addEventListener("click", () => {
+
+        const image = item.dataset.image;
+
+        largeImage.src = image;
+
+        modal.showModal();
+
+    });
+
+});
+
+
+/* ×を押したとき */
+
+closeButton.addEventListener("click", () => {
+
+    modal.close();
+
+});
+
+
+/* 画像の外側をクリックしたとき */
+
+modal.addEventListener("click", (event) => {
+
+    if (event.target === modal) {
+
+        modal.close();
+
+    }
+
+});
+
+</script>
+
+</html>

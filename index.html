@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>健康市場 うにのきもち</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="site">
+
+        <!-- ヘッダー -->
+        <header>
+
+            <div class="header-deco">✽✽✽</div>
+
+           <h1>
+    <img src="images/logo.png" alt="健康市場 うにのきもち">
+</h1>
+            <p class="subtitle">
+                - kenkoichiba uninokimochi -
+            </p>
+
+            <div class="header-deco">✽✽✽</div>
+
+        </header>
+
+
+        <div class="layout">
+
+            <!-- 左メニュー -->
+            <aside class="menu">
+
+                <h2>✽ メニュー ✽</h2>
+
+                <nav>
+                    <a href="index.html">トップ</a>
+                     <a href="gallery.html">ギャラリー</a>
+                    <a href="diary.html">日記</a>
+                    <a href="about.html">情報</a>
+                    <p class="admin-link">
+                    <a href="write.html">[管理者専用]</a>
+</p>
+                </nav>
+
+            </aside>
+
+
+            <!-- メイン -->
+            <main>
+
+                <!-- ようこそ -->
+                <section>
+
+                    <h2>✽ 案内 ✽</h2>
+
+                    <div class="welcome">
+
+                        <div class="welcome-text">
+                            <p>
+                            健康市場 うにのきもちとは、<br>
+                            飲尿健康法と河野つふじによる合同サークルです。
+                            </p>
+                            <p>
+                            このサイトでは、イラストや漫画や日記、<br>
+                            活動報告などを載せていく予定です。
+                            </p>
+
+                        </div>
+
+                        <div class="welcome-picture">
+                          <img src="images/icon.png" alt="健康法 つふじ">
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- 更新履歴 -->
+                <section>
+
+                    <h2>✽ 最新のお知らせ ✽</h2>
+
+                    <div class="updates">
+
+                        <p>
+                            <time>2026.09.18</time>
+                            サイトを作り始めました
+                        </p>
+
+                        <p class="more">
+                            → <a href="#">過去の更新履歴</a>
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- 最近のイラスト -->
+                <section>
+
+                    <h2>✽ 最近のイラスト ✽</h2>
+
+                    <div class="illust-list">
+
+                        <div class="illust">
+                            <div class="illust-placeholder">
+                                ILLUST
+                            </div>
+                        </div>
+
+                        <div class="illust">
+                            <div class="illust-placeholder">
+                                ILLUST
+                            </div>
+                        </div>
+
+                        <div class="illust">
+                            <div class="illust-placeholder">
+                                ILLUST
+                            </div>
+                        </div>
+
+                        <div class="illust">
+                            <div class="illust-placeholder">
+                                ILLUST
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <p class="more">
+                        → <a href="gallery.html">もっと見る</a>
+                    </p>
+
+                </section>
+
+
+                <!-- 日記 -->
+<section>
+
+    <h2>＊ 最新の日記 ＊</h2>
+
+    <div id="latest-diary-list">
+
+        <!-- ここに最新の日記が入ります -->
+
+    </div>
+
+    <p class="more">
+        → <a href="diary.html">日記をもっと見る</a>
+    </p>
+
+</section>
+
+
+                <!-- フッター -->
+                <footer>
+
+                    ✽　since 2026　｜　健康市場 うにのきもち　｜　✽
+
+
+                </footer>
+
+            </main>
+
+        </div>
+
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<script>
+
+async function loadLatestDiary() {
+
+    const {
+        data,
+        error
+    } = await window.mySupabase
+
+        .from("diary")
+
+.select(
+    "id, title, content, user_id, created_at, image_url"
+)
+
+        .order("created_at", {
+            ascending: false
+        })
+
+        .limit(3);
+
+
+    if (error) {
+
+        console.error(error);
+
+        return;
+
+    }
+
+
+    const diaryList =
+        document.getElementById(
+            "latest-diary-list"
+        );
+
+
+    diaryList.innerHTML = "";
+
+
+    data.forEach(function(diary) {
+
+        const article =
+            document.createElement("article");
+
+
+        article.className =
+            "latest-diary";
+
+            const users = {
+
+    "0cb63a34-76a9-4f23-bc94-b8bc63d68050": {
+        name: "つふじ",
+        icon: "images/uni.jpg"
+    },
+
+    "a9e9319a-f9e8-4bc7-8b1f-f6b07d2950e0": {
+        name: "健康法",
+        icon: "images/kenkou.jpg"
+    }
+
+};
+
+
+const author = users[diary.user_id] || {
+    name: "不明",
+    icon: "images/logo.png"
+};
+
+        const date =
+            new Date(diary.created_at)
+                .toLocaleDateString("ja-JP");
+
+
+        // 本文を短くする
+        let text = diary.content;
+
+        if (text.length > 60) {
+
+            text =
+                text.substring(0, 60) + "…";
+
+        }
+
+
+        let imageHtml = "";
+
+
+        if (diary.image_url) {
+
+            imageHtml = `
+
+                <a
+                    href="diary-detail.html?id=${diary.id}"
+                >
+                    <img
+                        src="${diary.image_url}"
+                        alt="${diary.title}"
+                    >
+                </a>
+
+            `;
+
+        }
+
+
+article.innerHTML = `
+
+    ${imageHtml}
+
+    <div class="latest-diary-text">
+
+        <div class="latest-diary-author">
+
+            <img
+                src="${author.icon}"
+                alt="${author.name}"
+            >
+
+            <span>
+                ${author.name}
+            </span>
+
+        </div>
+
+        <div class="diary-date">
+            ${date}
+        </div>
+
+<a
+    href="diary-detail.html?id=${diary.id}"
+    class="latest-diary-title-link"
+>
+    <h3>
+        ${diary.title}
+    </h3>
+</a>
+
+        <p>
+            ${text}
+        </p>
+
+        <p class="more">
+
+            → <a
+                href="diary-detail.html?id=${diary.id}"
+            >
+                続きを読む
+            </a>
+
+        </p>
+
+    </div>
+
+`;
+
+
+        diaryList.appendChild(article);
+
+    });
+
+}
+
+
+loadLatestDiary();
+
+</script>
+
+</body>
+</html>

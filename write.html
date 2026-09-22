@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>日記を書く - 健康市場 うにのきもち</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+</head>
+
+<body>
+
+<div class="site">
+
+    <header>
+
+        <div class="header-deco">✽✽✽</div>
+
+        <h1>
+            <img src="images/logo.png" alt="健康市場 うにのきもち">
+        </h1>
+
+        <p class="subtitle">
+            - kenkoichiba uninokimochi -
+        </p>
+
+        <div class="header-deco">✽✽✽</div>
+
+    </header>
+
+
+    <div class="layout">
+
+        <aside class="menu">
+
+            <h2>✽ メニュー ✽</h2>
+
+            <nav>
+                <a href="index.html">トップ</a>
+                <a href="gallery.html">ギャラリー</a>
+                <a href="diary.html">日記</a>
+                <a href="about.html">情報</a>
+            
+                <a href="write.html">[管理者専用]</a>
+            </nav>
+
+        </aside>
+
+
+        <main>
+
+            <section>
+
+                <h2>✽ 日記を書く ✽</h2>
+
+<button type="button" id="logout-button">
+    ログアウト
+</button>
+
+                <form id="diary-form">
+
+                    <p>
+                        <label for="title">タイトル</label><br>
+                        <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            required
+                        >
+                    </p>
+
+                    <p>
+    <label>
+        種類<br>
+
+        <select id="category">
+
+            <option value="日記">
+                日記
+            </option>
+
+            <option value="感想">
+                感想
+            </option>
+
+            <option value="進捗">
+                進捗
+            </option>
+
+            <option value="雑談">
+                雑談
+            </option>
+
+        </select>
+
+    </label>
+</p>
+
+                    <p>
+                        <label for="content">本文</label><br>
+                        <textarea
+                            id="content"
+                            name="content"
+                            rows="12"
+                            required
+                        ></textarea>
+                    </p>
+
+                    <p>
+
+    <label>
+        日記の画像<br>
+
+        <input
+            type="file"
+            id="image"
+            accept="image/*"
+        >
+    </label>
+
+</p>
+
+                    <button type="submit">
+                        日記を投稿する
+                    </button>
+
+                </form>
+
+                <p id="message"></p>
+
+            </section>
+
+
+            <footer>
+
+                ✽　since 2026　｜　健康市場 うにのきもち　｜　✽
+
+            </footer>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<script>
+
+// ログインしているか確認
+async function checkLogin() {
+
+    const {
+        data: { user }
+    } = await window.mySupabase.auth.getUser();
+
+    // ログインしていなければログインページへ
+    if (!user) {
+        window.location.href = "login.html";
+        return;
+    }
+}
+
+checkLogin();
+
+
+const form = document.getElementById("diary-form");
+
+const logoutButton = document.getElementById("logout-button");
+
+logoutButton.addEventListener("click", async function() {
+
+    const { error } = await window.mySupabase.auth.signOut();
+
+    if (error) {
+
+        console.error(error);
+
+        message.textContent =
+            "ログアウトできませんでした。";
+
+        return;
+    }
+
+    window.location.href = "login.html";
+
+});
+
+const message = document.getElementById("message");
+
+
+form.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+
+const title = document.getElementById("title").value;
+const category = document.getElementById("category").value;
+const imageFile = document.getElementById("image").files[0];
+const content = document.getElementById("content").value;
+
+
+    // 現在ログインしているユーザーを取得
+    const {
+        data: { user }
+    } = await window.mySupabase.auth.getUser();
+
+
+    // ログインしていない場合
+    if (!user) {
+
+        message.textContent = "ログインしてないよ！";
+
+        return;
+    }
+
+
+// 画像URL
+let imageUrl = null;
+
+
+// 画像が選ばれていたらアップロード
+if (imageFile) {
+
+    const fileExt = imageFile.name.split(".").pop();
+
+    const filePath =
+        `${user.id}/${crypto.randomUUID()}.${fileExt}`;
+
+
+    const { error: uploadError } = await window.mySupabase
+        .storage
+        .from("diary-images")
+        .upload(filePath, imageFile);
+
+
+    // 画像アップロード失敗
+    if (uploadError) {
+
+        console.error(uploadError);
+
+        message.textContent =
+            "画像をアップロードできなかったみたい…";
+
+        return;
+    }
+
+
+    // 公開URLを取得
+    const { data: publicUrlData } =
+        window.mySupabase
+            .storage
+            .from("diary-images")
+            .getPublicUrl(filePath);
+
+
+    imageUrl = publicUrlData.publicUrl;
+}
+
+
+// 日記を保存
+const { data, error } = await window.mySupabase
+    .from("diary")
+    .insert([
+{
+    title: title,
+    content: content,
+    category: category,
+    user_id: user.id,
+    image_url: imageUrl
+}
+    ]);
+
+
+// 日記保存失敗
+if (error) {
+
+    console.error(error);
+
+    message.textContent =
+        "日記を投稿できなかったみたい…";
+
+    return;
+}
+
+    // エラー
+    if (error) {
+
+        console.error(error);
+
+        message.textContent =
+            "日記を投稿できなかったみたい…";
+
+        return;
+    }
+
+
+    // 成功
+    message.textContent =
+        "投稿完了！";
+
+
+    // 入力欄を空にする
+    form.reset();
+
+});
+
+</script>
+
+</body>
+</html>

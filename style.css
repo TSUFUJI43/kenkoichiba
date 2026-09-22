@@ -1,0 +1,1161 @@
+/* =========================
+   基本設定
+========================= */
+
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 45px 25px;
+
+    color: #555555;
+
+    font-family:
+        "DotGothic16",
+        sans-serif;
+
+    font-weight: 400;
+
+    background-color: #f8faf7;
+
+    background-image:
+        linear-gradient(#cbd8ca 1px, transparent 1px),
+        linear-gradient(90deg, #cbd8ca 1px, transparent 1px);
+
+    background-size: 24px 24px;
+}
+
+/* =========================
+   サイト全体
+========================= */
+
+.site {
+    width: 100%;
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    background: #ffffff;
+
+    border: 2px solid #222222;
+
+    /* 画像の雰囲気に合わせて角丸なし */
+    border-radius: 0;
+
+    overflow: hidden;
+}
+
+
+/* =========================
+   ヘッダー
+========================= */
+
+header {
+    padding: 25px 30px 20px;
+
+    text-align: center;
+
+    background: #ffffff;
+
+    border-bottom: 2px solid #222222;
+}
+
+header h1 {
+    margin: 5px 0 10px;
+
+    line-height: 1.6;
+}
+
+header h1 img {
+    width: 500px;
+    max-width: 90%;
+    height: auto;
+
+    display: block;
+    margin: 0 auto;
+}
+
+.subtitle {
+    margin: 0;
+
+    color: #777777;
+
+    font-family: monospace;
+
+    font-size: 12px;
+
+    letter-spacing: 3px;
+}
+
+.header-deco {
+    color: #a4b5a3;
+
+    font-size: 14px;
+
+    letter-spacing: 8px;
+}
+
+
+/* =========================
+   左メニュー＋本文
+========================= */
+
+.layout {
+    display: grid;
+
+    grid-template-columns: 155px 1fr;
+
+    gap: 0;
+
+    padding: 0;
+}
+
+
+/* =========================
+   左メニュー
+========================= */
+
+.menu {
+    padding: 22px 15px;
+
+    background: #ffffff;
+
+    border-right: 2px solid #222222;
+
+    align-self: stretch;
+}
+
+.menu h2 {
+    margin: 0 0 15px;
+
+    padding: 0 0 12px;
+
+    color: #555555;
+
+    text-align: center;
+
+    font-size: 15px;
+    font-weight: normal;
+
+    border-bottom: 1px solid #222222;
+
+    font-weight: bold;
+
+}
+
+.menu nav {
+    display: flex;
+
+    flex-direction: column;
+}
+
+.menu nav a {
+    display: block;
+
+    padding: 10px 5px;
+
+    color: #444444;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    text-decoration: none;
+
+    border-bottom: 1px dotted #aaaaaa;
+
+    transition: 0.15s;
+}
+
+.menu nav a:hover {
+    padding-left: 10px;
+
+    color: #222222;
+
+    background: #eef4ec;
+}
+
+.menu-decoration {
+    margin-top: 30px;
+
+    color: #a4b5a3;
+
+    text-align: center;
+
+    line-height: 1.6;
+
+    font-size: 18px;
+}
+
+
+/* =========================
+   メイン
+========================= */
+
+main {
+    min-width: 0;
+
+    background: #ffffff;
+}
+
+
+/* =========================
+   セクション
+========================= */
+
+section {
+    margin: 0;
+
+    background: #ffffff;
+
+    border: none;
+
+    border-bottom: 1px solid #222222;
+
+    border-radius: 0;
+
+    overflow: visible;
+}
+
+section h2 {
+    margin: 0;
+
+    padding: 10px 16px;
+
+    color: #444444;
+
+    font-size: 17px;
+    font-weight: normal;
+
+    background: #ffffff;
+
+    border: none;
+
+    border-bottom: 1px solid #222222;
+}
+
+
+/* =========================
+   ようこそ
+========================= */
+
+.welcome {
+    display: flex;
+
+    gap: 25px;
+
+    padding: 25px;
+}
+
+.welcome-text {
+    flex: 1;
+
+    color: #555555;
+
+    line-height: 1.6;
+
+    font-size: 15px;
+}
+
+.welcome-text p {
+    margin: 0 0 12px;
+}
+
+.small-note {
+    color: #8da58e;
+
+    font-size: 12px;
+}
+
+.welcome-picture {
+    width: 230px;
+    height: 140px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    color: #9aaa99;
+
+    background: #f5f8f4;
+
+    border: 1px solid #555555;
+
+    border-radius: 0;
+
+    font-size: 11px;
+
+    letter-spacing: 1px;
+}
+
+.welcome-picture img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: contain;
+}
+
+
+/* =========================
+   更新履歴
+========================= */
+
+.updates {
+    padding: 15px 20px;
+}
+
+.updates p {
+    margin: 0;
+
+    padding: 8px 0;
+
+    font-size: 13px;
+
+    border-bottom: 1px dotted #aaaaaa;
+}
+
+.updates p:last-child {
+    border-bottom: none;
+}
+
+.updates time {
+    display: inline-block;
+
+    width: 105px;
+
+    color: #777777;
+
+    font-family: monospace;
+}
+
+.more {
+    padding: 10px 18px;
+
+    text-align: right !important;
+
+    border: none !important;
+}
+
+a {
+    color: #63896c;
+
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #222222;
+}
+
+
+/* =========================
+   イラスト
+========================= */
+
+.illust-list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 15px;
+
+    padding: 20px;
+}
+
+.illust-placeholder {
+    aspect-ratio: 1 / 1;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: #9aaa99;
+
+    background: #f6f8f5;
+
+    border: 1px solid #777777;
+
+    border-radius: 0;
+
+    font-family: monospace;
+
+    font-size: 11px;
+
+    transition: 0.15s;
+}
+
+.illust-placeholder:hover {
+    transform: none;
+
+    background: #edf3eb;
+
+    box-shadow: none;
+}
+
+/* =========================
+   HOME 最新日記
+========================= */
+
+.latest-diary {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 25px;
+
+    padding: 25px 30px;
+}
+
+
+/* =========================
+   日記画像
+========================= */
+
+#latest-diary-image {
+    display: block;
+
+width: 230px;
+height: 160px;
+
+    flex-shrink: 0;
+
+    border: 1px solid #777777;
+
+    overflow: hidden;
+}
+
+#latest-diary-image img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition: 0.15s;
+}
+
+#latest-diary-image:hover img {
+    opacity: 0.7;
+}
+
+
+/* =========================
+   日記本文
+========================= */
+
+.latest-diary-text {
+    flex: 1;
+
+    min-width: 0;
+}
+
+
+/* 日付 */
+
+.latest-diary-text .diary-date {
+    margin-bottom: 8px;
+
+    color: #777777;
+
+    font-family: monospace;
+
+    font-size: 13px;
+}
+
+
+/* タイトル */
+
+.latest-diary-text h3 {
+    margin: 0 0 12px;
+
+    color: #444444;
+
+    font-size: 20px;
+
+    font-weight: bold;
+}
+
+
+/* 本文 */
+
+.latest-diary-text > p {
+    margin: 0 0 15px;
+
+    color: #555555;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+/* 続きを読む */
+
+.latest-diary-text .more {
+    margin-top: 20px;
+
+    text-align: right;
+}
+
+/* =========================
+   フッター
+========================= */
+
+footer {
+    padding: 18px;
+
+    color: #888888;
+
+    text-align: center;
+
+    background: #ffffff;
+
+    border-top: none;
+
+    font-family: monospace;
+
+    font-size: 11px;
+}
+
+
+/* =========================
+   日記ページ
+========================= */
+
+.diary-entry {
+    padding: 25px 25px 30px;
+
+    border-bottom: 1px dashed #999999;
+}
+
+.diary-entry:last-of-type {
+    border-bottom: none;
+}
+
+.diary-entry-date {
+    margin-bottom: 8px;
+
+    color: #777777;
+
+    font-family: monospace;
+
+    font-size: 13px;
+}
+
+.diary-entry h3 {
+    margin: 0 0 15px;
+
+    color: #444444;
+
+    font-size: 17px;
+
+    font-weight: bold;
+}
+
+.diary-entry p {
+    margin: 0 0 12px;
+
+    color: #555555;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+/* =========================
+   日記一覧
+========================= */
+
+.diary-card {
+    display: flex;
+
+    gap: 20px;
+
+    padding: 20px;
+
+    border-bottom: 1px dashed #999999;
+}
+
+
+/* 日記サムネ */
+
+.diary-card-image {
+    width: 180px;
+    height: 140px;
+
+    display: block;
+
+    flex-shrink: 0;
+
+    border: 1px solid #777777;
+
+    background: #f5f8f4;
+
+    overflow: hidden;
+}
+
+.diary-card-image img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition: 0.15s;
+}
+
+.diary-card-image:hover img {
+    opacity: 0.7;
+}
+
+
+/* 日記本文 */
+
+.diary-card-text {
+    flex: 1;
+
+    min-width: 0;
+}
+
+.diary-card-text time {
+    color: #777777;
+
+    font-family: monospace;
+
+    font-size: 13px;
+}
+
+.diary-card-text h3 {
+    margin: 6px 0 10px;
+
+    font-size: 18px;
+
+    font-weight: bold;
+}
+
+.diary-card-text h3 a {
+    color: #444444;
+
+    text-decoration: none;
+}
+
+.diary-card-text h3 a:hover {
+    text-decoration: underline;
+}
+
+.diary-card-text p {
+    margin: 0 0 12px;
+
+    color: #555555;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+.read-more {
+    font-size: 13px;
+}
+
+.diary-main-image {
+    width: 100%;
+    max-width: 500px;
+
+    height: auto;
+
+    display: block;
+
+    margin: 0 auto 25px;
+
+    border: 1px solid #777777;
+}
+
+/* =========================
+   スマホ対応
+========================= */
+
+@media (max-width: 700px) {
+
+    body {
+        padding: 15px 8px;
+
+        background-size: 18px 18px;
+    }
+
+    .site {
+        width: 100%;
+
+        border-width: 1px;
+    }
+
+    header {
+        padding: 20px 15px 15px;
+
+        border-bottom-width: 1px;
+    }
+
+    header h1 img {
+        width: 400px;
+    }
+
+    .subtitle {
+        font-size: 10px;
+
+        letter-spacing: 2px;
+    }
+
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .latest-diary {
+    flex-direction: column;
+
+    gap: 15px;
+
+    padding: 18px;
+}
+
+#latest-diary-image {
+    width: 100%;
+    max-width: 300px;
+
+    height: auto;
+
+    aspect-ratio: 3 / 2;
+}
+
+    /* スマホではメニューを横並びにする */
+    .menu {
+        padding: 10px;
+
+        border-right: none;
+        border-bottom: 1px solid #222222;
+    }
+
+    .menu h2 {
+        margin-bottom: 8px;
+
+        padding-bottom: 7px;
+    }
+
+    .menu nav {
+        display: grid;
+
+        grid-template-columns: repeat(4, 1fr);
+
+        gap: 0;
+    }
+
+    .menu nav a {
+        padding: 8px 5px;
+
+        text-align: center;
+
+        border-bottom: 1px dotted #aaaaaa;
+    }
+
+    .menu-decoration {
+        display: none;
+    }
+
+    section h2 {
+        padding: 9px 12px;
+
+        font-size: 15px;
+    }
+
+    .welcome {
+        flex-direction: column;
+
+        padding: 18px;
+    }
+
+    .welcome-picture {
+        width: 100%;
+        height: 180px;
+    }
+
+    .illust-list {
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 10px;
+
+        padding: 12px;
+    }
+
+    .updates {
+        padding: 10px 12px;
+    }
+
+    .updates time {
+        width: 90px;
+    }
+
+    .diary {
+        padding: 15px;
+    }
+}
+
+/* テキストの頭浮かせてるやつ */
+
+main section h3,
+main section p {
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+/* =========================
+   らくがき一覧
+========================= */
+
+.rakugaki-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    padding: 25px;
+}
+
+.rakugaki-item {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+
+    padding: 0;
+
+    cursor: pointer;
+
+    border: 1px solid #777777;
+    background: #f5f8f4;
+
+    overflow: hidden;
+}
+
+.rakugaki-item img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition: 0.15s;
+}
+
+.rakugaki-item:hover img {
+    opacity: 0.7;
+}
+
+/* =========================
+   らくがき 拡大表示
+========================= */
+
+.rakugaki-item {
+    padding: 0;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.rakugaki-item img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: 0.15s;
+}
+
+.rakugaki-item:hover img {
+    opacity: 0.7;
+}
+
+
+/* 拡大表示の画面 */
+
+#rakugaki-modal {
+    position: fixed;
+
+    width: auto;
+    max-width: 90vw;
+    max-height: 90vh;
+
+    padding: 45px 25px 25px;
+
+    border: 2px solid #222222;
+    background: #ffffff;
+
+    overflow: auto;
+}
+
+
+/* 周りの暗い部分 */
+
+#rakugaki-modal::backdrop {
+    background: rgba(0, 0, 0, 0.65);
+}
+
+
+/* 拡大された画像 */
+
+#rakugaki-large {
+    display: block;
+
+    max-width: 80vw;
+    max-height: 80vh;
+
+    width: auto;
+    height: auto;
+
+    margin: 0 auto;
+}
+
+
+/* 閉じるボタン */
+
+#rakugaki-close {
+    position: absolute;
+
+    top: 8px;
+    right: 10px;
+
+    width: 30px;
+    height: 30px;
+
+    padding: 0;
+
+    border: none;
+    background: none;
+
+    color: #444444;
+
+    font-family: sans-serif;
+    font-size: 28px;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+#rakugaki-close:hover {
+    color: #8da58e;
+}
+
+/* 日記の投稿者 */
+
+.diary-author {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+
+
+.diary-author img {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.diary-content-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.diary-content-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.diary-image {
+    flex-shrink: 0;
+    width: 180px;
+    height: 120px;
+    object-fit: cover;
+    object-position: center;
+    margin: -55px 0 0 0;
+    border: 1px solid #222222;
+}
+
+.diary-detail-image {
+    margin: 20px 0;
+}
+
+.diary-detail-image img {
+    width: 350px;
+    height: auto;
+    border: 1px solid #222222;
+    display: block;
+}
+
+#diary-detail {
+    padding: 10px 25px 30px 25px;
+}
+
+.latest-diary {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.latest-diary {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+}
+
+.latest-diary:not(:last-child) {
+    border-bottom: 1px dashed #999999;
+}
+
+.latest-diary > a img {
+    width: 180px;
+    height: 120px;
+    object-fit: cover;
+    object-position: center;
+    border: 1px solid #222222;
+    display: block;
+}
+
+.latest-diary-text {
+    flex: 1;
+}
+
+.latest-diary-text h3 {
+    margin-top: 5px;
+}
+
+.latest-diary-text p {
+    margin-top: 8px;
+}
+
+.latest-diary-author {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 3px;
+    font-size: 0.85em;
+}
+
+.latest-diary-author img {
+    width: 26px;
+    height: 26px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.latest-diary-title-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.latest-diary-title-link h3 {
+    margin-top: 5px;
+}
+
+.latest-diary-title-link:hover {
+    text-decoration: underline;
+}
+
+.diary-filter {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.filter-button {
+    padding: 5px 14px;
+    border: 2px solid #000000;
+    background: #ffffff;
+    color: #555555;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.filter-button:hover {
+    background: #eeeeee;
+}
+
+.filter-button.active {
+    background: #222222;
+    color: #eeeeee;
+}
+
+.filter-button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.filter-button img {
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.diary-category-filter {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.category-button {
+    padding: 5px 14px;
+    border: 2px solid #000000;
+    background: #ffffff;
+    color: #555555;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.category-button:hover {
+    background: #eeeeee;
+}
+
+.category-button.active {
+    background: #000000;
+    color: #ffffff;
+}
+
+.diary-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.diary-category {
+    display: inline-block;
+    padding: 2px 8px;
+    border: 1px solid #000000;
+    background: #f8faf7;
+    font-size: 0.8em;
+    font-weight: bold;
+}

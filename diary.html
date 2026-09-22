@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>健康市場 うにのきもち</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+</head>
+
+<body>
+
+<div class="site">
+
+    <!-- ヘッダー -->
+    <header>
+
+        <div class="header-deco">✽✽✽</div>
+
+        <h1>
+            <img src="images/logo.png" alt="健康市場 うにのきもち">
+        </h1>
+
+        <p class="subtitle">
+            - kenkoichiba uninokimochi -
+        </p>
+
+        <div class="header-deco">✽✽✽</div>
+
+    </header>
+
+
+    <div class="layout">
+
+        <!-- メニュー -->
+        <aside class="menu">
+
+            <h2>✽ メニュー ✽</h2>
+
+            <nav>
+                <a href="index.html">トップ</a>
+                <a href="gallery.html">ギャラリー</a>
+                <a href="diary.html">日記</a>
+                <a href="about.html">情報</a>
+                <a href="write.html">[管理者専用]</a>
+            </nav>
+
+        </aside>
+
+
+        <!-- 日記一覧 -->
+        <main>
+
+            <section>
+
+                <h2>✽ 日記一覧 ✽</h2>
+
+                <div class="diary-filter">
+
+    <button type="button" class="filter-button active" data-user="all">
+        すべて
+    </button>
+
+<button type="button" class="filter-button" data-user="0cb63a34-76a9-4f23-bc94-b8bc63d68050">
+
+    <img
+        src="images/uni.jpg"
+        alt=""
+    >
+
+    つふじ
+
+</button>
+
+<button type="button" class="filter-button" data-user="a9e9319a-f9e8-4bc7-8b1f-f6b07d2950e0">
+
+    <img
+        src="images/kenkou.jpg"
+        alt=""
+    >
+
+    健康法
+</button>
+
+</div>
+
+<div class="diary-category-filter">
+
+    <button
+        type="button"
+        class="category-button active"
+        data-category="all"
+    >
+        すべて
+    </button>
+
+    <button
+        type="button"
+        class="category-button"
+        data-category="日記"
+    >
+        日記
+    </button>
+
+    <button
+        type="button"
+        class="category-button"
+        data-category="感想"
+    >
+        感想
+    </button>
+
+    <button
+        type="button"
+        class="category-button"
+        data-category="進捗"
+    >
+        進捗
+    </button>
+
+    <button
+        type="button"
+        class="category-button"
+        data-category="雑談"
+    >
+        雑談
+    </button>
+
+</div>
+
+
+                <!-- Supabaseからここに日記が入る -->
+                <div id="diary-list">
+
+                    <p style="padding: 25px;">
+                        日記を読み込み中……
+                    </p>
+
+                </div>
+
+                <p class="more">
+                    → <a href="index.html">トップに戻る</a>
+                </p>
+
+            </section>
+
+
+            <footer>
+
+                ✽　since 2026　｜　健康市場 うにのきもち　｜　✽
+
+            </footer>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const diaryList = document.getElementById("diary-list");
+
+
+// 日付を「2026.09.22」の形にする
+function formatDate(dateString) {
+
+    const date = new Date(dateString);
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}.${month}.${day}`;
+}
+
+
+// 日記を取得
+async function loadDiary() {
+
+    // 現在ログインしているユーザーを取得
+    const {
+        data: { user }
+    } = await window.mySupabase.auth.getUser();
+
+
+const { data, error } = await window.mySupabase
+    .from("diary")
+    .select("id, title, content, user_id, category, created_at, image_url")
+    .order("created_at", { ascending: false });
+
+
+    // エラー
+    if (error) {
+
+        console.error(error);
+
+        diaryList.innerHTML = `
+            <p style="padding: 25px;">
+                日記を読み込めませんでした。
+            </p>
+        `;
+
+        return;
+    }
+
+
+    // 日記がまだない場合
+    if (!data || data.length === 0) {
+
+        diaryList.innerHTML = `
+            <p style="padding: 25px;">
+                まだ日記はありません。
+            </p>
+        `;
+
+        return;
+    }
+
+
+    // 日記を表示
+    diaryList.innerHTML = "";
+
+// 投稿者情報
+const users = {
+
+    "0cb63a34-76a9-4f23-bc94-b8bc63d68050": {
+        name: "つふじ",
+        icon: "images/uni.jpg"
+    },
+
+    "a9e9319a-f9e8-4bc7-8b1f-f6b07d2950e0": {
+        name: "健康法",
+        icon: "images/kenkou.jpg"
+    }
+
+};
+
+data.forEach(diary => {
+
+    // 自分の日記かどうか
+    const isMine = user && diary.user_id === user.id;
+
+
+    // 投稿者情報
+    const author = users[diary.user_id] || {
+        name: "不明",
+        icon: "images/logo.png"
+    };
+
+let imageHtml = "";
+
+if (diary.image_url) {
+    imageHtml = `
+        <a
+            href="diary-detail.html?id=${diary.id}"
+            class="diary-image-link"
+        >
+            <img
+                class="diary-image"
+                src="${diary.image_url}"
+                alt="日記の画像"
+            >
+        </a>
+    `;
+}
+
+    let buttons = "";
+
+
+    const article = document.createElement("article");
+
+article.className = "diary-entry";
+article.dataset.user = diary.user_id;
+article.dataset.category = diary.category;
+
+
+    if (isMine) {
+
+        buttons = `
+            <div class="diary-actions">
+
+                <button
+                    type="button"
+                    class="edit-button"
+                    data-id="${diary.id}"
+                >
+                    編集
+                </button>
+
+                <button
+                    type="button"
+                    class="delete-button"
+                    data-id="${diary.id}"
+                >
+                    削除
+                </button>
+
+            </div>
+        `;
+
+    }
+
+
+article.innerHTML = `
+
+    <div class="diary-author">
+
+        <img
+            src="${author.icon}"
+            alt="${escapeHtml(author.name)}"
+        >
+
+        <span>
+            ${escapeHtml(author.name)}
+        </span>
+
+    </div>
+
+
+<div class="diary-meta">
+
+    <div class="diary-entry-date">
+        ${formatDate(diary.created_at)}
+    </div>
+
+    <div class="diary-category">
+        ${escapeHtml(diary.category || "日記")}
+    </div>
+
+</div>
+
+<a
+    href="diary-detail.html?id=${diary.id}"
+    class="diary-title-link"
+>
+    <h3>
+        ${escapeHtml(diary.title)}
+    </h3>
+</a>
+
+<div class="diary-content-row">
+
+    <p>
+        ${escapeHtml(diary.content).replace(/\n/g, "<br>")}
+    </p>
+
+    ${imageHtml}
+
+</div>
+
+${buttons}
+
+    `;
+
+
+    diaryList.appendChild(article);
+
+});
+
+}
+
+// 絞り込みボタン
+let selectedUser = "all";
+let selectedCategory = "all";
+
+
+function filterDiary() {
+
+    const articles =
+        document.querySelectorAll(".diary-entry");
+
+    let visibleCount = 0;
+
+
+    articles.forEach(function(article) {
+
+        const userMatch =
+            selectedUser === "all" ||
+            article.dataset.user === selectedUser;
+
+        const categoryMatch =
+            selectedCategory === "all" ||
+            article.dataset.category === selectedCategory;
+
+
+        if (userMatch && categoryMatch) {
+
+            article.style.display = "";
+            visibleCount++;
+
+        } else {
+
+            article.style.display = "none";
+
+        }
+
+    });
+
+
+    // 「日記が見つかりませんでした」を表示する
+    let noDiaryMessage =
+        document.getElementById("no-diary-message");
+
+
+    if (!noDiaryMessage) {
+
+        noDiaryMessage =
+            document.createElement("p");
+
+        noDiaryMessage.id =
+            "no-diary-message";
+
+        noDiaryMessage.textContent =
+            "日記が見つかりませんでした。";
+
+        noDiaryMessage.style.textAlign =
+            "center";
+
+        noDiaryMessage.style.padding =
+            "30px";
+
+        diaryList.appendChild(noDiaryMessage);
+
+    }
+
+
+    if (visibleCount === 0) {
+
+        noDiaryMessage.style.display = "";
+
+    } else {
+
+        noDiaryMessage.style.display = "none";
+
+    }
+
+}
+
+
+// 投稿者フィルター
+document.querySelectorAll(".filter-button").forEach(function(button) {
+
+    button.addEventListener("click", function() {
+
+        selectedUser = button.dataset.user;
+
+
+        document
+            .querySelectorAll(".filter-button")
+            .forEach(function(otherButton) {
+                otherButton.classList.remove("active");
+            });
+
+
+        button.classList.add("active");
+
+
+        filterDiary();
+
+    });
+
+});
+
+
+// 種類フィルター
+document.querySelectorAll(".category-button").forEach(function(button) {
+
+    button.addEventListener("click", function() {
+
+        selectedCategory = button.dataset.category;
+
+
+        document
+            .querySelectorAll(".category-button")
+            .forEach(function(otherButton) {
+                otherButton.classList.remove("active");
+            });
+
+
+        button.classList.add("active");
+
+
+        filterDiary();
+
+    });
+
+});
+
+
+// HTMLとして解釈されないようにする
+function escapeHtml(text) {
+
+    const div = document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}
+// 削除ボタン
+diaryList.addEventListener("click", async function(event) {
+
+    if (!event.target.classList.contains("delete-button")) {
+        return;
+    }
+
+
+    const diaryId = event.target.dataset.id;
+
+
+    // 確認
+    const result = confirm("この日記を削除する？");
+
+    if (!result) {
+        return;
+    }
+
+
+    // Supabaseから削除
+    const { error } = await window.mySupabase
+        .from("diary")
+        .delete()
+        .eq("id", diaryId);
+
+
+    // エラー
+    if (error) {
+
+        console.error(error);
+
+        alert("日記を削除できませんでした。");
+
+        return;
+    }
+
+
+    // 一覧を更新
+    loadDiary();
+
+});
+
+// 編集ボタン
+diaryList.addEventListener("click", function(event) {
+
+    if (!event.target.classList.contains("edit-button")) {
+        return;
+    }
+
+
+    const diaryId = event.target.dataset.id;
+
+
+    // 編集ページへ移動
+    window.location.href = "edit.html?id=" + diaryId;
+
+});
+
+// 実行
+loadDiary();
+
+</script>
+
+</body>
+</html>

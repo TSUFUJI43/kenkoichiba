@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ログイン - 健康市場 うにのきもち</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+</head>
+
+<body>
+
+<div class="site">
+
+    <header>
+        <div class="header-deco">✽✽✽</div>
+
+        <h1>
+            <img src="images/logo.png" alt="健康市場 うにのきもち">
+        </h1>
+
+        <p class="subtitle">- kenkoichiba uninokimochi -</p>
+
+        <div class="header-deco">✽✽✽</div>
+    </header>
+
+    <main>
+
+        <section>
+            <h2>＊ ログイン ＊</h2>
+
+            <div style="padding: 25px;">
+
+                <p>
+                    管理人・メンバー用ログイン
+                </p>
+
+                <form id="login-form">
+
+                    <p>
+                        <label>
+                            メールアドレス<br>
+                            <input
+                                type="email"
+                                id="email"
+                                required
+                            >
+                        </label>
+                    </p>
+
+                    <p>
+                        <label>
+                            パスワード<br>
+                            <input
+                                type="password"
+                                id="password"
+                                required
+                            >
+                        </label>
+                    </p>
+
+                    <button type="submit">
+                        ログイン
+                    </button>
+
+                    <p id="login-message"></p>
+
+                </form>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        ✽ 健康市場 うにのきもち ✽
+    </footer>
+
+</div>
+
+<script>
+const loginForm = document.getElementById("login-form");
+const loginMessage = document.getElementById("login-message");
+
+loginForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    loginMessage.textContent = "ログイン中……";
+
+    const { data, error } = await window.mySupabase.auth.signInWithPassword({
+        email: email,
+        password: password
+    });
+
+if (error) {
+    loginMessage.textContent = "ログインできませんでした：" + error.message;
+    console.error(error);
+    return;
+}
+
+loginMessage.textContent = "ログイン成功！";
+
+console.log("ログインしたユーザー:", data.user);
+
+window.location.href = "diary.html";
+});
+
+
+</script>
+
+</body>
+</html>
