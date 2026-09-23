@@ -1159,3 +1159,11 @@ main section p {
     font-size: 0.8em;
     font-weight: bold;
 }
+
+.diary-preview {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 10;
+    line-clamp: 10;
+    overflow: hidden;
+}
