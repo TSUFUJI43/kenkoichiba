@@ -288,25 +288,19 @@ if (error) {
     return;
 }
 
-    // エラー
-    if (error) {
-
-        console.error(error);
-
-        message.textContent =
-            "日記を投稿できなかったみたい…";
-
-        return;
-    }
 
 
-    // 成功
-    message.textContent =
-        "投稿完了！";
+// 成功
+message.textContent =
+    "投稿完了！";
 
+// 入力欄を空にする
+form.reset();
 
-    // 入力欄を空にする
-    form.reset();
+// 少し待って日記一覧へ移動
+setTimeout(function() {
+    window.location.href = "diary.html";
+}, 1000);
 
 });
 
