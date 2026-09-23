@@ -380,6 +380,16 @@ if (preview.scrollHeight > preview.clientHeight) {
     readMore.style.display = "inline-block";
 }
 
+const previewBox = article.querySelector(".diary-preview");
+const diaryImage = article.querySelector(".diary-image");
+
+if (diaryImage && window.innerWidth > 700) {
+    const textHeight = previewBox.offsetHeight;
+
+    diaryImage.style.height =
+        Math.min(Math.max(textHeight, 80), 150) + "px";
+}
+
 });
 
 }

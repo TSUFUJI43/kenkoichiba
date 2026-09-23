@@ -1339,3 +1339,32 @@ main section p {
         margin: 0 auto;
     }
 }
+
+/* =========================
+   日記サムネ：PC
+========================= */
+
+.diary-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    object-position: center;
+    flex-shrink: 0;
+}
+
+/* スマホ */
+@media (max-width: 700px) {
+    .diary-image {
+        width: 100%;
+        max-width: 260px;
+        height: 150px !important;
+        margin: 0 auto;
+        object-fit: cover;
+    }
+}
+
+@media (min-width: 701px) {
+    .diary-entry {
+        padding: 18px 25px 20px;
+    }
+}
