@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>日記を編集 - 健康市場 うにのきもち</title>
+    <title>記事を編集 - 健康市場 うにのきもち</title>
 
     <link rel="stylesheet" href="style.css">
 
@@ -43,7 +43,7 @@
 
         <section>
 
-            <h2>✽ 日記を編集 ✽</h2>
+            <h2>✽ 記事を編集 ✽</h2>
 
 
             <div style="padding: 25px;">
@@ -156,7 +156,7 @@
 
                 <p class="more">
 
-                    → <a href="diary.html">日記一覧に戻る</a>
+                    → <a href="diary.html">雑記一覧に戻る</a>
 
                 </p>
 
@@ -246,7 +246,7 @@ async function loadDiary() {
     if (!diaryId) {
 
         message.textContent =
-            "編集する日記が指定されていません。";
+            "編集する記事が指定されていません。";
 
         return;
     }
@@ -266,7 +266,7 @@ async function loadDiary() {
         console.error(error);
 
         message.textContent =
-            "日記を読み込めませんでした。";
+            "記事を読み込めませんでした。";
 
         return;
     }
@@ -276,7 +276,7 @@ async function loadDiary() {
     if (data.user_id !== user.id) {
 
         message.textContent =
-            "この日記は編集できません。";
+            "この記事は編集できません。";
 
         editForm.style.display = "none";
 

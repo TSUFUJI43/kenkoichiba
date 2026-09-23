@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>日記を書く - 健康市場 うにのきもち</title>
+    <title>記事を書く - 健康市場 うにのきもち</title>
 
     <link rel="stylesheet" href="style.css">
 
@@ -37,7 +37,7 @@
             <nav>
                 <a href="index.html">トップ</a>
                 <a href="gallery.html">ギャラリー</a>
-                <a href="diary.html">日記</a>
+                <a href="diary.html">雑記</a>
                 <a href="about.html">情報</a>
             </nav>
 
@@ -47,7 +47,7 @@
 
             <section>
 
-                <h2>＊ 日記を書く ＊</h2>
+                <h2>＊ 記事を書く ＊</h2>
 
                 <div style="padding: 25px;">
 
@@ -83,7 +83,7 @@
 
                         <p>
                             <button type="submit">
-                                日記を投稿する
+                                記事を投稿する
                             </button>
                         </p>
 
@@ -96,7 +96,7 @@
             </section>
 
             <p class="more">
-                → <a href="diary.html">日記を見る</a>
+                → <a href="diary.html">記事を見る</a>
             </p>
 
         </main>
@@ -127,7 +127,7 @@ async function checkLogin() {
     if (error || !data.user) {
 
         loginStatus.textContent =
-            "ログインしていません。日記を書くにはログインしてください。";
+            "ログインしていません。記事を書くにはログインしてください。";
 
         return;
     }
@@ -135,7 +135,7 @@ async function checkLogin() {
     currentUser = data.user;
 
     loginStatus.textContent =
-        "ログイン中です。日記を書いてみよう！";
+        "ログイン中です。記事を書いてみよう！";
 
     postForm.style.display = "block";
 }

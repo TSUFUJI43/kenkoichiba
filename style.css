@@ -1160,10 +1160,21 @@ main section p {
     font-weight: bold;
 }
 
-.diary-preview {
+.diary-preview p {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 10;
     line-clamp: 10;
     overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.diary-read-more {
+    font-size: 0.8em;
+    color: #999;
+    text-decoration: none;
+}
+
+.diary-read-more:hover {
+    text-decoration: underline;
 }

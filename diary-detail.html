@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
 
-    <title>日記 - 健康市場 うにのきもち</title>
+    <title>記事 - 健康市場 うにのきもち</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -44,7 +44,7 @@
 
                 <a href="gallery.html">ギャラリー</a>
 
-                <a href="diary.html">日記</a>
+                <a href="diary.html">雑記</a>
 
                 <a href="about.html">情報</a>
 
@@ -60,13 +60,13 @@
     <main>
 
         <p>
-            <a href="diary.html">← 日記一覧に戻る</a>
+            <a href="diary.html">← 雑記一覧に戻る</a>
         </p>
 
 
         <article id="diary-detail">
 
-            <p>日記を読み込み中……</p>
+            <p>記事を読み込み中……</p>
 
         </article>
 
@@ -136,7 +136,7 @@ async function loadDiaryDetail() {
     if (!diaryId) {
 
         diaryDetail.innerHTML =
-            "<p>日記が見つかりませんでした。</p>";
+            "<p>記事が見つかりませんでした。</p>";
 
         return;
 
@@ -171,7 +171,7 @@ async function loadDiaryDetail() {
         console.error(error);
 
         diaryDetail.innerHTML =
-            "<p>日記を読み込めませんでした。</p>";
+            "<p>記事を読み込めませんでした。</p>";
 
         return;
 
@@ -322,7 +322,7 @@ async function loadDiaryDetail() {
             async function() {
 
                 const result =
-                    confirm("この日記を削除する？");
+                    confirm("この記事を削除する？");
 
 
                 if (!result) {
@@ -348,7 +348,7 @@ async function loadDiaryDetail() {
                     console.error(error);
 
                     alert(
-                        "日記を削除できませんでした。"
+                        "記事を削除できませんでした。"
                     );
 
                     return;
