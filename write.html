@@ -297,9 +297,9 @@ message.textContent =
 // 入力欄を空にする
 form.reset();
 
-// 少し待って日記一覧へ移動
-setTimeout(function() {
-    window.location.href = "diary.html";
+// 1秒後に日記一覧へ移動
+setTimeout(() => {
+    window.location.replace("./diary.html");
 }, 1000);
 
 });
