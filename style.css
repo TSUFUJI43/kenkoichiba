@@ -1296,19 +1296,13 @@ main section p {
    日記一覧をコンパクトに
 ========================= */
 
-.diary-entry {
-    max-width: 760px;
-    margin: 0 auto;
-}
-
-/* 本文と画像の並び */
+/* PC */
 .diary-content-row {
     display: flex;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 18px;
 }
 
-/* 本文側 */
 .diary-preview {
     flex: 1;
     min-width: 0;
@@ -1317,23 +1311,22 @@ main section p {
 /* 縦長サムネ */
 .diary-image {
     width: 110px;
-    height: 150px;
-    flex-shrink: 0;
+    height: auto;
+    min-height: 80px;
+    max-height: 150px;
     object-fit: cover;
     object-position: center;
+    flex-shrink: 0;
     margin: 0;
     border: 1px solid #222222;
 }
 
+/* スマホ */
 @media (max-width: 700px) {
-
-    .diary-entry {
-        max-width: none;
-        margin: 0;
-    }
 
     .diary-content-row {
         flex-direction: column;
+        align-items: stretch;
         gap: 12px;
     }
 
@@ -1341,6 +1334,8 @@ main section p {
         width: 100%;
         max-width: 260px;
         height: 150px;
+        min-height: 0;
+        max-height: none;
         margin: 0 auto;
     }
 }
