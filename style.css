@@ -1178,3 +1178,114 @@ main section p {
 .diary-read-more:hover {
     text-decoration: underline;
 }
+
+.diary-image {
+    width: 130px;
+    height: 175px;
+    object-fit: cover;
+    object-position: center;
+    flex-shrink: 0;
+    margin: 0;
+    border: 1px solid #222222;
+}
+
+.diary-content-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.diary-preview {
+    flex: 1;
+    min-width: 0;
+}
+
+@media (max-width: 700px) {
+
+    /* 日記一覧 */
+    .diary-entry {
+        padding: 18px 15px 22px;
+    }
+
+    .diary-content-row {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .diary-preview {
+        width: 100%;
+    }
+
+    /* スマホの日記サムネ */
+    .diary-image {
+        width: 100%;
+        max-width: 260px;
+        height: 150px;
+        margin: 0 auto;
+        object-fit: cover;
+    }
+
+    /* 投稿者 */
+    .diary-author {
+        font-size: 0.85em;
+    }
+
+    .diary-author img {
+        width: 28px;
+        height: 28px;
+    }
+
+    /* 日付・カテゴリ */
+    .diary-meta {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    /* 日記タイトル */
+    .diary-entry h3 {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    /* 日記本文 */
+    .diary-entry p {
+        font-size: 13px;
+        line-height: 1.7;
+    }
+
+    /* 「続きを読む」 */
+    .diary-read-more {
+        font-size: 11px;
+    }
+
+    /* 投稿者フィルター */
+    .diary-filter,
+    .diary-category-filter {
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 0 8px;
+    }
+
+    .filter-button,
+    .category-button {
+        padding: 5px 9px;
+        font-size: 12px;
+    }
+
+}
+
+@media (max-width: 700px) {
+
+    main section h3,
+    main section p {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .diary-preview p {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+}
