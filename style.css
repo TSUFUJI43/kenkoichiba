@@ -1394,3 +1394,81 @@ main section p {
         padding-left: 2px;
     }
 }
+
+/* =========================
+   スマホ版 雑記・個別記事
+========================= */
+
+@media (max-width: 700px) {
+
+    /* 「← 雑記一覧に戻る」 */
+    main > p {
+        margin: 8px 12px 12px;
+        font-size: 12px;
+    }
+
+    /* 記事全体 */
+    #diary-detail {
+        padding: 8px 12px 30px;
+    }
+
+    /* 投稿者 */
+    #diary-detail .diary-author {
+        margin-bottom: 5px;
+        font-size: 13px;
+    }
+
+    #diary-detail .diary-author img {
+        width: 28px;
+        height: 28px;
+    }
+
+    /* 投稿日時 */
+    #diary-detail .diary-entry-date {
+        margin-bottom: 8px;
+        font-size: 11px;
+        color: #777777;
+    }
+
+    /* タイトル */
+    #diary-detail h1 {
+        margin: 5px 0 15px;
+        font-size: 20px;
+        line-height: 1.45;
+        overflow-wrap: break-word;
+    }
+
+    /* 記事画像 */
+    #diary-detail .diary-detail-image {
+        width: 100%;
+        margin: 15px 0 18px;
+    }
+
+    #diary-detail .diary-detail-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border: 1px solid #222222;
+        box-sizing: border-box;
+    }
+
+    /* 本文 */
+    #diary-detail .diary-detail-content {
+        width: 100%;
+    }
+
+    #diary-detail .diary-detail-content p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.8;
+        overflow-wrap: break-word;
+    }
+
+    /* 編集・削除ボタン */
+    #diary-detail .diary-actions {
+        margin-top: 25px;
+        display: flex;
+        gap: 8px;
+    }
+
+}
