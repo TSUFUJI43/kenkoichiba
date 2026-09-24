@@ -1293,78 +1293,104 @@ main section p {
 }
 
 /* =========================
-   日記一覧をコンパクトに
+   スマホ版 日記ページ調整
 ========================= */
 
-/* PC */
-.diary-content-row {
-    display: flex;
-    align-items: stretch;
-    gap: 18px;
-}
-
-.diary-preview {
-    flex: 1;
-    min-width: 0;
-}
-
-/* 縦長サムネ */
-.diary-image {
-    width: 110px;
-    height: auto;
-    min-height: 80px;
-    max-height: 150px;
-    object-fit: cover;
-    object-position: center;
-    flex-shrink: 0;
-    margin: 0;
-    border: 1px solid #222222;
-}
-
-/* スマホ */
 @media (max-width: 700px) {
 
+    /* 日記全体 */
+    .diary-entry {
+        padding: 16px 12px 20px;
+    }
+
+    /* 投稿者 */
+    .diary-author {
+        margin-bottom: 4px;
+    }
+
+    /* 日付・カテゴリ */
+    .diary-meta {
+        margin-bottom: 5px;
+    }
+
+    /* タイトル */
+    .diary-entry h3 {
+        margin: 5px 0 10px;
+        font-size: 16px;
+        line-height: 1.4;
+    }
+
+    /* 本文＋画像 */
     .diary-content-row {
+        display: flex;
         flex-direction: column;
-        align-items: stretch;
-        gap: 12px;
+        gap: 10px;
     }
 
-    .diary-image {
+    .diary-preview {
         width: 100%;
-        max-width: 260px;
-        height: 150px;
-        min-height: 0;
-        max-height: none;
-        margin: 0 auto;
     }
-}
 
-/* =========================
-   日記サムネ：PC
-========================= */
-
-.diary-image {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    object-position: center;
-    flex-shrink: 0;
-}
-
-/* スマホ */
-@media (max-width: 700px) {
+    /* スマホでは画像を画面いっぱいに */
     .diary-image {
         width: 100%;
-        max-width: 260px;
-        height: 150px !important;
-        margin: 0 auto;
+        max-width: none;
+        height: auto !important;
+        margin: 0;
         object-fit: cover;
     }
-}
 
-@media (min-width: 701px) {
-    .diary-entry {
-        padding: 18px 25px 20px;
+    /* 続きを読む */
+    .diary-read-more {
+        font-size: 11px;
+    }
+
+
+    /* =========================
+       スマホ版 メニュー
+    ========================= */
+
+    .menu {
+        padding: 8px 5px;
+    }
+
+    .menu h2 {
+        margin-bottom: 6px;
+        padding-bottom: 6px;
+    }
+
+    .menu nav {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        width: 100%;
+        gap: 0;
+    }
+
+    .menu nav a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 100%;
+        min-width: 0;
+
+        padding: 8px 2px;
+
+        text-align: center;
+        white-space: nowrap;
+
+        font-size: 12px;
+        letter-spacing: 0;
+
+        border-bottom: none;
+        border-right: 1px dotted #aaaaaa;
+    }
+
+    .menu nav a:last-child {
+        border-right: none;
+    }
+
+    .menu nav a:hover {
+        padding-left: 2px;
     }
 }
