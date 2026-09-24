@@ -1901,122 +1901,76 @@ main section p {
 
 /* =========================
    ギャラリー投稿
-   画像プレビュー
+   小さい画像プレビュー
    ========================= */
 
 .gallery-upload-preview {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
     margin-top: 15px;
 }
 
-
-/* 画像1枚ごとのカード */
-
 .gallery-preview-item {
-    width: 100%;
+    width: 110px;
+    height: 110px;
     box-sizing: border-box;
-
-    padding: 10px;
-
+    padding: 5px;
     border: 2px solid #555;
-
     background: #ffffff;
-
     cursor: grab;
-
+    position: relative;
     transition:
         opacity 0.15s,
         border-color 0.15s,
-        background 0.15s;
+        transform 0.15s;
 }
 
-
-/* ドラッグ中 */
+.gallery-preview-item:active {
+    cursor: grabbing;
+}
 
 .gallery-preview-item.is-dragging {
     opacity: 0.4;
 }
 
-
-/* ドロップ先 */
-
 .gallery-preview-item.drag-over {
     border-color: #333;
-    background: #f0f5ef;
+    transform: scale(1.05);
 }
 
-
-/* 何枚目か */
-
-.gallery-preview-number {
-    margin-bottom: 6px;
-
-    font-size: 1em;
-    font-weight: bold;
-}
-
-
-/* 画像を入れる枠 */
-
+/* 画像 */
 .gallery-preview-image-box {
     width: 100%;
-
-    /*
-     * 画像をかなり小さめに表示
-     */
-
-    height: 220px;
-
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    box-sizing: border-box;
-
-    margin-bottom: 8px;
-
-    background: #f8faf7;
-
-    border: 1px solid #cbd8ca;
-
     overflow: hidden;
+    background: #f8faf7;
 }
-
-
-/* 実際の画像 */
 
 .gallery-preview-image-box img {
     display: block;
-
-    max-width: 80%;
-    max-height: 200px;
-
-    width: auto;
-    height: auto;
-
+    width: 100%;
+    height: 100%;
     object-fit: contain;
 }
 
-
-/* ファイル名 */
-
-.gallery-preview-name {
-    margin-bottom: 5px;
-
-    font-size: 0.85em;
-
-    overflow-wrap: anywhere;
+/* 「1枚目」などは小さく画像の上に表示 */
+.gallery-preview-number {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    z-index: 2;
+    padding: 2px 5px;
+    background: rgba(255, 255, 255, 0.85);
+    font-size: 11px;
+    font-weight: bold;
 }
 
-
-/* ドラッグ案内 */
-
+/* ファイル名とドラッグ説明は非表示 */
+.gallery-preview-name,
 .gallery-preview-drag {
-    font-size: 0.8em;
-
-    color: #777;
-
-    padding-top: 3px;
+    display: none;
 }
