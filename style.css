@@ -1974,3 +1974,59 @@ main section p {
 .gallery-preview-drag {
     display: none;
 }
+
+/* =========================
+   ギャラリー確認画面
+   ========================= */
+
+.gallery-confirm-area {
+    margin-top: 25px;
+}
+
+.gallery-confirm-box {
+    padding: 15px;
+    border: 2px solid #555;
+    background: #fff;
+}
+
+.gallery-confirm-box p {
+    margin: 8px 0;
+}
+
+.gallery-confirm-box strong {
+    display: block;
+    margin-top: 12px;
+}
+
+.gallery-confirm-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.gallery-confirm-images img {
+    width: 110px;
+    height: 110px;
+    object-fit: contain;
+    background: #f8faf7;
+    border: 1px solid #cbd8ca;
+}
+
+.gallery-confirm-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.gallery-confirm-buttons button {
+    padding: 10px 18px;
+    border: 2px solid #555;
+    background: #fff;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.gallery-confirm-buttons button:hover {
+    background: #f0f5ef;
+}

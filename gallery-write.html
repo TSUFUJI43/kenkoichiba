@@ -170,23 +170,54 @@
                     class="gallery-upload-preview"
                 >
                 </div>
-
+                
+<button
+    type="button"
+    id="gallery-confirm"
+    class="gallery-submit-button"
+>
+    投稿内容を確認
+</button>
 
                 <!-- 投稿ボタン -->
 
-                <button
-                    type="button"
-                    id="gallery-confirm"
-                    class="gallery-submit-button"
-                >
-                    投稿内容を確認
-                </button>
+<div class="gallery-confirm-area" id="gallery-confirm-area" style="display:none;">
 
+    <h3>＊ 投稿内容の確認 ＊</h3>
 
-                <p
-                    id="gallery-message"
-                    class="gallery-message"
-                ></p>
+    <div class="gallery-confirm-box">
+        <p><strong>投稿者</strong></p>
+        <p id="confirm-author"></p>
+
+        <p><strong>作品の種類</strong></p>
+        <p id="confirm-type"></p>
+
+        <p><strong>タイトル</strong></p>
+        <p id="confirm-title"></p>
+
+        <p><strong>タグ</strong></p>
+        <p id="confirm-tags"></p>
+
+        <p><strong>説明</strong></p>
+        <p id="confirm-description"></p>
+
+        <p><strong>画像</strong></p>
+        <div id="confirm-images" class="gallery-confirm-images"></div>
+    </div>
+
+    <div class="gallery-confirm-buttons">
+        <button type="button" id="gallery-back">
+            ← 編集に戻る
+        </button>
+
+        <button type="button" id="gallery-post">
+            投稿する
+        </button>
+    </div>
+
+</div>
+
+<p id="gallery-message" class="gallery-message"></p>
 
 
                 <p class="more">
@@ -681,47 +712,104 @@ function showImagePreview() {
      * 確認ボタン
      */
 
-    document.getElementById(
-        "gallery-confirm"
-    ).addEventListener(
-        "click",
-        () => {
+document.getElementById("gallery-confirm").addEventListener("click", () => {
 
-            const title =
-                document
-                    .getElementById("gallery-title")
-                    .value
-                    .trim();
+    const title =
+        document.getElementById("gallery-title").value.trim();
 
+    const type =
+        document.getElementById("gallery-type").value;
 
-            if (!title) {
+    const description =
+        document.getElementById("gallery-description").value.trim();
 
-                alert(
-                    "タイトルを入力してください。"
-                );
+    // タイトルチェック
+    if (!title) {
+        alert("タイトルを入力してください。");
+        return;
+    }
 
-                return;
+    // 画像チェック
+    if (selectedImages.length === 0) {
+        alert("画像を1枚以上選択してください。");
+        return;
+    }
 
-            }
+    // 投稿者
+    document.getElementById("confirm-author").textContent =
+        document.getElementById("current-user").textContent;
 
+    // 作品の種類
+    document.getElementById("confirm-type").textContent =
+        type;
 
-            if (selectedImages.length === 0) {
+    // タイトル
+    document.getElementById("confirm-title").textContent =
+        title;
 
-                alert(
-                    "画像を1枚以上選択してください。"
-                );
+    // タグ
+    document.getElementById("confirm-tags").textContent =
+        tags.length > 0
+            ? tags.map(tag => "#" + tag).join(" ")
+            : "タグなし";
 
-                return;
+    // 説明
+    document.getElementById("confirm-description").textContent =
+        description || "説明なし";
 
-            }
+    // 画像
+    const confirmImages =
+        document.getElementById("confirm-images");
 
+    confirmImages.innerHTML = "";
 
-            alert(
-                "確認画面は次の段階で作ります！"
-            );
+    selectedImages.forEach(file => {
 
-        }
-    );
+        const imageURL =
+            URL.createObjectURL(file);
+
+        const img =
+            document.createElement("img");
+
+        img.src = imageURL;
+        img.alt = "";
+
+        confirmImages.appendChild(img);
+    });
+
+    // 入力画面を隠す
+    document.getElementById("gallery-confirm").style.display =
+        "none";
+
+    // 確認画面を表示
+    document.getElementById("gallery-confirm-area").style.display =
+        "block";
+
+    // 確認画面までスクロール
+    document.getElementById("gallery-confirm-area")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+});
+
+/*
+ * 編集に戻る
+ */
+
+document.getElementById("gallery-back").addEventListener("click", () => {
+
+    document.getElementById("gallery-confirm-area").style.display =
+        "none";
+
+    document.getElementById("gallery-confirm").style.display =
+        "block";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+});
 
 </script>
 
