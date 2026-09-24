@@ -380,155 +380,216 @@
     );
 
 
-    /*
-     * 画像
-     */
+ /*
+ * =========================
+ * 画像プレビュー
+ * =========================
+ */
 
-    const imageInput =
-        document.getElementById("gallery-images");
+const imageInput =
+    document.getElementById("gallery-images");
 
-    const preview =
-        document.getElementById("gallery-preview");
-
-
-    let selectedImages = [];
-
-
-    imageInput.addEventListener(
-        "change",
-        event => {
-
-            selectedImages =
-                Array.from(event.target.files);
-
-            showImagePreview();
-
-        }
-    );
+const preview =
+    document.getElementById("gallery-preview");
 
 
-    function showImagePreview() {
+/*
+ * 選択された画像
+ */
 
-        preview.innerHTML = "";
-
-
-        selectedImages.forEach(
-            (file, index) => {
-
-                const reader =
-                    new FileReader();
+let selectedImages = [];
 
 
-                reader.onload = event => {
+/*
+ * 画像を選択したとき
+ */
 
-                    const item =
-                        document.createElement("div");
+imageInput.addEventListener(
+    "change",
+    event => {
 
-                    item.className =
-                        "gallery-preview-item";
+        selectedImages =
+            Array.from(event.target.files);
+
+        showImagePreview();
+
+    }
+);
 
 
-                    item.innerHTML = `
+/*
+ * 画像プレビュー表示
+ */
 
-                        <div class="gallery-preview-number">
-                            ${index + 1}
-                        </div>
+function showImagePreview() {
+
+    preview.innerHTML = "";
+
+
+    selectedImages.forEach(
+        (file, index) => {
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload = event => {
+
+                const item =
+                    document.createElement("div");
+
+                item.className =
+                    "gallery-preview-item";
+
+
+                /*
+                 * 画像カード
+                 */
+
+                item.innerHTML = `
+
+                    <div class="gallery-preview-number">
+                        ${index + 1}枚目
+                    </div>
+
+                    <div class="gallery-preview-image-box">
 
                         <img
                             src="${event.target.result}"
                             alt=""
                         >
 
-                        <div class="gallery-preview-name">
-                            ${escapeHtml(file.name)}
-                        </div>
+                    </div>
 
-                        <div class="gallery-preview-buttons">
-
-                            <button
-                                type="button"
-                                class="move-left"
-                                ${index === 0 ? "disabled" : ""}
-                            >
-                                ←
-                            </button>
-
-                            <button
-                                type="button"
-                                class="move-right"
-                                ${index === selectedImages.length - 1 ? "disabled" : ""}
-                            >
-                                →
-                            </button>
-
-                        </div>
-
-                    `;
+                    <div class="gallery-preview-name">
+                        ${escapeHtml(file.name)}
+                    </div>
 
 
+                    <div class="gallery-preview-buttons">
+
+                        <button
+                            type="button"
+                            class="move-left"
+                            ${index === 0 ? "disabled" : ""}
+                        >
+                            ← ひとつ前へ
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="move-right"
+                            ${index === selectedImages.length - 1 ? "disabled" : ""}
+                        >
+                            ひとつ後ろへ →
+                        </button>
+
+                    </div>
+
+                `;
+
+
+                /*
+                 * 「ひとつ前へ」
+                 */
+
+                const leftButton =
                     item.querySelector(
                         ".move-left"
-                    ).addEventListener(
-                        "click",
-                        () => {
-
-                            if (index === 0) {
-                                return;
-                            }
-
-                            [
-                                selectedImages[index - 1],
-                                selectedImages[index]
-                            ] = [
-                                selectedImages[index],
-                                selectedImages[index - 1]
-                            ];
-
-                            showImagePreview();
-
-                        }
                     );
 
 
+                leftButton.addEventListener(
+                    "click",
+                    () => {
+
+                        if (index === 0) {
+                            return;
+                        }
+
+
+                        /*
+                         * 現在の画像と
+                         * ひとつ前の画像を交換
+                         */
+
+                        [
+                            selectedImages[index - 1],
+                            selectedImages[index]
+                        ] = [
+                            selectedImages[index],
+                            selectedImages[index - 1]
+                        ];
+
+
+                        /*
+                         * 並び順を更新
+                         */
+
+                        showImagePreview();
+
+                    }
+                );
+
+
+                /*
+                 * 「ひとつ後ろへ」
+                 */
+
+                const rightButton =
                     item.querySelector(
                         ".move-right"
-                    ).addEventListener(
-                        "click",
-                        () => {
-
-                            if (
-                                index ===
-                                selectedImages.length - 1
-                            ) {
-                                return;
-                            }
-
-                            [
-                                selectedImages[index],
-                                selectedImages[index + 1]
-                            ] = [
-                                selectedImages[index + 1],
-                                selectedImages[index]
-                            ];
-
-                            showImagePreview();
-
-                        }
                     );
 
 
-                    preview.appendChild(item);
+                rightButton.addEventListener(
+                    "click",
+                    () => {
 
-                };
+                        if (
+                            index ===
+                            selectedImages.length - 1
+                        ) {
+                            return;
+                        }
 
 
-                reader.readAsDataURL(file);
+                        /*
+                         * 現在の画像と
+                         * ひとつ後ろの画像を交換
+                         */
 
-            }
-        );
+                        [
+                            selectedImages[index],
+                            selectedImages[index + 1]
+                        ] = [
+                            selectedImages[index + 1],
+                            selectedImages[index]
+                        ];
 
-    }
 
+                        /*
+                         * 並び順を更新
+                         */
+
+                        showImagePreview();
+
+                    }
+                );
+
+
+                preview.appendChild(item);
+
+            };
+
+
+            reader.readAsDataURL(file);
+
+        }
+    );
+
+}
 
     /*
      * HTMLエスケープ

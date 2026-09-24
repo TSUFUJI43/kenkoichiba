@@ -1500,3 +1500,519 @@ main section p {
     }
 
 }
+
+/* =========================
+   新ギャラリー
+========================= */
+
+.gallery-intro {
+    margin-bottom: 20px;
+}
+
+
+/* =========================
+   作者ごとのエリア
+========================= */
+
+.gallery-authors {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 20px;
+
+    padding: 10px 20px 25px;
+}
+
+
+.gallery-author {
+    min-width: 0;
+
+    border: 1px solid #777777;
+
+    background: #ffffff;
+}
+
+
+/* 作者タイトル */
+
+.gallery-author-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 9px 12px;
+
+    color: #444444;
+
+    background: #eef4ec;
+
+    border-bottom: 1px dotted #aaaaaa;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   作品グリッド
+========================= */
+
+.gallery-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 10px;
+
+    padding: 12px;
+}
+
+
+/* 作品 */
+
+.gallery-work {
+    position: relative;
+
+    width: 100%;
+
+    aspect-ratio: 1 / 1;
+
+    padding: 0;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+    border: 1px solid #777777;
+
+    background: #f5f8f4;
+}
+
+
+.gallery-work img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition: opacity 0.15s;
+}
+
+
+.gallery-work:hover img {
+    opacity: 0.7;
+}
+
+
+/* 複数枚表示 */
+
+.gallery-count {
+    position: absolute;
+
+    right: 5px;
+    bottom: 5px;
+
+    padding: 2px 5px;
+
+    color: #ffffff;
+
+    background: rgba(0, 0, 0, 0.65);
+
+    font-family: monospace;
+
+    font-size: 11px;
+
+    line-height: 1;
+}
+
+
+/* 作者ギャラリーへのリンク */
+
+.gallery-more {
+    margin: 0;
+
+    padding: 0 12px 12px;
+
+    text-align: right;
+}
+
+
+/* =========================
+   ライトボックス
+========================= */
+
+#gallery-modal {
+    width: min(900px, 92vw);
+
+    height: min(90vh, 800px);
+
+    padding: 0;
+
+    border: 2px solid #222222;
+
+    background: #ffffff;
+
+    overflow: hidden;
+}
+
+
+#gallery-modal::backdrop {
+    background: rgba(0, 0, 0, 0.65);
+}
+
+
+/* ライトボックス内部 */
+
+.gallery-modal-inner {
+    position: relative;
+
+    display: flex;
+
+    flex-direction: column;
+
+    width: 100%;
+    height: 100%;
+}
+
+
+/* =========================
+   ×ボタン
+========================= */
+
+.gallery-modal-close {
+    position: absolute;
+
+    z-index: 10;
+
+    top: 8px;
+    right: 10px;
+
+    width: 34px;
+    height: 34px;
+
+    padding: 0;
+
+    border: none;
+
+    color: #444444;
+
+    background: rgba(255, 255, 255, 0.85);
+
+    font-family: sans-serif;
+
+    font-size: 28px;
+
+    line-height: 30px;
+
+    cursor: pointer;
+}
+
+
+.gallery-modal-close:hover {
+    color: #63896c;
+}
+
+
+/* =========================
+   画像エリア
+   ★ここだけスクロール
+========================= */
+
+.gallery-image-area {
+    flex: 1;
+
+    min-height: 0;
+
+    padding: 45px 20px 20px;
+
+    overflow-y: auto;
+
+    overflow-x: hidden;
+
+    background: #f7f9f6;
+
+    text-align: center;
+}
+
+
+/* 画像 */
+
+.gallery-image-area img {
+    display: block;
+
+    width: auto;
+
+    max-width: 100%;
+
+    height: auto;
+
+    margin: 0 auto 20px;
+
+    border: 1px solid #777777;
+
+    background: #ffffff;
+}
+
+
+.gallery-image-area img:last-child {
+    margin-bottom: 0;
+}
+
+
+/* =========================
+   作品情報
+   ★ここは固定
+========================= */
+
+.gallery-info {
+    flex-shrink: 0;
+
+    max-height: 180px;
+
+    padding: 15px 20px;
+
+    border-top: 1px solid #222222;
+
+    background: #ffffff;
+
+    overflow-y: auto;
+}
+
+
+.gallery-info h3 {
+    margin: 0 0 8px;
+
+    color: #444444;
+
+    font-size: 17px;
+}
+
+
+/* タグ */
+
+.gallery-modal-tags {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 5px;
+
+    margin-bottom: 8px;
+}
+
+
+.gallery-modal-tags span {
+    padding: 3px 7px;
+
+    color: #63896c;
+
+    background: #eef4ec;
+
+    border: 1px solid #cbd8ca;
+
+    font-size: 11px;
+}
+
+
+/* 説明 */
+
+.gallery-modal-description {
+    margin: 0;
+
+    color: #555555;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+
+    white-space: pre-wrap;
+}
+
+
+/* =========================
+   スマホ
+========================= */
+
+@media (max-width: 700px) {
+
+    .gallery-authors {
+        grid-template-columns: 1fr;
+
+        gap: 18px;
+
+        padding: 10px 12px 20px;
+    }
+
+
+    .gallery-grid {
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap: 7px;
+
+        padding: 9px;
+    }
+
+
+    .gallery-author-title {
+        font-size: 13px;
+    }
+
+
+    #gallery-modal {
+        width: 94vw;
+
+        height: 90vh;
+
+        border-width: 1px;
+    }
+
+
+    .gallery-image-area {
+        padding: 40px 10px 10px;
+    }
+
+
+    .gallery-info {
+        max-height: 160px;
+
+        padding: 12px 14px;
+    }
+
+
+    .gallery-info h3 {
+        font-size: 15px;
+    }
+
+
+    .gallery-modal-description {
+        font-size: 12px;
+
+        line-height: 1.6;
+    }
+
+}
+
+
+/* =========================
+   ギャラリー投稿
+   画像プレビュー
+   ========================= */
+
+.gallery-upload-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+
+/* 画像1枚ごとのカード */
+
+.gallery-preview-item {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 15px;
+
+    border: 2px solid #555;
+
+    background: #ffffff;
+}
+
+
+/* 何枚目か */
+
+.gallery-preview-number {
+    margin-bottom: 12px;
+
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+
+/* 画像を入れる枠 */
+
+.gallery-preview-image-box {
+    width: 100%;
+    height: 400px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    margin-bottom: 12px;
+
+    background: #f8faf7;
+
+    border: 1px solid #cbd8ca;
+
+    overflow: hidden;
+}
+
+
+/* 実際の画像 */
+
+.gallery-preview-image-box img {
+    display: block;
+
+    max-width: 100%;
+    max-height: 100%;
+
+    width: auto;
+    height: auto;
+
+    object-fit: contain;
+}
+
+
+/* ファイル名 */
+
+.gallery-preview-name {
+    margin-bottom: 12px;
+
+    font-size: 0.9em;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* 入れ替えボタン */
+
+.gallery-preview-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+
+.gallery-preview-buttons button {
+    padding: 8px 14px;
+
+    border: 1px solid #555;
+
+    background: #ffffff;
+
+    font-family: inherit;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+.gallery-preview-buttons button:hover:not(:disabled) {
+    background: #f0f5ef;
+}
+
+
+.gallery-preview-buttons button:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
