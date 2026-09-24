@@ -1459,3 +1459,44 @@ main section p {
     }
 
 }
+/* =========================
+   スマホ版 仕上げ調整
+========================= */
+
+@media (max-width: 700px) {
+
+    /* サイト左右の黒い枠線を戻す */
+    .site {
+        border-left: 2px solid #222222 !important;
+        border-right: 2px solid #222222 !important;
+    }
+
+
+    /* =========================
+       スマホ版 メニュー
+    ========================= */
+
+    /* 「情報」の右側には点線を付けない */
+    .menu nav > a:nth-of-type(4) {
+        border-right: none;
+    }
+
+
+    /* 管理者専用を2段目にする */
+    .menu nav .admin-link {
+        grid-column: 1 / -1;
+        margin: 0;
+        padding: 0;
+        border-top: 1px solid #222222;
+    }
+
+    /* 管理者専用のリンク */
+    .menu nav .admin-link a {
+        display: block;
+        width: 100%;
+        padding: 8px 5px;
+        border: none;
+        text-align: left;
+    }
+
+}
