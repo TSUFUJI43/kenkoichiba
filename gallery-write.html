@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ギャラリー投稿 - 健康市場 うにのきもち</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="site">
+
+    <header>
+
+        <div class="header-deco">✽✽✽</div>
+
+        <h1>
+            <img src="images/logo.png" alt="健康市場 うにのきもち">
+        </h1>
+
+        <p class="subtitle">
+            - kenkoichiba uninokimochi -
+        </p>
+
+        <div class="header-deco">✽✽✽</div>
+
+    </header>
+
+
+    <div class="layout">
+
+        <aside class="menu">
+
+            <h2>✽ メニュー ✽</h2>
+
+            <nav>
+                <a href="index.html">トップ</a>
+                <a href="gallery.html">ギャラリー</a>
+                <a href="diary.html">雑記</a>
+                <a href="about.html">情報</a>
+
+                <a href="write.html">[管理者専用]</a>
+            </nav>
+
+        </aside>
+
+
+        <main>
+
+            <section class="gallery-write">
+
+                <h2>＊ ギャラリーに作品を投稿 ＊</h2>
+
+
+                <!-- ログイン中のユーザー -->
+
+                <div class="gallery-write-user">
+
+                    投稿者：
+                    <strong id="current-user">確認中……</strong>
+
+                </div>
+
+
+                <!-- 種類 -->
+
+                <label for="gallery-type">
+                    作品の種類
+                </label>
+
+                <select id="gallery-type">
+
+                    <option value="イラスト">
+                        イラスト
+                    </option>
+
+                    <option value="漫画">
+                        漫画
+                    </option>
+
+                    <option value="らくがき">
+                        らくがき
+                    </option>
+
+                </select>
+
+
+                <!-- タイトル -->
+
+                <label for="gallery-title">
+                    タイトル
+                </label>
+
+                <input
+                    type="text"
+                    id="gallery-title"
+                    placeholder="作品のタイトル"
+                    maxlength="100"
+                >
+
+
+                <!-- タグ -->
+
+                <label>
+                    タグ
+                </label>
+
+                <div class="gallery-tag-input">
+
+                    <input
+                        type="text"
+                        id="gallery-tag"
+                        placeholder="例：創作"
+                        maxlength="30"
+                    >
+
+                    <button
+                        type="button"
+                        id="add-tag"
+                    >
+                        ＋タグを追加
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="gallery-tags"
+                    class="gallery-tags"
+                >
+                </div>
+
+
+                <!-- 説明 -->
+
+                <label for="gallery-description">
+                    説明
+                </label>
+
+                <textarea
+                    id="gallery-description"
+                    placeholder="作品についての説明など"
+                    rows="5"
+                ></textarea>
+
+
+                <!-- 画像 -->
+
+                <label>
+                    画像
+                </label>
+
+                <div class="gallery-upload-box">
+
+                    <input
+                        type="file"
+                        id="gallery-images"
+                        accept="image/*"
+                        multiple
+                    >
+
+                    <p>
+                        複数の画像を選択できます
+                    </p>
+
+                    <p>
+                        画像の順番は投稿前に変更できます
+                    </p>
+
+                </div>
+
+
+                <!-- 画像プレビュー -->
+
+                <div
+                    id="gallery-preview"
+                    class="gallery-upload-preview"
+                >
+                </div>
+
+
+                <!-- 投稿ボタン -->
+
+                <button
+                    type="button"
+                    id="gallery-confirm"
+                    class="gallery-submit-button"
+                >
+                    投稿内容を確認
+                </button>
+
+
+                <p
+                    id="gallery-message"
+                    class="gallery-message"
+                ></p>
+
+
+                <p class="more">
+
+                    → <a href="gallery.html">
+                        ギャラリーに戻る
+                    </a>
+
+                </p>
+
+            </section>
+
+
+            <footer>
+
+                ✽　since 2026　｜　健康市場 うにのきもち　｜　✽
+
+            </footer>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /*
+     * =========================
+     * ギャラリー投稿
+     * =========================
+     */
+
+    const SUPABASE_URL =
+        "ここにSupabase URL";
+
+    const SUPABASE_ANON_KEY =
+        "ここにSupabase Anon Key";
+
+
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_ANON_KEY
+        );
+
+
+    /*
+     * 投稿者表示
+     */
+
+    const authors = {
+
+        "0cb63a34-76a9-4f23-bc94-b8bc63d68050":
+            "つふじ",
+
+        "866f58f4-e493-4f62-999b-2aba99af71ef":
+            "健康法"
+
+    };
+
+
+    /*
+     * タグ
+     */
+
+    let tags = [];
+
+
+    const tagInput =
+        document.getElementById("gallery-tag");
+
+    const addTagButton =
+        document.getElementById("add-tag");
+
+    const tagsArea =
+        document.getElementById("gallery-tags");
+
+
+    function showTags() {
+
+        tagsArea.innerHTML = "";
+
+        tags.forEach((tag, index) => {
+
+            const tagElement =
+                document.createElement("span");
+
+            tagElement.className =
+                "gallery-tag";
+
+            tagElement.innerHTML = `
+                #${escapeHtml(tag)}
+
+                <button
+                    type="button"
+                    data-index="${index}"
+                >
+                    ×
+                </button>
+            `;
+
+            tagsArea.appendChild(tagElement);
+
+        });
+
+
+        tagsArea
+            .querySelectorAll("button")
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        const index =
+                            Number(button.dataset.index);
+
+                        tags.splice(index, 1);
+
+                        showTags();
+
+                    }
+                );
+
+            });
+
+    }
+
+
+    function addTag() {
+
+        const tag =
+            tagInput.value.trim();
+
+        if (!tag) {
+            return;
+        }
+
+
+        if (tags.includes(tag)) {
+
+            tagInput.value = "";
+
+            return;
+
+        }
+
+
+        tags.push(tag);
+
+        tagInput.value = "";
+
+        showTags();
+
+    }
+
+
+    addTagButton.addEventListener(
+        "click",
+        addTag
+    );
+
+
+    tagInput.addEventListener(
+        "keydown",
+        event => {
+
+            if (event.key === "Enter") {
+
+                event.preventDefault();
+
+                addTag();
+
+            }
+
+        }
+    );
+
+
+    /*
+     * 画像
+     */
+
+    const imageInput =
+        document.getElementById("gallery-images");
+
+    const preview =
+        document.getElementById("gallery-preview");
+
+
+    let selectedImages = [];
+
+
+    imageInput.addEventListener(
+        "change",
+        event => {
+
+            selectedImages =
+                Array.from(event.target.files);
+
+            showImagePreview();
+
+        }
+    );
+
+
+    function showImagePreview() {
+
+        preview.innerHTML = "";
+
+
+        selectedImages.forEach(
+            (file, index) => {
+
+                const reader =
+                    new FileReader();
+
+
+                reader.onload = event => {
+
+                    const item =
+                        document.createElement("div");
+
+                    item.className =
+                        "gallery-preview-item";
+
+
+                    item.innerHTML = `
+
+                        <div class="gallery-preview-number">
+                            ${index + 1}
+                        </div>
+
+                        <img
+                            src="${event.target.result}"
+                            alt=""
+                        >
+
+                        <div class="gallery-preview-name">
+                            ${escapeHtml(file.name)}
+                        </div>
+
+                        <div class="gallery-preview-buttons">
+
+                            <button
+                                type="button"
+                                class="move-left"
+                                ${index === 0 ? "disabled" : ""}
+                            >
+                                ←
+                            </button>
+
+                            <button
+                                type="button"
+                                class="move-right"
+                                ${index === selectedImages.length - 1 ? "disabled" : ""}
+                            >
+                                →
+                            </button>
+
+                        </div>
+
+                    `;
+
+
+                    item.querySelector(
+                        ".move-left"
+                    ).addEventListener(
+                        "click",
+                        () => {
+
+                            if (index === 0) {
+                                return;
+                            }
+
+                            [
+                                selectedImages[index - 1],
+                                selectedImages[index]
+                            ] = [
+                                selectedImages[index],
+                                selectedImages[index - 1]
+                            ];
+
+                            showImagePreview();
+
+                        }
+                    );
+
+
+                    item.querySelector(
+                        ".move-right"
+                    ).addEventListener(
+                        "click",
+                        () => {
+
+                            if (
+                                index ===
+                                selectedImages.length - 1
+                            ) {
+                                return;
+                            }
+
+                            [
+                                selectedImages[index],
+                                selectedImages[index + 1]
+                            ] = [
+                                selectedImages[index + 1],
+                                selectedImages[index]
+                            ];
+
+                            showImagePreview();
+
+                        }
+                    );
+
+
+                    preview.appendChild(item);
+
+                };
+
+
+                reader.readAsDataURL(file);
+
+            }
+        );
+
+    }
+
+
+    /*
+     * HTMLエスケープ
+     */
+
+    function escapeHtml(value) {
+
+        return String(value)
+
+            .replace(/&/g, "&amp;")
+
+            .replace(/</g, "&lt;")
+
+            .replace(/>/g, "&gt;")
+
+            .replace(/"/g, "&quot;")
+
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    /*
+     * ログイン確認
+     */
+
+    async function checkLogin() {
+
+        const {
+            data: {
+                user
+            }
+        } =
+            await supabaseClient
+                .auth
+                .getUser();
+
+
+        if (!user) {
+
+            document.getElementById(
+                "current-user"
+            ).textContent =
+                "ログインしてください";
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "current-user"
+        ).textContent =
+            authors[user.id] ||
+            "投稿者";
+
+    }
+
+
+    checkLogin();
+
+
+    /*
+     * 確認ボタン
+     */
+
+    document.getElementById(
+        "gallery-confirm"
+    ).addEventListener(
+        "click",
+        () => {
+
+            const title =
+                document
+                    .getElementById("gallery-title")
+                    .value
+                    .trim();
+
+
+            if (!title) {
+
+                alert(
+                    "タイトルを入力してください。"
+                );
+
+                return;
+
+            }
+
+
+            if (selectedImages.length === 0) {
+
+                alert(
+                    "画像を1枚以上選択してください。"
+                );
+
+                return;
+
+            }
+
+
+            alert(
+                "確認画面は次の段階で作ります！"
+            );
+
+        }
+    );
+
+</script>
+
+</body>
+
+</html>
