@@ -156,20 +156,9 @@
 
                 <div class="gallery-upload-box">
 
-                    <input
-                        type="file"
-                        id="gallery-images"
-                        accept="image/*"
-                        multiple
-                    >
-
-                    <p>
-                        複数の画像を選択できます
-                    </p>
-
-                    <p>
-                        画像の順番は投稿前に変更できます
-                    </p>
+                    <input type="file" id="gallery-images" accept="image/*" multiple>
+<p>画像を追加できます</p>
+<p>画像はドラッグして順番を変更できます</p>
 
                 </div>
 
@@ -404,12 +393,15 @@ let selectedImages = [];
 imageInput.addEventListener(
     "change",
     event => {
-
-        selectedImages =
+        const newImages =
             Array.from(event.target.files);
+
+        selectedImages.push(...newImages);
 
         showImagePreview();
 
+        // 同じ画像をもう一度選べるようにする
+        imageInput.value = "";
     }
 );
 

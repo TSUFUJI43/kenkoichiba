@@ -1916,7 +1916,7 @@ main section p {
     height: 110px;
     box-sizing: border-box;
     padding: 5px;
-    border: 2px solid #555;
+    border: 1px solid #555;
     background: #ffffff;
     cursor: grab;
     position: relative;
