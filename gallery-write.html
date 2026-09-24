@@ -811,6 +811,256 @@ document.getElementById("gallery-back").addEventListener("click", () => {
 
 });
 
+/*
+ * =========================
+ * 投稿する
+ * =========================
+ */
+
+document.getElementById("gallery-post").addEventListener("click", async () => {
+
+    const postButton =
+        document.getElementById("gallery-post");
+
+    const message =
+        document.getElementById("gallery-message");
+
+
+    /*
+     * 二重投稿防止
+     */
+
+    postButton.disabled = true;
+    postButton.textContent = "投稿中……";
+    message.textContent = "";
+
+
+    try {
+
+        /*
+         * ログイン中のユーザーを取得
+         */
+
+        const {
+            data: {
+                user
+            },
+            error: userError
+        } =
+            await supabaseClient
+                .auth
+                .getUser();
+
+
+        if (userError || !user) {
+
+            throw new Error(
+                "ログインしてください。"
+            );
+
+        }
+
+
+        /*
+         * 入力内容を取得
+         */
+
+        const title =
+            document
+                .getElementById("gallery-title")
+                .value
+                .trim();
+
+        const type =
+            document
+                .getElementById("gallery-type")
+                .value;
+
+        const description =
+            document
+                .getElementById("gallery-description")
+                .value
+                .trim();
+
+
+        /*
+         * 画像URLを入れる配列
+         *
+         * selectedImages の順番どおりに
+         * URLを保存する
+         */
+
+        const imageUrls = [];
+
+
+        /*
+         * 画像を1枚ずつStorageへアップロード
+         */
+
+        for (
+            let i = 0;
+            i < selectedImages.length;
+            i++
+        ) {
+
+            const file =
+                selectedImages[i];
+
+
+            /*
+             * ファイル名を安全な名前にする
+             */
+
+            const fileExtension =
+                file.name.includes(".")
+                    ? file.name
+                        .split(".")
+                        .pop()
+                        .toLowerCase()
+                    : "jpg";
+
+
+            /*
+             * ユーザーごとのフォルダ
+             * ＋ランダムなファイル名
+             */
+
+            const filePath =
+                `${user.id}/${crypto.randomUUID()}.${fileExtension}`;
+
+
+            /*
+             * Storageへアップロード
+             */
+
+            const {
+                error: uploadError
+            } =
+                await supabaseClient
+                    .storage
+                    .from("gallery-images")
+                    .upload(
+                        filePath,
+                        file,
+                        {
+                            cacheControl: "3600",
+                            upsert: false
+                        }
+                    );
+
+
+            if (uploadError) {
+
+                throw uploadError;
+
+            }
+
+
+            /*
+             * 公開URLを取得
+             */
+
+            const {
+                data: publicUrlData
+            } =
+                supabaseClient
+                    .storage
+                    .from("gallery-images")
+                    .getPublicUrl(filePath);
+
+
+            imageUrls.push(
+                publicUrlData.publicUrl
+            );
+
+        }
+
+
+        /*
+         * galleryテーブルへ投稿情報を保存
+         */
+
+        const {
+            error: insertError
+        } =
+            await supabaseClient
+                .from("gallery")
+                .insert({
+
+                    user_id: user.id,
+
+                    title: title,
+
+                    description: description,
+
+                    type: type,
+
+                    tags: tags,
+
+                    image_urls: imageUrls
+
+                });
+
+
+        if (insertError) {
+
+            throw insertError;
+
+        }
+
+
+        /*
+         * 投稿成功
+         */
+
+        message.textContent =
+            "投稿しました！";
+
+
+        alert(
+            "ギャラリーに投稿しました！"
+        );
+
+
+        /*
+         * ギャラリーページへ移動
+         */
+
+        window.location.href =
+            "gallery.html";
+
+
+    } catch (error) {
+
+        console.error(
+            "Gallery post error:",
+            error
+        );
+
+
+        message.textContent =
+            "投稿に失敗しました。";
+
+
+        alert(
+            "投稿に失敗しました。\n\n" +
+            (error.message || error)
+        );
+
+
+        /*
+         * 失敗したらボタンを戻す
+         */
+
+        postButton.disabled = false;
+
+        postButton.textContent =
+            "投稿する";
+
+    }
+
+});
+
 </script>
 
 </body>
