@@ -380,9 +380,10 @@
     );
 
 
- /*
+/*
  * =========================
  * 画像プレビュー
+ * ドラッグ＆ドロップ並び替え
  * =========================
  */
 
@@ -393,15 +394,11 @@ const preview =
     document.getElementById("gallery-preview");
 
 
-/*
- * 選択された画像
- */
-
 let selectedImages = [];
 
 
 /*
- * 画像を選択したとき
+ * 画像を選択
  */
 
 imageInput.addEventListener(
@@ -429,162 +426,198 @@ function showImagePreview() {
     selectedImages.forEach(
         (file, index) => {
 
-            const reader =
-                new FileReader();
+            const item =
+                document.createElement("div");
+
+            item.className =
+                "gallery-preview-item";
+
+            /*
+             * ドラッグ可能にする
+             */
+
+            item.draggable = true;
+
+            /*
+             * 現在の番号を保存
+             */
+
+            item.dataset.index = index;
 
 
-            reader.onload = event => {
+            /*
+             * 画像URLを作成
+             */
 
-                const item =
-                    document.createElement("div");
-
-                item.className =
-                    "gallery-preview-item";
-
-
-                /*
-                 * 画像カード
-                 */
-
-                item.innerHTML = `
-
-                    <div class="gallery-preview-number">
-                        ${index + 1}枚目
-                    </div>
-
-                    <div class="gallery-preview-image-box">
-
-                        <img
-                            src="${event.target.result}"
-                            alt=""
-                        >
-
-                    </div>
-
-                    <div class="gallery-preview-name">
-                        ${escapeHtml(file.name)}
-                    </div>
+            const imageURL =
+                URL.createObjectURL(file);
 
 
-                    <div class="gallery-preview-buttons">
+            item.innerHTML = `
 
-                        <button
-                            type="button"
-                            class="move-left"
-                            ${index === 0 ? "disabled" : ""}
-                        >
-                            ← ひとつ前へ
-                        </button>
+                <div class="gallery-preview-number">
+                    ${index + 1}枚目
+                </div>
+
+                <div class="gallery-preview-image-box">
+
+                    <img
+                        src="${imageURL}"
+                        alt=""
+                    >
+
+                </div>
+
+                <div class="gallery-preview-name">
+                    ${escapeHtml(file.name)}
+                </div>
+
+                <div class="gallery-preview-drag">
+                    ☷ ドラッグして順番を変更
+                </div>
+
+            `;
 
 
-                        <button
-                            type="button"
-                            class="move-right"
-                            ${index === selectedImages.length - 1 ? "disabled" : ""}
-                        >
-                            ひとつ後ろへ →
-                        </button>
+            /*
+             * ドラッグ開始
+             */
 
-                    </div>
+            item.addEventListener(
+                "dragstart",
+                event => {
 
-                `;
+                    item.classList.add(
+                        "is-dragging"
+                    );
+
+                    event.dataTransfer.effectAllowed =
+                        "move";
+
+                    event.dataTransfer.setData(
+                        "text/plain",
+                        index
+                    );
+
+                }
+            );
 
 
-                /*
-                 * 「ひとつ前へ」
-                 */
+            /*
+             * ドラッグ終了
+             */
 
-                const leftButton =
-                    item.querySelector(
-                        ".move-left"
+            item.addEventListener(
+                "dragend",
+                () => {
+
+                    item.classList.remove(
+                        "is-dragging"
+                    );
+
+                }
+            );
+
+
+            /*
+             * ドラッグ中の画像の上に来た
+             */
+
+            item.addEventListener(
+                "dragover",
+                event => {
+
+                    event.preventDefault();
+
+                    item.classList.add(
+                        "drag-over"
+                    );
+
+                }
+            );
+
+
+            /*
+             * ドラッグ中の画像から離れた
+             */
+
+            item.addEventListener(
+                "dragleave",
+                () => {
+
+                    item.classList.remove(
+                        "drag-over"
+                    );
+
+                }
+            );
+
+
+            /*
+             * ドロップ
+             */
+
+            item.addEventListener(
+                "drop",
+                event => {
+
+                    event.preventDefault();
+
+                    item.classList.remove(
+                        "drag-over"
                     );
 
 
-                leftButton.addEventListener(
-                    "click",
-                    () => {
-
-                        if (index === 0) {
-                            return;
-                        }
-
-
-                        /*
-                         * 現在の画像と
-                         * ひとつ前の画像を交換
-                         */
-
-                        [
-                            selectedImages[index - 1],
-                            selectedImages[index]
-                        ] = [
-                            selectedImages[index],
-                            selectedImages[index - 1]
-                        ];
+                    const fromIndex =
+                        Number(
+                            event.dataTransfer.getData(
+                                "text/plain"
+                            )
+                        );
 
 
-                        /*
-                         * 並び順を更新
-                         */
+                    const toIndex =
+                        Number(
+                            item.dataset.index
+                        );
 
-                        showImagePreview();
 
+                    if (
+                        fromIndex === toIndex
+                    ) {
+                        return;
                     }
-                );
 
 
-                /*
-                 * 「ひとつ後ろへ」
-                 */
+                    /*
+                     * 画像そのものを移動
+                     */
 
-                const rightButton =
-                    item.querySelector(
-                        ".move-right"
+                    const movedImage =
+                        selectedImages.splice(
+                            fromIndex,
+                            1
+                        )[0];
+
+
+                    selectedImages.splice(
+                        toIndex,
+                        0,
+                        movedImage
                     );
 
 
-                rightButton.addEventListener(
-                    "click",
-                    () => {
+                    /*
+                     * 新しい順番で表示
+                     */
 
-                        if (
-                            index ===
-                            selectedImages.length - 1
-                        ) {
-                            return;
-                        }
+                    showImagePreview();
+
+                }
+            );
 
 
-                        /*
-                         * 現在の画像と
-                         * ひとつ後ろの画像を交換
-                         */
-
-                        [
-                            selectedImages[index],
-                            selectedImages[index + 1]
-                        ] = [
-                            selectedImages[index + 1],
-                            selectedImages[index]
-                        ];
-
-
-                        /*
-                         * 並び順を更新
-                         */
-
-                        showImagePreview();
-
-                    }
-                );
-
-
-                preview.appendChild(item);
-
-            };
-
-
-            reader.readAsDataURL(file);
+            preview.appendChild(item);
 
         }
     );
