@@ -8,6 +8,7 @@
     <title>健康市場 うにのきもち</title>
 
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -347,6 +348,20 @@
 
 <script>
 
+const SUPABASE_URL =
+    "https://bvlmukmabwubdfaebzbo.supabase.co";
+
+const SUPABASE_ANON_KEY =
+    "sb_publishable_CeYH12uKYMe07tYxd_flsA_cxdI922_";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+    );
+
+
 const galleryWorks =
     document.querySelectorAll(".gallery-work");
 
@@ -518,6 +533,23 @@ galleryModal.addEventListener("cancel", () => {
     galleryModal.close();
 
 });
+
+// Supabaseからギャラリー投稿を取得
+async function loadGallery() {
+    const { data, error } = await supabaseClient
+        .from("gallery")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+    if (error) {
+        console.error("Gallery load error:", error);
+        return;
+    }
+
+    console.log("取得したギャラリー投稿:", data);
+}
+
+loadGallery();
 
 </script>
 
