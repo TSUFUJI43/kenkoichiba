@@ -63,194 +63,11 @@
 
 
                 <div class="gallery-authors">
-
-
-                    <!-- =========================
-                         つふじ
-                    ========================= -->
-
-                    <div class="gallery-author">
-
-                        <div class="gallery-author-title">
-                            <span>✽</span>
-                            <span>つふじの作品</span>
-                        </div>
-
-
-                        <div class="gallery-grid">
-
-
-                            <!-- 作品1：複数画像 -->
-
-                            <button
-                                class="gallery-work"
-                                type="button"
-
-                                data-title="春の午後"
-                                data-description="青い空と、白い花。少しだけあたたかい風が吹いた。"
-                                data-tags="創作,春,風景"
-
-                                data-images="
-                                    images/rakugaki/001.png,
-                                    images/rakugaki/002.png,
-                                    images/rakugaki/003.png
-                                "
-                            >
-
-                                <img
-                                    src="images/rakugaki/001.png"
-                                    alt="春の午後"
-                                >
-
-                                <span class="gallery-count">
-                                    [3]
-                                </span>
-
-                            </button>
-
-
-                            <!-- 作品2 -->
-
-                            <button
-                                class="gallery-work"
-                                type="button"
-
-                                data-title="らくがき 001"
-                                data-description=""
-                                data-tags="らくがき"
-
-                                data-images="
-                                    images/rakugaki/004.png
-                                "
-                            >
-
-                                <img
-                                    src="images/rakugaki/004.png"
-                                    alt="らくがき 001"
-                                >
-
-                            </button>
-
-
-                            <!-- 仮作品 -->
-
-                            <button
-                                class="gallery-work"
-                                type="button"
-
-                                data-title="作品タイトル"
-                                data-description="ここに作品の説明が入ります。"
-                                data-tags="創作,人物"
-
-                                data-images="
-                                    images/rakugaki/001.png
-                                "
-                            >
-
-                                <img
-                                    src="images/rakugaki/001.png"
-                                    alt="作品タイトル"
-                                >
-
-                            </button>
-
-
-                        </div>
-
-
-                        <p class="gallery-more">
-                            → <a href="#">つふじのギャラリーへ</a>
-                        </p>
-
-                    </div>
-
-
-
-                    <!-- =========================
-                         健康法
-                    ========================= -->
-
-                    <div class="gallery-author">
-
-                        <div class="gallery-author-title">
-                            <span>✽</span>
-                            <span>健康法の作品</span>
-                        </div>
-
-
-                        <div class="gallery-grid">
-
-
-                            <!-- 仮作品 -->
-
-                            <button
-                                class="gallery-work"
-                                type="button"
-
-                                data-title="健康法の作品"
-                                data-description="作品の説明文です。"
-                                data-tags="創作"
-
-                                data-images="
-                                    images/rakugaki/002.png,
-                                    images/rakugaki/003.png
-                                "
-                            >
-
-                                <img
-                                    src="images/rakugaki/002.png"
-                                    alt="健康法の作品"
-                                >
-
-                                <span class="gallery-count">
-                                    [2]
-                                </span>
-
-                            </button>
-
-
-                            <button
-                                class="gallery-work"
-                                type="button"
-
-                                data-title="らくがき"
-                                data-description=""
-                                data-tags="らくがき"
-
-                                data-images="
-                                    images/rakugaki/003.png
-                                "
-                            >
-
-                                <img
-                                    src="images/rakugaki/003.png"
-                                    alt="らくがき"
-                                >
-
-                            </button>
-
-
-                            <button
-                                class="gallery-work"
-                                type="button"
-
-                                data-title="作品タイトル"
-                                data-description="ここに説明文が入ります。"
-                                data-tags="漫画,創作"
-
-                                data-images="
-                                    images/rakugaki/004.png
-                                "
-                            >
-
-                                <img
-                                    src="images/rakugaki/004.png"
-                                    alt="作品タイトル"
-                                >
-
-                            </button>
-
-
+<div
+    class="gallery-authors"
+    id="gallery-authors"
+>
+</div>
                         </div>
 
 
@@ -534,20 +351,250 @@ galleryModal.addEventListener("cancel", () => {
 
 });
 
+// =========================
 // Supabaseからギャラリー投稿を取得
+// =========================
+
+const authorNames = {
+    "0cb63a34-76a9-4f23-bc94-b8bc63d68050": "つふじ",
+    "866f58f4-e493-4f62-999b-2aba99af71ef": "健康法"
+};
+
+
 async function loadGallery() {
+
     const { data, error } = await supabaseClient
         .from("gallery")
         .select("*")
         .order("created_at", { ascending: false });
 
+
     if (error) {
-        console.error("Gallery load error:", error);
+
+        console.error(
+            "Gallery load error:",
+            error
+        );
+
         return;
     }
 
-    console.log("取得したギャラリー投稿:", data);
+
+    console.log(
+        "取得したギャラリー投稿:",
+        data
+    );
+
+
+    const galleryAuthors =
+        document.getElementById("gallery-authors");
+
+
+    galleryAuthors.innerHTML = "";
+
+
+    // 作者ごとに分ける
+    const grouped = {};
+
+
+    data.forEach(work => {
+
+        const author =
+            authorNames[work.user_id] ||
+            "その他";
+
+
+        if (!grouped[author]) {
+            grouped[author] = [];
+        }
+
+
+        grouped[author].push(work);
+
+    });
+
+
+    // 作者ごとの表示
+    Object.keys(grouped).forEach(author => {
+
+
+        const authorSection =
+            document.createElement("div");
+
+        authorSection.className =
+            "gallery-author";
+
+
+        // 作者タイトル
+        const authorTitle =
+            document.createElement("div");
+
+        authorTitle.className =
+            "gallery-author-title";
+
+
+        authorTitle.innerHTML = `
+            <span>✽</span>
+            <span>${author}の作品</span>
+        `;
+
+
+        authorSection.appendChild(
+            authorTitle
+        );
+
+
+        // 作品グリッド
+        const grid =
+            document.createElement("div");
+
+        grid.className =
+            "gallery-grid";
+
+
+        grouped[author].forEach(work => {
+
+            const button =
+                document.createElement("button");
+
+            button.className =
+                "gallery-work";
+
+            button.type = "button";
+
+
+            // 画像
+            const images =
+                Array.isArray(work.image_urls)
+                    ? work.image_urls
+                    : [];
+
+
+            if (images.length > 0) {
+
+                const img =
+                    document.createElement("img");
+
+                img.src = images[0];
+
+                img.alt =
+                    work.title || "作品";
+
+
+                button.appendChild(img);
+
+            }
+
+
+            // 複数画像なら枚数表示
+            if (images.length > 1) {
+
+                const count =
+                    document.createElement("span");
+
+                count.className =
+                    "gallery-count";
+
+                count.textContent =
+                    "[" + images.length + "]";
+
+
+                button.appendChild(count);
+
+            }
+
+
+            // クリック時のライトボックス
+            button.addEventListener(
+                "click",
+                () => {
+
+                    galleryImageArea.innerHTML =
+                        "";
+
+
+                    images.forEach(
+                        (image, index) => {
+
+                            const img =
+                                document.createElement("img");
+
+                            img.src = image;
+
+                            img.alt =
+                                (work.title || "作品") +
+                                " " +
+                                (index + 1);
+
+
+                            galleryImageArea.appendChild(
+                                img
+                            );
+
+                        }
+                    );
+
+
+                    galleryTitle.textContent =
+                        work.title || "";
+
+
+                    galleryTags.innerHTML =
+                        "";
+
+
+                    const tags =
+                        Array.isArray(work.tags)
+                            ? work.tags
+                            : [];
+
+
+                    tags.forEach(tag => {
+
+                        const span =
+                            document.createElement("span");
+
+                        span.textContent =
+                            "#" + tag;
+
+
+                        galleryTags.appendChild(
+                            span
+                        );
+
+                    });
+
+
+                    galleryDescription.textContent =
+                        work.description || "";
+
+
+                    galleryModal.showModal();
+
+
+                    galleryImageArea.scrollTop =
+                        0;
+
+                }
+            );
+
+
+            grid.appendChild(button);
+
+        });
+
+
+        authorSection.appendChild(grid);
+
+
+        galleryAuthors.appendChild(
+            authorSection
+        );
+
+    });
+
 }
+
 
 loadGallery();
 
