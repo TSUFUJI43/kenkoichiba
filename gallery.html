@@ -572,12 +572,24 @@ async function loadGallery() {
         });
 
 
-        authorSection.appendChild(grid);
+authorSection.appendChild(grid);
 
+// 作者のギャラリーへのリンク
+const more =
+    document.createElement("p");
 
-        galleryAuthors.appendChild(
-            authorSection
-        );
+more.className =
+    "gallery-more";
+
+more.innerHTML = `
+    → <a href="#">${author}のギャラリーへ</a>
+`;
+
+authorSection.appendChild(more);
+
+galleryAuthors.appendChild(
+    authorSection
+);
 
     });
 
