@@ -12,196 +12,516 @@
 
 <body>
 
-    <div class="site">
+<div class="site">
 
-        <header>
+    <header>
         <div class="header-deco">✽✽✽</div>
 
-           <h1>
-             <img src="images/logo.png" alt="健康市場 うにのきもち">
-            </h1>
-            <p class="subtitle">
-                - kenkoichiba uninokimochi -
-            </p>
+        <h1>
+            <img src="images/logo.png" alt="健康市場 うにのきもち">
+        </h1>
 
-            <div class="header-deco">✽✽✽</div>
-        </header>
+        <p class="subtitle">
+            - kenkoichiba uninokimochi -
+        </p>
 
-
-        <div class="layout">
-
-            <aside class="menu">
-
-                <h2>✽ メニュー ✽</h2>
-
-                <nav>
-                    <a href="index.html">トップ</a>
-                     <a href="gallery.html">ギャラリー</a>
-                    <a href="diary.html">雑記</a>
-                    <a href="about.html">情報</a>
-                        <a href="write.html">[管理者専用]</a>
-                </nav>
-
-            </aside>
+        <div class="header-deco">✽✽✽</div>
+    </header>
 
 
-            <main>
+    <div class="layout">
 
-                <section>
+        <aside class="menu">
 
-                    <h2>＊ イラスト ＊</h2>
+            <h2>✽ メニュー ✽</h2>
 
-                    <div class="illust-list">
+            <nav>
+                <a href="index.html">トップ</a>
+                <a href="gallery.html">ギャラリー</a>
+                <a href="diary.html">雑記</a>
+                <a href="about.html">情報</a>
+                <a href="write.html">[管理者専用]</a>
+            </nav>
 
-                        <div class="illust">
-                            <div class="illust-placeholder">
-                                ILLUST
-                            </div>
-                        </div>
-
-                        <div class="illust">
-                            <div class="illust-placeholder">
-                                ILLUST
-                            </div>
-                        </div>
-
-                        <div class="illust">
-                            <div class="illust-placeholder">
-                                ILLUST
-                            </div>
-                        </div>
-
-                        <div class="illust">
-                            <div class="illust-placeholder">
-                                ILLUST
-                            </div>
-                        </div>
-
-                    </div>
-
-                </section>
-
-<section>
-
-    <dialog id="rakugaki-modal">
-
-    <button id="rakugaki-close" type="button">×</button>
-
-    <img id="rakugaki-large" src="" alt="拡大表示">
-    </dialog>
-
-    <h2>＊ らくがき ＊</h2>
-
-    <div class="rakugaki-grid">
-
-        <button class="rakugaki-item" data-image="images/rakugaki/001.png">
-            <img src="images/rakugaki/001.png" alt="らくがき 001">
-        </button>
-
-        <button class="rakugaki-item" data-image="images/rakugaki/002.png">
-            <img src="images/rakugaki/002.png" alt="らくがき 002">
-        </button>
-
-        <button class="rakugaki-item" data-image="images/rakugaki/003.png">
-            <img src="images/rakugaki/003.png" alt="らくがき 003">
-        </button>
-
-        <button class="rakugaki-item" data-image="images/rakugaki/004.png">
-            <img src="images/rakugaki/004.png" alt="らくがき 004">
-        </button>
-
-    </div>
-
-    <p class="more">
-        → <a href="rakugaki.html">らくがき一覧へ</a>
-    </p>
-</section>
-                
-                <section>
-
-                    <h2>＊ 漫画 ＊</h2>
-
-                    <div class="diary">
-
-                        <p>
-                            準備中
-                        </p>
-                        
-                    </div>
-
-                </section>
+        </aside>
 
 
-                <p class="more">
-                    → <a href="index.html">トップに戻る</a>
+        <main>
+
+            <!-- =========================
+                 ギャラリー
+            ========================= -->
+
+            <section>
+
+                <h2>＊ ギャラリー ＊</h2>
+
+                <p class="gallery-intro">
+                    イラスト・漫画・らくがきをまとめて展示しています。
                 </p>
 
 
-                <footer>
-                    
-                    ✽　since 2026　｜　健康市場 うにのきもち　｜　✽
+                <div class="gallery-authors">
 
-                </footer>
 
-            </main>
+                    <!-- =========================
+                         つふじ
+                    ========================= -->
+
+                    <div class="gallery-author">
+
+                        <div class="gallery-author-title">
+                            <span>✽</span>
+                            <span>つふじの作品</span>
+                        </div>
+
+
+                        <div class="gallery-grid">
+
+
+                            <!-- 作品1：複数画像 -->
+
+                            <button
+                                class="gallery-work"
+                                type="button"
+
+                                data-title="春の午後"
+                                data-description="青い空と、白い花。少しだけあたたかい風が吹いた。"
+                                data-tags="創作,春,風景"
+
+                                data-images="
+                                    images/rakugaki/001.png,
+                                    images/rakugaki/002.png,
+                                    images/rakugaki/003.png
+                                "
+                            >
+
+                                <img
+                                    src="images/rakugaki/001.png"
+                                    alt="春の午後"
+                                >
+
+                                <span class="gallery-count">
+                                    [3]
+                                </span>
+
+                            </button>
+
+
+                            <!-- 作品2 -->
+
+                            <button
+                                class="gallery-work"
+                                type="button"
+
+                                data-title="らくがき 001"
+                                data-description=""
+                                data-tags="らくがき"
+
+                                data-images="
+                                    images/rakugaki/004.png
+                                "
+                            >
+
+                                <img
+                                    src="images/rakugaki/004.png"
+                                    alt="らくがき 001"
+                                >
+
+                            </button>
+
+
+                            <!-- 仮作品 -->
+
+                            <button
+                                class="gallery-work"
+                                type="button"
+
+                                data-title="作品タイトル"
+                                data-description="ここに作品の説明が入ります。"
+                                data-tags="創作,人物"
+
+                                data-images="
+                                    images/rakugaki/001.png
+                                "
+                            >
+
+                                <img
+                                    src="images/rakugaki/001.png"
+                                    alt="作品タイトル"
+                                >
+
+                            </button>
+
+
+                        </div>
+
+
+                        <p class="gallery-more">
+                            → <a href="#">つふじのギャラリーへ</a>
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- =========================
+                         健康法
+                    ========================= -->
+
+                    <div class="gallery-author">
+
+                        <div class="gallery-author-title">
+                            <span>✽</span>
+                            <span>健康法の作品</span>
+                        </div>
+
+
+                        <div class="gallery-grid">
+
+
+                            <!-- 仮作品 -->
+
+                            <button
+                                class="gallery-work"
+                                type="button"
+
+                                data-title="健康法の作品"
+                                data-description="作品の説明文です。"
+                                data-tags="創作"
+
+                                data-images="
+                                    images/rakugaki/002.png,
+                                    images/rakugaki/003.png
+                                "
+                            >
+
+                                <img
+                                    src="images/rakugaki/002.png"
+                                    alt="健康法の作品"
+                                >
+
+                                <span class="gallery-count">
+                                    [2]
+                                </span>
+
+                            </button>
+
+
+                            <button
+                                class="gallery-work"
+                                type="button"
+
+                                data-title="らくがき"
+                                data-description=""
+                                data-tags="らくがき"
+
+                                data-images="
+                                    images/rakugaki/003.png
+                                "
+                            >
+
+                                <img
+                                    src="images/rakugaki/003.png"
+                                    alt="らくがき"
+                                >
+
+                            </button>
+
+
+                            <button
+                                class="gallery-work"
+                                type="button"
+
+                                data-title="作品タイトル"
+                                data-description="ここに説明文が入ります。"
+                                data-tags="漫画,創作"
+
+                                data-images="
+                                    images/rakugaki/004.png
+                                "
+                            >
+
+                                <img
+                                    src="images/rakugaki/004.png"
+                                    alt="作品タイトル"
+                                >
+
+                            </button>
+
+
+                        </div>
+
+
+                        <p class="gallery-more">
+                            → <a href="#">健康法のギャラリーへ</a>
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <p class="more">
+                → <a href="index.html">トップに戻る</a>
+            </p>
+
+
+            <footer>
+                ✽　since 2026　｜　健康市場 うにのきもち　｜　✽
+            </footer>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================
+     ライトボックス
+========================= -->
+
+<dialog id="gallery-modal">
+
+    <div class="gallery-modal-inner">
+
+
+        <!-- 閉じる -->
+
+        <button
+            id="gallery-modal-close"
+            class="gallery-modal-close"
+            type="button"
+        >
+            ×
+        </button>
+
+
+        <!-- =========================
+             画像だけスクロールする部分
+        ========================= -->
+
+        <div
+            id="gallery-image-area"
+            class="gallery-image-area"
+        >
+        </div>
+
+
+        <!-- =========================
+             作品情報
+             ここは固定
+        ========================= -->
+
+        <div class="gallery-info">
+
+            <h3 id="gallery-modal-title">
+            </h3>
+
+
+            <div
+                id="gallery-modal-tags"
+                class="gallery-modal-tags"
+            >
+            </div>
+
+
+            <p
+                id="gallery-modal-description"
+                class="gallery-modal-description"
+            >
+            </p>
 
         </div>
 
     </div>
 
-</body>
+</dialog>
+
+
 
 <script>
 
-const rakugakiItems = document.querySelectorAll(".rakugaki-item");
+const galleryWorks =
+    document.querySelectorAll(".gallery-work");
 
-const modal = document.getElementById("rakugaki-modal");
-const largeImage = document.getElementById("rakugaki-large");
-const closeButton = document.getElementById("rakugaki-close");
+const galleryModal =
+    document.getElementById("gallery-modal");
+
+const galleryImageArea =
+    document.getElementById("gallery-image-area");
+
+const galleryTitle =
+    document.getElementById("gallery-modal-title");
+
+const galleryTags =
+    document.getElementById("gallery-modal-tags");
+
+const galleryDescription =
+    document.getElementById("gallery-modal-description");
+
+const galleryClose =
+    document.getElementById("gallery-modal-close");
 
 
-/* 画像をクリックしたとき */
 
-rakugakiItems.forEach(item => {
+/* =========================
+   作品を開く
+========================= */
 
-    item.addEventListener("click", () => {
+galleryWorks.forEach(work => {
 
-        const image = item.dataset.image;
+    work.addEventListener("click", () => {
 
-        largeImage.src = image;
+        /*
+         * data-images の画像を取得
+         */
 
-        modal.showModal();
+        const images =
+            work.dataset.images
+                .split(",")
+                .map(image => image.trim())
+                .filter(image => image !== "");
+
+
+        /*
+         * 画像エリアを空にする
+         */
+
+        galleryImageArea.innerHTML = "";
+
+
+        /*
+         * 画像を全部並べる
+         */
+
+        images.forEach((image, index) => {
+
+            const img =
+                document.createElement("img");
+
+            img.src = image;
+
+            img.alt =
+                work.dataset.title +
+                " " +
+                (index + 1);
+
+
+            galleryImageArea.appendChild(img);
+
+        });
+
+
+        /*
+         * タイトル
+         */
+
+        galleryTitle.textContent =
+            work.dataset.title || "";
+
+
+        /*
+         * タグ
+         */
+
+        galleryTags.innerHTML = "";
+
+        const tags =
+            work.dataset.tags
+                ? work.dataset.tags
+                    .split(",")
+                    .map(tag => tag.trim())
+                    .filter(tag => tag !== "")
+                : [];
+
+
+        tags.forEach(tag => {
+
+            const span =
+                document.createElement("span");
+
+            span.textContent =
+                "#" + tag;
+
+            galleryTags.appendChild(span);
+
+        });
+
+
+        /*
+         * 説明
+         */
+
+        galleryDescription.textContent =
+            work.dataset.description || "";
+
+
+        /*
+         * ライトボックスを開く
+         */
+
+        galleryModal.showModal();
+
+
+        /*
+         * 毎回一番上から開始
+         */
+
+        galleryImageArea.scrollTop = 0;
 
     });
 
 });
 
 
-/* ×を押したとき */
 
-closeButton.addEventListener("click", () => {
+/* =========================
+   ×で閉じる
+========================= */
 
-    modal.close();
+galleryClose.addEventListener("click", () => {
+
+    galleryModal.close();
 
 });
 
 
-/* 外側をクリックしたとき */
 
-modal.addEventListener("click", (event) => {
+/* =========================
+   背景クリックで閉じる
+========================= */
 
-    if (event.target === modal) {
+galleryModal.addEventListener("click", event => {
 
-        modal.close();
+    if (event.target === galleryModal) {
+
+        galleryModal.close();
 
     }
 
 });
 
+
+
+/* =========================
+   ESCでも閉じる
+========================= */
+
+galleryModal.addEventListener("cancel", () => {
+
+    galleryModal.close();
+
+});
+
 </script>
 
-</body>
 
-</html>
+</body>
 
 </html>
