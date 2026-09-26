@@ -2030,3 +2030,73 @@ main section p {
 .gallery-confirm-buttons button:hover {
     background: #f0f5ef;
 }
+
+.gallery-modal-actions {
+    display: none;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.gallery-modal-actions button {
+    padding: 7px 14px;
+    border: 1px solid #555;
+    background: #fff;
+    color: #555;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.gallery-modal-actions button:hover {
+    background: #f0f4ef;
+}
+
+#gallery-modal-delete {
+    border-color: #999;
+}
+
+.gallery-edit-form {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px dashed #aaa;
+}
+
+.gallery-edit-form h3 {
+    margin-top: 0;
+}
+
+.gallery-edit-form label {
+    display: block;
+    margin-bottom: 12px;
+    font-weight: bold;
+}
+
+.gallery-edit-form input,
+.gallery-edit-form textarea {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 5px;
+    padding: 8px;
+    border: 1px solid #999;
+    background: #fff;
+    font-family: inherit;
+}
+
+.gallery-edit-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.gallery-edit-buttons button {
+    padding: 7px 14px;
+    border: 1px solid #555;
+    background: #fff;
+    color: #555;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+}

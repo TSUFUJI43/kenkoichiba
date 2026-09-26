@@ -124,18 +124,98 @@
              ここは固定
         ========================= -->
 
-        <div class="gallery-info">
+       <div class="gallery-info">
 
-            <h3 id="gallery-modal-title">
-            </h3>
+    <h3 id="gallery-modal-title">
+    </h3>
 
+    <div
+        id="gallery-modal-tags"
+        class="gallery-modal-tags"
+    >
+    </div>
 
-            <div
-                id="gallery-modal-tags"
-                class="gallery-modal-tags"
-            >
-            </div>
+    <p
+        id="gallery-modal-description"
+        class="gallery-modal-description"
+    >
+    </p>
 
+    <div
+        id="gallery-modal-actions"
+        class="gallery-modal-actions"
+    >
+        <button
+            id="gallery-modal-edit"
+            type="button"
+        >
+            編集
+        </button>
+
+        <button
+            id="gallery-modal-delete"
+            type="button"
+        >
+            削除
+        </button>
+    </div>
+
+</div>
+
+<div
+    id="gallery-edit-form"
+    class="gallery-edit-form"
+    style="display: none;"
+>
+
+    <h3>作品を編集</h3>
+
+    <label>
+        タイトル
+        <input
+            type="text"
+            id="gallery-edit-title"
+        >
+    </label>
+
+    <label>
+        タグ
+        <input
+            type="text"
+            id="gallery-edit-tags"
+            placeholder="例：イラスト, うに, オリジナル"
+        >
+    </label>
+
+    <label>
+        説明
+        <textarea
+            id="gallery-edit-description"
+            rows="5"
+        ></textarea>
+    </label>
+
+    <div class="gallery-edit-buttons">
+
+        <button
+            id="gallery-edit-cancel"
+            type="button"
+        >
+            キャンセル
+        </button>
+
+        <button
+            id="gallery-edit-save"
+            type="button"
+        >
+            保存
+        </button>
+
+    </div>
+
+    <p id="gallery-edit-message"></p>
+
+</div>
 
             <p
                 id="gallery-modal-description"
@@ -188,7 +268,144 @@ const galleryDescription =
 const galleryClose =
     document.getElementById("gallery-modal-close");
 
+    const galleryActions =
+    document.getElementById("gallery-modal-actions");
 
+const galleryEdit =
+    document.getElementById("gallery-modal-edit");
+
+const galleryDelete =
+    document.getElementById("gallery-modal-delete");
+    let currentGalleryWork = null;
+
+    const galleryEditForm =
+    document.getElementById("gallery-edit-form");
+
+const galleryEditTitle =
+    document.getElementById("gallery-edit-title");
+
+const galleryEditTags =
+    document.getElementById("gallery-edit-tags");
+
+const galleryEditDescription =
+    document.getElementById("gallery-edit-description");
+
+const galleryEditCancel =
+    document.getElementById("gallery-edit-cancel");
+
+const galleryEditSave =
+    document.getElementById("gallery-edit-save");
+
+const galleryEditMessage =
+    document.getElementById("gallery-edit-message");
+
+galleryEdit.addEventListener("click", () => {
+
+    if (!currentGalleryWork) return;
+
+    galleryEditTitle.value =
+        currentGalleryWork.title || "";
+
+    galleryEditTags.value =
+        Array.isArray(currentGalleryWork.tags)
+            ? currentGalleryWork.tags.join(", ")
+            : "";
+
+    galleryEditDescription.value =
+        currentGalleryWork.description || "";
+
+    galleryEditForm.style.display = "block";
+
+    galleryEditMessage.textContent = "";
+
+});
+
+galleryEditCancel.addEventListener("click", () => {
+
+    galleryEditForm.style.display = "none";
+
+});
+
+galleryEditSave.addEventListener("click", async () => {
+
+    if (!currentGalleryWork) return;
+
+    galleryEditSave.disabled = true;
+    galleryEditSave.textContent = "保存中……";
+    galleryEditMessage.textContent = "";
+
+    try {
+
+        const { data: { user }, error: userError } =
+            await supabaseClient.auth.getUser();
+
+        if (userError || !user) {
+            throw new Error("ログインしてください。");
+        }
+
+        if (user.id !== currentGalleryWork.user_id) {
+            throw new Error("この作品を編集する権限がありません。");
+        }
+
+        const title =
+            galleryEditTitle.value.trim();
+
+        const description =
+            galleryEditDescription.value.trim();
+
+        const tags =
+            galleryEditTags.value
+                .split(",")
+                .map(tag => tag.trim())
+                .filter(tag => tag !== "");
+
+        const { error } =
+            await supabaseClient
+                .from("gallery")
+                .update({
+                    title: title,
+                    tags: tags,
+                    description: description
+                })
+                .eq("id", currentGalleryWork.id)
+                .eq("user_id", user.id);
+
+        if (error) {
+            throw error;
+        }
+
+        currentGalleryWork.title = title;
+        currentGalleryWork.tags = tags;
+        currentGalleryWork.description = description;
+
+        galleryEditForm.style.display = "none";
+
+        galleryEditSave.disabled = false;
+        galleryEditSave.textContent = "保存";
+
+        alert("作品を更新しました！");
+
+        await loadGallery();
+
+        galleryModal.close();
+
+    } catch (error) {
+
+        console.error("Gallery edit error:", error);
+
+        galleryEditMessage.textContent =
+            "保存に失敗しました。";
+
+        alert(
+            "保存に失敗しました。\n\n" +
+            (error.message || error)
+        );
+
+        galleryEditSave.disabled = false;
+        galleryEditSave.textContent = "保存";
+    }
+
+});
 
 /* =========================
    作品を開く
@@ -497,6 +714,8 @@ async function loadGallery() {
                 "click",
                 () => {
 
+                    currentGalleryWork = work;
+
                     galleryImageArea.innerHTML =
                         "";
 
@@ -555,6 +774,22 @@ async function loadGallery() {
 
                     galleryDescription.textContent =
                         work.description || "";
+
+                        supabaseClient.auth.getUser().then(({ data }) => {
+
+    const user = data.user;
+
+    if (user && user.id === work.user_id) {
+
+        galleryActions.style.display = "flex";
+
+    } else {
+
+        galleryActions.style.display = "none";
+
+    }
+
+});
 
 
                     galleryModal.showModal();
