@@ -359,20 +359,26 @@ galleryEditSave.addEventListener("click", async () => {
                 .map(tag => tag.trim())
                 .filter(tag => tag !== "");
 
-        const { error } =
-            await supabaseClient
-                .from("gallery")
-                .update({
-                    title: title,
-                    tags: tags,
-                    description: description
-                })
-                .eq("id", currentGalleryWork.id)
-                .eq("user_id", user.id);
+const { data: updatedWork, error } =
+    await supabaseClient
+        .from("gallery")
+        .update({
+            title: title,
+            tags: tags,
+            description: description
+        })
+        .eq("id", currentGalleryWork.id)
+        .eq("user_id", user.id)
+        .select()
+        .single();
 
-        if (error) {
-            throw error;
-        }
+if (error) {
+    throw error;
+}
+
+if (!updatedWork) {
+    throw new Error("作品の更新対象が見つかりませんでした。");
+}
 
         currentGalleryWork.title = title;
         currentGalleryWork.tags = tags;
