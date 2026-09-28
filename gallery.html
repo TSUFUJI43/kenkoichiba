@@ -347,6 +347,9 @@ galleryEditSave.addEventListener("click", async () => {
             throw new Error("この作品を編集する権限がありません。");
         }
 
+        console.log("編集対象:", currentGalleryWork);
+console.log("ログインユーザー:", user.id);
+
         const title =
             galleryEditTitle.value.trim();
 
@@ -369,8 +372,17 @@ const { data: updatedWork, error } =
         })
         .eq("id", currentGalleryWork.id)
         .eq("user_id", user.id)
-        .select()
-        .single();
+        .select();
+
+console.log("更新結果:", updatedWork);
+
+if (error) {
+    throw error;
+}
+
+if (!updatedWork || updatedWork.length === 0) {
+    throw new Error("更新された作品が0件でした。");
+}
 
 if (error) {
     throw error;
