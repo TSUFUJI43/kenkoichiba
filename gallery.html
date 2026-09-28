@@ -547,49 +547,215 @@ editImages =
     url: image.url
 }));
 
-editImages.forEach((imageData, index) => {
+function renderEditImages() {
 
-    const item = document.createElement("div");
+    galleryEditImages.innerHTML = "";
 
-    item.className = "gallery-edit-image-item";
+    editImages.forEach((imageData, index) => {
 
-    item.innerHTML = `
-        <div class="gallery-edit-image-number">
-            ${index + 1}枚目
-        </div>
+        const item =
+            document.createElement("div");
 
-        <img
-            src="${imageData.url}"
-            alt=""
-        >
+        item.className =
+            "gallery-edit-image-item";
 
-        <button
-            type="button"
-            class="gallery-edit-image-delete"
-        >
-            この画像を削除
-        </button>
-    `;
+        item.draggable = true;
 
-    const deleteButton =
-        item.querySelector(".gallery-edit-image-delete");
+        item.dataset.index = index;
 
-deleteButton.addEventListener("click", () => {
+        item.innerHTML = `
+            <div class="gallery-edit-image-number">
+                ${index + 1}枚目
+            </div>
 
-    if (editImages.length <= 1) {
-        alert("画像は最低1枚残してください。");
-        return;
-    }
+            <img
+                src="${imageData.url}"
+                alt=""
+            >
 
-    editImages.splice(index, 1);
+            <div class="gallery-edit-image-drag">
+                ☷ ドラッグして順番を変更
+            </div>
 
-    item.remove();
+            <button
+                type="button"
+                class="gallery-edit-image-delete"
+            >
+                この画像を削除
+            </button>
+        `;
 
-});
 
-    galleryEditImages.appendChild(item);
+        /* =========================
+           ドラッグ開始
+        ========================= */
 
-});
+        item.addEventListener(
+            "dragstart",
+            event => {
+
+                item.classList.add(
+                    "is-dragging"
+                );
+
+                event.dataTransfer.effectAllowed =
+                    "move";
+
+                event.dataTransfer.setData(
+                    "text/plain",
+                    index
+                );
+
+            }
+        );
+
+
+        /* =========================
+           ドラッグ終了
+        ========================= */
+
+        item.addEventListener(
+            "dragend",
+            () => {
+
+                item.classList.remove(
+                    "is-dragging"
+                );
+
+            }
+        );
+
+
+        /* =========================
+           ドラッグ中
+        ========================= */
+
+        item.addEventListener(
+            "dragover",
+            event => {
+
+                event.preventDefault();
+
+                item.classList.add(
+                    "drag-over"
+                );
+
+            }
+        );
+
+
+        /* =========================
+           ドラッグが外れた
+        ========================= */
+
+        item.addEventListener(
+            "dragleave",
+            () => {
+
+                item.classList.remove(
+                    "drag-over"
+                );
+
+            }
+        );
+
+
+        /* =========================
+           ドロップ
+        ========================= */
+
+        item.addEventListener(
+            "drop",
+            event => {
+
+                event.preventDefault();
+
+                item.classList.remove(
+                    "drag-over"
+                );
+
+                const fromIndex =
+                    Number(
+                        event.dataTransfer
+                            .getData("text/plain")
+                    );
+
+                const toIndex = index;
+
+
+                if (
+                    fromIndex === toIndex
+                ) {
+                    return;
+                }
+
+
+                const movedImage =
+                    editImages.splice(
+                        fromIndex,
+                        1
+                    )[0];
+
+
+                editImages.splice(
+                    toIndex,
+                    0,
+                    movedImage
+                );
+
+
+                renderEditImages();
+
+            }
+        );
+
+
+
+        /* =========================
+           削除
+        ========================= */
+
+        const deleteButton =
+            item.querySelector(
+                ".gallery-edit-image-delete"
+            );
+
+
+        deleteButton.addEventListener(
+            "click",
+            () => {
+
+                if (editImages.length <= 1) {
+
+                    alert(
+                        "画像は最低1枚残してください。"
+                    );
+
+                    return;
+                }
+
+
+                editImages.splice(
+                    index,
+                    1
+                );
+
+
+                renderEditImages();
+
+            }
+        );
+
+
+        galleryEditImages.appendChild(
+            item
+        );
+
+    });
+
+    renderEditImages();
+
+}
 
     galleryEditForm.style.display = "block";
 
