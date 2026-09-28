@@ -381,7 +381,12 @@ if (error) {
 }
 
 if (!updatedWork || updatedWork.length === 0) {
-    throw new Error("更新された作品が0件でした。");
+    throw new Error(
+        "更新された作品が0件でした。\n" +
+        "作品ID: " + currentGalleryWork.id + "\n" +
+        "ユーザーID: " + user.id + "\n" +
+        "作品のユーザーID: " + currentGalleryWork.user_id
+    );
 }
 
 if (error) {
