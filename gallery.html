@@ -278,6 +278,105 @@ const galleryDelete =
     document.getElementById("gallery-modal-delete");
     let currentGalleryWork = null;
 
+    galleryDelete.addEventListener("click", async () => {
+
+    if (!currentGalleryWork) return;
+
+    const confirmed = confirm(
+        "この作品を削除しますか？\n\n画像もすべて削除されます。"
+    );
+
+    if (!confirmed) return;
+
+    galleryDelete.disabled = true;
+    galleryDelete.textContent = "削除中……";
+
+    try {
+
+        const { data: { user }, error: userError } =
+            await supabaseClient.auth.getUser();
+
+        if (userError || !user) {
+            throw new Error("ログインしてください。");
+        }
+
+        if (user.id !== currentGalleryWork.user_id) {
+            throw new Error(
+                "この作品を削除する権限がありません。"
+            );
+        }
+
+        // 画像URLからStorage上のファイルパスを取り出す
+        const imageUrls =
+            Array.isArray(currentGalleryWork.image_urls)
+                ? currentGalleryWork.image_urls
+                : [];
+
+        const storagePaths = imageUrls
+            .map(url => {
+                const marker =
+                    "/storage/v1/object/public/gallery-images/";
+
+                const index = url.indexOf(marker);
+
+                if (index === -1) return null;
+
+                return url.slice(index + marker.length);
+            })
+            .filter(path => path);
+
+        // Storageから画像を削除
+        if (storagePaths.length > 0) {
+
+            const { error: storageError } =
+                await supabaseClient.storage
+                    .from("gallery-images")
+                    .remove(storagePaths);
+
+            if (storageError) {
+                throw storageError;
+            }
+        }
+
+        // galleryテーブルから投稿を削除
+        const { error: deleteError } =
+            await supabaseClient
+                .from("gallery")
+                .delete()
+                .eq("id", currentGalleryWork.id)
+                .eq("user_id", user.id);
+
+        if (deleteError) {
+            throw deleteError;
+        }
+
+        alert("作品を削除しました！");
+
+        currentGalleryWork = null;
+
+        galleryActions.style.display = "none";
+
+        galleryEditForm.style.display = "none";
+
+        galleryModal.close();
+
+        await loadGallery();
+
+    } catch (error) {
+
+        console.error("Gallery delete error:", error);
+
+        alert(
+            "削除に失敗しました。\n\n" +
+            (error.message || error)
+        );
+
+        galleryDelete.disabled = false;
+        galleryDelete.textContent = "削除";
+    }
+
+});
+
     const galleryEditForm =
     document.getElementById("gallery-edit-form");
 
