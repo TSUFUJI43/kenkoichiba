@@ -180,6 +180,23 @@
     >
     </div>
 
+    <div class="gallery-edit-add-images">
+    <h4>画像を追加</h4>
+
+    <input
+        type="file"
+        id="gallery-edit-add-image-input"
+        accept="image/*"
+        multiple
+    >
+
+    <div
+        id="gallery-edit-new-images"
+        class="gallery-edit-images-list"
+    >
+    </div>
+</div>
+
 </div>
 
     <label>
@@ -415,6 +432,86 @@ const galleryEditMessage =
 
     const galleryEditImages =
     document.getElementById("gallery-edit-images");
+
+    const galleryEditAddImageInput =
+    document.getElementById("gallery-edit-add-image-input");
+
+let editNewImages = [];
+
+const galleryEditNewImages =
+    document.getElementById("gallery-edit-new-images");
+
+
+function renderNewEditImages() {
+
+    galleryEditNewImages.innerHTML = "";
+
+    editNewImages.forEach((file, index) => {
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "gallery-edit-image-item";
+
+        const imageURL =
+            URL.createObjectURL(file);
+
+        item.innerHTML = `
+            <div class="gallery-edit-image-number">
+                追加 ${index + 1}枚目
+            </div>
+
+            <img
+                src="${imageURL}"
+                alt=""
+            >
+
+            <button
+                type="button"
+                class="gallery-edit-image-delete"
+            >
+                追加を取り消す
+            </button>
+        `;
+
+        const deleteButton =
+            item.querySelector(
+                ".gallery-edit-image-delete"
+            );
+
+        deleteButton.addEventListener(
+            "click",
+            () => {
+
+                editNewImages.splice(index, 1);
+
+                renderNewEditImages();
+
+            }
+        );
+
+        galleryEditNewImages.appendChild(item);
+
+    });
+}
+
+
+galleryEditAddImageInput.addEventListener(
+    "change",
+    event => {
+
+        const newFiles =
+            Array.from(event.target.files);
+
+        editNewImages.push(...newFiles);
+
+        renderNewEditImages();
+
+        galleryEditAddImageInput.value = "";
+
+    }
+);
 
     let editImages = [];
 
