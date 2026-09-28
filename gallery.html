@@ -547,6 +547,15 @@ const deletedImageUrls = originalEditImages
 console.log("残っている画像:", remainingImageUrls);
 console.log("削除された画像:", deletedImageUrls);
 
+const deletedStoragePaths = deletedImageUrls
+    .map(url => getStoragePathFromPublicUrl(url))
+    .filter(path => path !== null);
+
+console.log(
+    "Storageから削除するファイル:",
+    deletedStoragePaths
+);
+
         const tags =
             galleryEditTags.value
                 .split(",")
@@ -579,6 +588,23 @@ if (!updatedWork || updatedWork.length === 0) {
         "ユーザーID: " + user.id + "\n" +
         "作品のユーザーID: " + currentGalleryWork.user_id
     );
+}
+
+if (deletedStoragePaths.length > 0) {
+
+    const { error: storageDeleteError } =
+        await supabaseClient.storage
+            .from("gallery-images")
+            .remove(deletedStoragePaths);
+
+    if (storageDeleteError) {
+        console.error(
+            "Storage削除エラー:",
+            storageDeleteError
+        );
+
+        throw storageDeleteError;
+    }
 }
 
 if (error) {
@@ -621,6 +647,23 @@ if (!updatedWork) {
     }
 
 });
+
+function getStoragePathFromPublicUrl(url) {
+
+    const marker =
+        "/storage/v1/object/public/gallery-images/";
+
+    const index =
+        url.indexOf(marker);
+
+    if (index === -1) {
+        return null;
+    }
+
+    return url.slice(
+        index + marker.length
+    );
+}
 
 /* =========================
    作品を開く
