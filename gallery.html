@@ -442,61 +442,6 @@ const galleryEditNewImages =
     document.getElementById("gallery-edit-new-images");
 
 
-function renderNewEditImages() {
-
-    galleryEditNewImages.innerHTML = "";
-
-    editNewImages.forEach((file, index) => {
-
-        const item =
-            document.createElement("div");
-
-        item.className =
-            "gallery-edit-image-item";
-
-        const imageURL =
-            URL.createObjectURL(file);
-
-        item.innerHTML = `
-            <div class="gallery-edit-image-number">
-                追加 ${index + 1}枚目
-            </div>
-
-            <img
-                src="${imageURL}"
-                alt=""
-            >
-
-            <button
-                type="button"
-                class="gallery-edit-image-delete"
-            >
-                追加を取り消す
-            </button>
-        `;
-
-        const deleteButton =
-            item.querySelector(
-                ".gallery-edit-image-delete"
-            );
-
-        deleteButton.addEventListener(
-            "click",
-            () => {
-
-                editNewImages.splice(index, 1);
-
-                renderNewEditImages();
-
-            }
-        );
-
-        galleryEditNewImages.appendChild(item);
-
-    });
-}
-
-
 galleryEditAddImageInput.addEventListener(
     "change",
     event => {
@@ -504,9 +449,20 @@ galleryEditAddImageInput.addEventListener(
         const newFiles =
             Array.from(event.target.files);
 
-        editNewImages.push(...newFiles);
+        newFiles.forEach(file => {
 
-        renderNewEditImages();
+            const imageURL =
+                URL.createObjectURL(file);
+
+            editImages.push({
+                type: "new",
+                file: file,
+                url: imageURL
+            });
+
+        });
+
+        renderEditImages();
 
         galleryEditAddImageInput.value = "";
 
@@ -800,52 +756,50 @@ console.log("ログインユーザー:", user.id);
         const description =
             galleryEditDescription.value.trim();
 
-const remainingImageUrls = editImages
-    .filter(image => image.type === "existing")
-    .map(image => image.url);
+// 並び順どおりに画像を保存する
+const finalImageUrls = [];
 
+for (const image of editImages) {
 
-// 新しく追加された画像をStorageへアップロード
-const newImageUrls = [];
+    // 既存画像
+    if (image.type === "existing") {
 
-for (const file of editNewImages) {
+        finalImageUrls.push(image.url);
 
-    const extension =
-        file.name.split(".").pop().toLowerCase();
-
-    const filePath =
-        `${user.id}/${crypto.randomUUID()}.${extension}`;
-
-    const { error: uploadError } =
-        await supabaseClient.storage
-            .from("gallery-images")
-            .upload(filePath, file);
-
-    if (uploadError) {
-        throw uploadError;
     }
 
-    const { data: publicUrlData } =
-        supabaseClient.storage
-            .from("gallery-images")
-            .getPublicUrl(filePath);
+    // 新しく追加した画像
+    else if (image.type === "new") {
 
-    newImageUrls.push(
-        publicUrlData.publicUrl
-    );
+        const file = image.file;
+
+        const extension =
+            file.name.split(".").pop().toLowerCase();
+
+        const filePath =
+            `${user.id}/${crypto.randomUUID()}.${extension}`;
+
+        const { error: uploadError } =
+            await supabaseClient.storage
+                .from("gallery-images")
+                .upload(filePath, file);
+
+        if (uploadError) {
+            throw uploadError;
+        }
+
+        const { data: publicUrlData } =
+            supabaseClient.storage
+                .from("gallery-images")
+                .getPublicUrl(filePath);
+
+        finalImageUrls.push(
+            publicUrlData.publicUrl
+        );
+
+    }
+
 }
-
-console.log(
-    "新しくアップロードした画像:",
-    newImageUrls
-);
-
-
-// 既存画像＋新しく追加した画像
-const finalImageUrls = [
-    ...remainingImageUrls,
-    ...newImageUrls
-];
 
 console.log(
     "最終的に保存する画像URL:",
@@ -856,7 +810,7 @@ const deletedImageUrls = originalEditImages
     .map(image => image.url)
     .filter(url => !remainingImageUrls.includes(url));
 
-console.log("残っている画像:", remainingImageUrls);
+console.log("残っている画像:", finalImageUrls);
 console.log("削除された画像:", deletedImageUrls);
 
 const deletedStoragePaths = deletedImageUrls
