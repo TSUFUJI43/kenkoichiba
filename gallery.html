@@ -633,22 +633,13 @@ console.log("ログインユーザー:", user.id);
         const description =
             galleryEditDescription.value.trim();
 
-            const remainingImageUrls = editImages
+const remainingImageUrls = editImages
     .filter(image => image.type === "existing")
     .map(image => image.url);
 
-    // 新しく追加された画像をStorageへアップロード
+
+// 新しく追加された画像をStorageへアップロード
 const newImageUrls = [];
-
-const finalImageUrls = [
-    ...remainingImageUrls,
-    ...newImageUrls
-];
-
-console.log(
-    "最終的に保存する画像URL:",
-    finalImageUrls
-);
 
 for (const file of editNewImages) {
 
@@ -680,6 +671,18 @@ for (const file of editNewImages) {
 console.log(
     "新しくアップロードした画像:",
     newImageUrls
+);
+
+
+// 既存画像＋新しく追加した画像
+const finalImageUrls = [
+    ...remainingImageUrls,
+    ...newImageUrls
+];
+
+console.log(
+    "最終的に保存する画像URL:",
+    finalImageUrls
 );
 
 const deletedImageUrls = originalEditImages
