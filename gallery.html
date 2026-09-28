@@ -418,6 +418,8 @@ const galleryEditMessage =
 
     let editImages = [];
 
+    let originalEditImages = [];
+
 galleryEdit.addEventListener("click", () => {
 
     if (!currentGalleryWork) return;
@@ -442,6 +444,11 @@ editImages =
             url: url
         }))
         : [];
+
+        originalEditImages = editImages.map(image => ({
+    type: image.type,
+    url: image.url
+}));
 
 editImages.forEach((imageData, index) => {
 
@@ -529,6 +536,17 @@ console.log("ログインユーザー:", user.id);
         const description =
             galleryEditDescription.value.trim();
 
+            const remainingImageUrls = editImages
+    .filter(image => image.type === "existing")
+    .map(image => image.url);
+
+const deletedImageUrls = originalEditImages
+    .map(image => image.url)
+    .filter(url => !remainingImageUrls.includes(url));
+
+console.log("残っている画像:", remainingImageUrls);
+console.log("削除された画像:", deletedImageUrls);
+
         const tags =
             galleryEditTags.value
                 .split(",")
@@ -541,7 +559,8 @@ const { data: updatedWork, error } =
         .update({
             title: title,
             tags: tags,
-            description: description
+            description: description,
+            image_urls: remainingImageUrls
         })
         .eq("id", currentGalleryWork.id)
         .eq("user_id", user.id)
