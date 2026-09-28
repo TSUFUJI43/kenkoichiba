@@ -416,6 +416,8 @@ const galleryEditMessage =
     const galleryEditImages =
     document.getElementById("gallery-edit-images");
 
+    let editImages = [];
+
 galleryEdit.addEventListener("click", () => {
 
     if (!currentGalleryWork) return;
@@ -433,12 +435,15 @@ galleryEdit.addEventListener("click", () => {
 
     galleryEditImages.innerHTML = "";
 
-    const images =
-        Array.isArray(currentGalleryWork.image_urls)
-            ? currentGalleryWork.image_urls
-            : [];
+editImages =
+    Array.isArray(currentGalleryWork.image_urls)
+        ? currentGalleryWork.image_urls.map(url => ({
+            type: "existing",
+            url: url
+        }))
+        : [];
 
-images.forEach((image, index) => {
+editImages.forEach((imageData, index) => {
 
     const item = document.createElement("div");
 
@@ -450,7 +455,7 @@ images.forEach((image, index) => {
         </div>
 
         <img
-            src="${image}"
+            src="${imageData.url}"
             alt=""
         >
 
@@ -465,11 +470,18 @@ images.forEach((image, index) => {
     const deleteButton =
         item.querySelector(".gallery-edit-image-delete");
 
-    deleteButton.addEventListener("click", () => {
+deleteButton.addEventListener("click", () => {
 
-        item.remove();
+    if (editImages.length <= 1) {
+        alert("画像は最低1枚残してください。");
+        return;
+    }
 
-    });
+    editImages.splice(index, 1);
+
+    item.remove();
+
+});
 
     galleryEditImages.appendChild(item);
 
