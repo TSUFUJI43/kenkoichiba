@@ -640,6 +640,16 @@ console.log("ログインユーザー:", user.id);
     // 新しく追加された画像をStorageへアップロード
 const newImageUrls = [];
 
+const finalImageUrls = [
+    ...remainingImageUrls,
+    ...newImageUrls
+];
+
+console.log(
+    "最終的に保存する画像URL:",
+    finalImageUrls
+);
+
 for (const file of editNewImages) {
 
     const extension =
@@ -701,7 +711,7 @@ const { data: updatedWork, error } =
             title: title,
             tags: tags,
             description: description,
-            image_urls: remainingImageUrls
+            image_urls: finalImageUrls
         })
         .eq("id", currentGalleryWork.id)
         .eq("user_id", user.id)
