@@ -2134,3 +2134,20 @@ main section p {
     object-fit: cover;
     border: 1px solid #555;
 }
+
+.gallery-edit-image-delete {
+    display: block;
+    width: 100%;
+    margin-top: 6px;
+    padding: 5px;
+    border: 1px solid #999;
+    background: #fff;
+    color: #555;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.gallery-edit-image-delete:hover {
+    background: #f0f4ef;
+}

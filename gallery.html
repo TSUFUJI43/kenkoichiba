@@ -438,26 +438,42 @@ galleryEdit.addEventListener("click", () => {
             ? currentGalleryWork.image_urls
             : [];
 
-    images.forEach((image, index) => {
+images.forEach((image, index) => {
 
-        const item = document.createElement("div");
+    const item = document.createElement("div");
 
-        item.className = "gallery-edit-image-item";
+    item.className = "gallery-edit-image-item";
 
-        item.innerHTML = `
-            <div class="gallery-edit-image-number">
-                ${index + 1}枚目
-            </div>
+    item.innerHTML = `
+        <div class="gallery-edit-image-number">
+            ${index + 1}枚目
+        </div>
 
-            <img
-                src="${image}"
-                alt=""
-            >
-        `;
+        <img
+            src="${image}"
+            alt=""
+        >
 
-        galleryEditImages.appendChild(item);
+        <button
+            type="button"
+            class="gallery-edit-image-delete"
+        >
+            この画像を削除
+        </button>
+    `;
+
+    const deleteButton =
+        item.querySelector(".gallery-edit-image-delete");
+
+    deleteButton.addEventListener("click", () => {
+
+        item.remove();
 
     });
+
+    galleryEditImages.appendChild(item);
+
+});
 
     galleryEditForm.style.display = "block";
 
