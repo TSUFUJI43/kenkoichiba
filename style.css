@@ -2100,3 +2100,37 @@ main section p {
     font-weight: bold;
     cursor: pointer;
 }
+
+.gallery-edit-images {
+    margin-bottom: 20px;
+}
+
+.gallery-edit-images h4 {
+    margin: 0 0 10px;
+}
+
+.gallery-edit-images-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.gallery-edit-image-item {
+    border: 1px solid #999;
+    background: #fff;
+    padding: 5px;
+}
+
+.gallery-edit-image-number {
+    font-size: 12px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.gallery-edit-image-item img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border: 1px solid #555;
+}

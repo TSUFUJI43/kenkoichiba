@@ -170,6 +170,18 @@
 
     <h3>作品を編集</h3>
 
+    <div class="gallery-edit-images">
+
+    <h4>画像</h4>
+
+    <div
+        id="gallery-edit-images"
+        class="gallery-edit-images-list"
+    >
+    </div>
+
+</div>
+
     <label>
         タイトル
         <input
@@ -274,6 +286,8 @@ const galleryClose =
 const galleryEdit =
     document.getElementById("gallery-modal-edit");
 
+    
+
 const galleryDelete =
     document.getElementById("gallery-modal-delete");
     let currentGalleryWork = null;
@@ -305,6 +319,7 @@ const galleryDelete =
                 "この作品を削除する権限がありません。"
             );
         }
+        
 
         // 画像URLからStorage上のファイルパスを取り出す
         const imageUrls =
@@ -398,6 +413,9 @@ const galleryEditSave =
 const galleryEditMessage =
     document.getElementById("gallery-edit-message");
 
+    const galleryEditImages =
+    document.getElementById("gallery-edit-images");
+
 galleryEdit.addEventListener("click", () => {
 
     if (!currentGalleryWork) return;
@@ -412,6 +430,34 @@ galleryEdit.addEventListener("click", () => {
 
     galleryEditDescription.value =
         currentGalleryWork.description || "";
+
+    galleryEditImages.innerHTML = "";
+
+    const images =
+        Array.isArray(currentGalleryWork.image_urls)
+            ? currentGalleryWork.image_urls
+            : [];
+
+    images.forEach((image, index) => {
+
+        const item = document.createElement("div");
+
+        item.className = "gallery-edit-image-item";
+
+        item.innerHTML = `
+            <div class="gallery-edit-image-number">
+                ${index + 1}枚目
+            </div>
+
+            <img
+                src="${image}"
+                alt=""
+            >
+        `;
+
+        galleryEditImages.appendChild(item);
+
+    });
 
     galleryEditForm.style.display = "block";
 
