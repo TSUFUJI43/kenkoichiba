@@ -2,85 +2,417 @@
 <html lang="ja">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>作者のギャラリー - 健康市場 うにのきもち</title>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>作者のギャラリー｜健康市場 うにのきもち</title>
 
     <link rel="stylesheet" href="style.css">
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </head>
+
 
 <body>
 
+
 <div class="site">
 
+
+    <!-- =========================
+         ヘッダー
+    ========================= -->
+
     <header>
-        <div class="header-logo">
-            <a href="index.html">
-                <img src="images/logo.png" alt="健康市場 うにのきもち">
-            </a>
+
+        <div class="header-deco">
+            ✽✽✽
         </div>
 
-        <p class="site-subtitle">
+        <h1>
+            <img
+                src="images/logo.png"
+                alt="健康市場 うにのきもち"
+            >
+        </h1>
+
+        <p class="subtitle">
             - kenkoichiba uninokimochi -
         </p>
+
+        <div class="header-deco">
+            ✽✽✽
+        </div>
+
     </header>
+
 
 
     <div class="layout">
 
-        <nav class="menu">
-            <a href="index.html">トップ</a>
-            <a href="gallery.html">ギャラリー</a>
-            <a href="diary.html">雑記</a>
-            <a href="about.html">情報</a>
-            <a href="write.html">[管理者専用]</a>
-        </nav>
 
+        <!-- =========================
+             メニュー
+        ========================= -->
+
+        <aside class="menu">
+
+            <h2>
+                ✽ メニュー ✽
+            </h2>
+
+            <nav>
+
+                <a href="index.html">
+                    トップ
+                </a>
+
+                <a href="gallery.html">
+                    ギャラリー
+                </a>
+
+                <a href="diary.html">
+                    雑記
+                </a>
+
+                <a href="about.html">
+                    情報
+                </a>
+
+                <a href="write.html">
+                    [管理者専用]
+                </a>
+
+            </nav>
+
+        </aside>
+
+
+
+        <!-- =========================
+             メイン
+        ========================= -->
 
         <main>
 
-            <section class="gallery-author-page">
+            <section>
 
-                <h1 id="author-title">
-                    作者のギャラリー
-                </h1>
+                <h2 id="author-gallery-title">
+                    ＊ ギャラリー ＊
+                </h2>
 
-                <div id="author-gallery"
-                     class="gallery-grid">
+
+                <p
+                    class="gallery-intro"
+                    id="author-gallery-intro"
+                >
+                    作者の作品をまとめて展示しています。
+                </p>
+
+
+                <!-- 作者の作品 -->
+
+                <div
+                    class="gallery-authors"
+                    id="gallery-author-container"
+                >
                 </div>
 
-                <p class="gallery-back">
-                    ← <a href="gallery.html">ギャラリーへ戻る</a>
-                </p>
 
             </section>
 
+
+
+            <!-- 戻る -->
+
+            <p class="more">
+
+                → <a href="gallery.html">
+                    ギャラリーに戻る
+                </a>
+
+            </p>
+
+
+            <footer>
+
+                ✽　since 2026
+                ｜ 健康市場 うにのきもち
+                ｜ ✽
+
+            </footer>
+
         </main>
+
 
     </div>
 
 
-    <footer>
-        <p>
-            © 健康市場 うにのきもち
-        </p>
-    </footer>
-
 </div>
 
 
-<script src="supabase.js"></script>
+
+<!-- ==================================================
+     ギャラリーモーダル
+================================================== -->
+
+<dialog id="gallery-modal">
+
+
+    <div class="gallery-modal-inner">
+
+
+        <!-- 閉じる -->
+
+        <button
+            id="gallery-modal-close"
+            class="gallery-modal-close"
+            type="button"
+        >
+            ×
+        </button>
+
+
+
+        <!-- 画像 -->
+
+        <div
+            id="gallery-image-area"
+            class="gallery-image-area"
+        >
+        </div>
+
+
+
+        <!-- 情報 -->
+
+        <div class="gallery-info">
+
+
+            <h3 id="gallery-modal-title">
+            </h3>
+
+
+            <div
+                id="gallery-modal-tags"
+                class="gallery-modal-tags"
+            >
+            </div>
+
+
+            <p
+                id="gallery-modal-description"
+                class="gallery-modal-description"
+            >
+            </p>
+
+
+            <!-- 編集・削除 -->
+
+            <div
+                id="gallery-modal-actions"
+                class="gallery-modal-actions"
+            >
+
+                <button
+                    id="gallery-modal-edit"
+                    type="button"
+                >
+                    編集
+                </button>
+
+
+                <button
+                    id="gallery-modal-delete"
+                    type="button"
+                >
+                    削除
+                </button>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ==================================================
+             編集フォーム
+        ================================================== -->
+
+        <div
+            id="gallery-edit-form"
+            class="gallery-edit-form"
+            style="display: none;"
+        >
+
+
+            <h3>
+                作品を編集
+            </h3>
+
+
+
+            <!-- 画像 -->
+
+            <div class="gallery-edit-images">
+
+
+                <h4>
+                    画像
+                </h4>
+
+
+                <div
+                    id="gallery-edit-images"
+                    class="gallery-edit-images-list"
+                >
+                </div>
+
+
+
+                <div class="gallery-edit-add-images">
+
+
+                    <h4>
+                        画像を追加
+                    </h4>
+
+
+                    <input
+                        type="file"
+                        id="gallery-edit-add-image-input"
+                        accept="image/*"
+                        multiple
+                    >
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- タイトル -->
+
+            <label>
+
+                タイトル
+
+                <input
+                    type="text"
+                    id="gallery-edit-title"
+                >
+
+            </label>
+
+
+
+            <!-- タグ -->
+
+            <label>
+
+                タグ
+
+                <input
+                    type="text"
+                    id="gallery-edit-tags"
+                    placeholder="例：イラスト, うに, オリジナル"
+                >
+
+            </label>
+
+
+
+            <!-- 説明 -->
+
+            <label>
+
+                説明
+
+                <textarea
+                    id="gallery-edit-description"
+                    rows="5"
+                ></textarea>
+
+            </label>
+
+
+
+            <!-- ボタン -->
+
+            <div class="gallery-edit-buttons">
+
+
+                <button
+                    id="gallery-edit-cancel"
+                    type="button"
+                >
+                    キャンセル
+                </button>
+
+
+                <button
+                    id="gallery-edit-save"
+                    type="button"
+                >
+                    保存
+                </button>
+
+
+            </div>
+
+
+
+            <p id="gallery-edit-message">
+            </p>
+
+
+        </div>
+
+
+    </div>
+
+
+</dialog>
+
+
 
 <script>
 
-const params =
-    new URLSearchParams(window.location.search);
 
-const userId =
-    params.get("user");
+/* ==================================================
+   Supabase
+================================================== */
 
+const SUPABASE_URL =
+    "https://bvlmukmabwubdfaebzbo.supabase.co";
+
+
+/*
+   ↓↓↓ ここだけ gallery.html のものをコピー ↓↓↓
+*/
+
+const SUPABASE_ANON_KEY =
+    "b_publishable_CeYH12uKYMe07tYxd_flsA_cxdI922_";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+    );
+
+
+
+/* ==================================================
+   作者情報
+================================================== */
 
 const authorNames = {
 
@@ -93,146 +425,1494 @@ const authorNames = {
 };
 
 
+
+/* ==================================================
+   URLから作者IDを取得
+================================================== */
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+const authorId =
+    params.get("user");
+
+
+
+/* ==================================================
+   作者ページのタイトル
+================================================== */
+
+const authorName =
+    authorNames[authorId] || "作者";
+
+
+document.title =
+    `${authorName}のギャラリー｜健康市場 うにのきもち`;
+
+
+document.getElementById(
+    "author-gallery-title"
+).textContent =
+    `＊ ${authorName}のギャラリー ＊`;
+
+
+document.getElementById(
+    "author-gallery-intro"
+).textContent =
+    `${authorName}の作品をまとめて展示しています。`;
+
+
+
+/* ==================================================
+   モーダル関連
+================================================== */
+
+const galleryModal =
+    document.getElementById(
+        "gallery-modal"
+    );
+
+
+const galleryImageArea =
+    document.getElementById(
+        "gallery-image-area"
+    );
+
+
+const galleryTitle =
+    document.getElementById(
+        "gallery-modal-title"
+    );
+
+
+const galleryTags =
+    document.getElementById(
+        "gallery-modal-tags"
+    );
+
+
+const galleryDescription =
+    document.getElementById(
+        "gallery-modal-description"
+    );
+
+
+const galleryClose =
+    document.getElementById(
+        "gallery-modal-close"
+    );
+
+
+const galleryActions =
+    document.getElementById(
+        "gallery-modal-actions"
+    );
+
+
+const galleryEdit =
+    document.getElementById(
+        "gallery-modal-edit"
+    );
+
+
+const galleryDelete =
+    document.getElementById(
+        "gallery-modal-delete"
+    );
+
+
+let currentGalleryWork = null;
+
+
+
+/* ==================================================
+   編集フォーム
+================================================== */
+
+const galleryEditForm =
+    document.getElementById(
+        "gallery-edit-form"
+    );
+
+
+const galleryEditTitle =
+    document.getElementById(
+        "gallery-edit-title"
+    );
+
+
+const galleryEditTags =
+    document.getElementById(
+        "gallery-edit-tags"
+    );
+
+
+const galleryEditDescription =
+    document.getElementById(
+        "gallery-edit-description"
+    );
+
+
+const galleryEditCancel =
+    document.getElementById(
+        "gallery-edit-cancel"
+    );
+
+
+const galleryEditSave =
+    document.getElementById(
+        "gallery-edit-save"
+    );
+
+
+const galleryEditMessage =
+    document.getElementById(
+        "gallery-edit-message"
+    );
+
+
+const galleryEditImages =
+    document.getElementById(
+        "gallery-edit-images"
+    );
+
+
+const galleryEditAddImageInput =
+    document.getElementById(
+        "gallery-edit-add-image-input"
+    );
+
+
+let editImages = [];
+
+let originalEditImages = [];
+
+
+
+/* ==================================================
+   HTMLエスケープ
+================================================== */
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+
+/* ==================================================
+   編集画像を表示
+================================================== */
+
+function renderEditImages() {
+
+    galleryEditImages.innerHTML = "";
+
+
+    editImages.forEach(
+        (image, index) => {
+
+
+            const item =
+                document.createElement("div");
+
+
+            item.className =
+                "gallery-edit-image-item";
+
+
+            item.innerHTML = `
+
+                <div class="gallery-edit-image-box">
+
+                    <img
+                        src="${escapeHtml(image.url)}"
+                        alt=""
+                    >
+
+                </div>
+
+                <button
+                    type="button"
+                    class="gallery-edit-image-delete"
+                    data-index="${index}"
+                >
+                    ×
+                </button>
+
+            `;
+
+
+            const deleteButton =
+                item.querySelector(
+                    ".gallery-edit-image-delete"
+                );
+
+
+            deleteButton.addEventListener(
+                "click",
+                () => {
+
+                    editImages.splice(
+                        index,
+                        1
+                    );
+
+                    renderEditImages();
+
+                }
+            );
+
+
+            galleryEditImages.appendChild(
+                item
+            );
+
+        }
+    );
+
+}
+
+
+
+/* ==================================================
+   編集ボタン
+================================================== */
+
+galleryEdit.addEventListener(
+    "click",
+    () => {
+
+        if (!currentGalleryWork) {
+            return;
+        }
+
+
+        galleryImageArea.style.display =
+            "none";
+
+
+        document.querySelector(
+            ".gallery-info"
+        ).style.display =
+            "none";
+
+
+        galleryEditForm.style.display =
+            "block";
+
+
+        galleryEditTitle.value =
+            currentGalleryWork.title || "";
+
+
+        galleryEditDescription.value =
+            currentGalleryWork.description || "";
+
+
+        const tags =
+            Array.isArray(
+                currentGalleryWork.tags
+            )
+                ? currentGalleryWork.tags
+                : [];
+
+
+        galleryEditTags.value =
+            tags.join(", ");
+
+
+        const images =
+            Array.isArray(
+                currentGalleryWork.image_urls
+            )
+                ? currentGalleryWork.image_urls
+                : [];
+
+
+        editImages =
+            images.map(
+                url => ({
+                    url: url,
+                    isNew: false
+                })
+            );
+
+
+        originalEditImages =
+            [...editImages];
+
+
+        renderEditImages();
+
+
+        galleryEditMessage.textContent =
+            "";
+
+    }
+);
+
+
+
+/* ==================================================
+   追加画像
+================================================== */
+
+galleryEditAddImageInput.addEventListener(
+    "change",
+    event => {
+
+
+        const files =
+            Array.from(
+                event.target.files
+            );
+
+
+        files.forEach(file => {
+
+            const url =
+                URL.createObjectURL(file);
+
+
+            editImages.push({
+
+                url: url,
+
+                file: file,
+
+                isNew: true
+
+            });
+
+        });
+
+
+        renderEditImages();
+
+
+        galleryEditAddImageInput.value =
+            "";
+
+    }
+);
+
+
+
+/* ==================================================
+   編集キャンセル
+================================================== */
+
+galleryEditCancel.addEventListener(
+    "click",
+    () => {
+
+        galleryEditForm.style.display =
+            "none";
+
+
+        galleryImageArea.style.display =
+            "";
+
+
+        document.querySelector(
+            ".gallery-info"
+        ).style.display =
+            "";
+
+
+        galleryEditMessage.textContent =
+            "";
+
+    }
+);
+
+
+
+/* ==================================================
+   Storage URLからパスを取得
+================================================== */
+
+function getStoragePathFromPublicUrl(
+    url
+) {
+
+    const marker =
+        "/storage/v1/object/public/gallery-images/";
+
+    const index =
+        url.indexOf(marker);
+
+
+    if (index === -1) {
+        return null;
+    }
+
+
+    return decodeURIComponent(
+        url.substring(
+            index + marker.length
+        )
+    );
+
+}
+
+
+
+/* ==================================================
+   編集保存
+================================================== */
+
+galleryEditSave.addEventListener(
+    "click",
+    async () => {
+
+
+        if (!currentGalleryWork) {
+            return;
+        }
+
+
+        galleryEditMessage.textContent =
+            "保存中……";
+
+
+        galleryEditSave.disabled =
+            true;
+
+
+        try {
+
+
+            /* -------------------------
+               新しい画像をアップロード
+            ------------------------- */
+
+            const finalImageUrls = [];
+
+
+            for (
+                const image of editImages
+            ) {
+
+
+                if (
+                    image.isNew &&
+                    image.file
+                ) {
+
+
+                    const extension =
+                        image.file.name
+                            .split(".")
+                            .pop()
+                            .toLowerCase();
+
+
+                    const filePath =
+                        `${currentGalleryWork.user_id}/${crypto.randomUUID()}.${extension}`;
+
+
+                    const {
+                        error:
+                        uploadError
+                    } =
+                        await supabaseClient
+                            .storage
+                            .from("gallery-images")
+                            .upload(
+                                filePath,
+                                image.file
+                            );
+
+
+                    if (uploadError) {
+
+                        throw uploadError;
+
+                    }
+
+
+                    const {
+                        data:
+                        publicData
+                    } =
+                        supabaseClient
+                            .storage
+                            .from(
+                                "gallery-images"
+                            )
+                            .getPublicUrl(
+                                filePath
+                            );
+
+
+                    finalImageUrls.push(
+                        publicData.publicUrl
+                    );
+
+
+                } else {
+
+                    finalImageUrls.push(
+                        image.url
+                    );
+
+                }
+
+            }
+
+
+
+            /* -------------------------
+               削除された画像をStorageから削除
+            ------------------------- */
+
+            const originalUrls =
+                originalEditImages
+                    .map(
+                        image => image.url
+                    );
+
+
+            const finalUrls =
+                finalImageUrls;
+
+
+            const deletedUrls =
+                originalUrls.filter(
+                    url =>
+                        !finalUrls.includes(
+                            url
+                        )
+                );
+
+
+            const deletedPaths =
+                deletedUrls
+                    .map(
+                        getStoragePathFromPublicUrl
+                    )
+                    .filter(Boolean);
+
+
+            if (
+                deletedPaths.length > 0
+            ) {
+
+                const {
+                    error:
+                    deleteStorageError
+                } =
+                    await supabaseClient
+                        .storage
+                        .from(
+                            "gallery-images"
+                        )
+                        .remove(
+                            deletedPaths
+                        );
+
+
+                if (
+                    deleteStorageError
+                ) {
+
+                    console.error(
+                        deleteStorageError
+                    );
+
+                }
+
+            }
+
+
+
+            /* -------------------------
+               タグ
+            ------------------------- */
+
+            const tagArray =
+                galleryEditTags.value
+                    .split(",")
+                    .map(
+                        tag =>
+                            tag.trim()
+                    )
+                    .filter(
+                        tag =>
+                            tag !== ""
+                    );
+
+
+
+            /* -------------------------
+               DB更新
+            ------------------------- */
+
+            const {
+                error:
+                updateError
+            } =
+                await supabaseClient
+                    .from("gallery")
+                    .update({
+
+                        title:
+                            galleryEditTitle.value
+                                .trim(),
+
+                        tags:
+                            tagArray,
+
+                        description:
+                            galleryEditDescription.value
+                                .trim(),
+
+                        image_urls:
+                            finalImageUrls
+
+                    })
+                    .eq(
+                        "id",
+                        currentGalleryWork.id
+                    );
+
+
+            if (updateError) {
+
+                throw updateError;
+
+            }
+
+
+
+            /* -------------------------
+               表示を更新
+            ------------------------- */
+
+            currentGalleryWork.title =
+                galleryEditTitle.value.trim();
+
+
+            currentGalleryWork.tags =
+                tagArray;
+
+
+            currentGalleryWork.description =
+                galleryEditDescription.value
+                    .trim();
+
+
+            currentGalleryWork.image_urls =
+                finalImageUrls;
+
+
+            galleryTitle.textContent =
+                currentGalleryWork.title;
+
+
+            galleryTags.innerHTML =
+                "";
+
+
+            tagArray.forEach(
+                tag => {
+
+                    const span =
+                        document.createElement(
+                            "span"
+                        );
+
+                    span.textContent =
+                        "#" + tag;
+
+                    galleryTags.appendChild(
+                        span
+                    );
+
+                }
+            );
+
+
+            galleryDescription.textContent =
+                currentGalleryWork.description;
+
+
+
+            /* -------------------------
+               画像表示を更新
+            ------------------------- */
+
+            galleryImageArea.innerHTML =
+                "";
+
+
+            finalImageUrls.forEach(
+                (image, index) => {
+
+                    const img =
+                        document.createElement(
+                            "img"
+                        );
+
+                    img.src =
+                        image;
+
+                    img.alt =
+                        (
+                            currentGalleryWork.title ||
+                            "作品"
+                        ) +
+                        " " +
+                        (index + 1);
+
+
+                    galleryImageArea.appendChild(
+                        img
+                    );
+
+                }
+            );
+
+
+
+            /* -------------------------
+               編集フォームを閉じる
+            ------------------------- */
+
+            galleryEditForm.style.display =
+                "none";
+
+
+            galleryImageArea.style.display =
+                "";
+
+
+            document.querySelector(
+                ".gallery-info"
+            ).style.display =
+                "";
+
+
+            galleryEditMessage.textContent =
+                "";
+
+
+            alert(
+                "作品を更新しました！"
+            );
+
+
+        } catch (error) {
+
+
+            console.error(
+                "Gallery update error:",
+                error
+            );
+
+
+            galleryEditMessage.textContent =
+                "保存に失敗しました。";
+
+
+            alert(
+                "保存に失敗しました。\n" +
+                error.message
+            );
+
+
+        } finally {
+
+            galleryEditSave.disabled =
+                false;
+
+        }
+
+    }
+);
+
+
+
+/* ==================================================
+   削除
+================================================== */
+
+galleryDelete.addEventListener(
+    "click",
+    async () => {
+
+
+        if (!currentGalleryWork) {
+            return;
+        }
+
+
+        const ok =
+            confirm(
+                "この作品を削除しますか？"
+            );
+
+
+        if (!ok) {
+            return;
+        }
+
+
+        try {
+
+
+            /* -------------------------
+               Storage画像削除
+            ------------------------- */
+
+            const images =
+                Array.isArray(
+                    currentGalleryWork.image_urls
+                )
+                    ? currentGalleryWork.image_urls
+                    : [];
+
+
+            const paths =
+                images
+                    .map(
+                        getStoragePathFromPublicUrl
+                    )
+                    .filter(Boolean);
+
+
+            if (
+                paths.length > 0
+            ) {
+
+                const {
+                    error:
+                    storageError
+                } =
+                    await supabaseClient
+                        .storage
+                        .from(
+                            "gallery-images"
+                        )
+                        .remove(
+                            paths
+                        );
+
+
+                if (storageError) {
+
+                    console.error(
+                        "Storage delete error:",
+                        storageError
+                    );
+
+                }
+
+            }
+
+
+
+            /* -------------------------
+               DB削除
+            ------------------------- */
+
+            const {
+                error:
+                deleteError
+            } =
+                await supabaseClient
+                    .from("gallery")
+                    .delete()
+                    .eq(
+                        "id",
+                        currentGalleryWork.id
+                    );
+
+
+            if (deleteError) {
+
+                throw deleteError;
+
+            }
+
+
+            galleryModal.close();
+
+
+            currentGalleryWork =
+                null;
+
+
+            await loadAuthorGallery();
+
+
+        } catch (error) {
+
+
+            console.error(
+                "Gallery delete error:",
+                error
+            );
+
+
+            alert(
+                "削除に失敗しました。\n" +
+                error.message
+            );
+
+        }
+
+    }
+);
+
+
+
+/* ==================================================
+   ×で閉じる
+================================================== */
+
+galleryClose.addEventListener(
+    "click",
+    () => {
+
+        galleryModal.close();
+
+    }
+);
+
+
+
+/* ==================================================
+   背景クリックで閉じる
+================================================== */
+
+galleryModal.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target === galleryModal
+        ) {
+
+            galleryModal.close();
+
+        }
+
+    }
+);
+
+
+
+/* ==================================================
+   ESCでも閉じる
+================================================== */
+
+galleryModal.addEventListener(
+    "cancel",
+    () => {
+
+        galleryModal.close();
+
+    }
+);
+
+
+
+/* ==================================================
+   作者ギャラリー取得
+================================================== */
+
 async function loadAuthorGallery() {
 
-    const authorTitle =
-        document.getElementById("author-title");
 
-    const gallery =
-        document.getElementById("author-gallery");
+    const galleryContainer =
+        document.getElementById(
+            "gallery-author-container"
+        );
 
 
-    if (!userId) {
+    galleryContainer.innerHTML =
+        "";
 
-        authorTitle.textContent =
-            "作者が指定されていません";
+
+
+    /* -------------------------
+       URLに作者IDがない場合
+    ------------------------- */
+
+    if (!authorId) {
+
+        galleryContainer.innerHTML = `
+
+            <p>
+                作者が指定されていません。
+            </p>
+
+        `;
 
         return;
 
     }
 
 
-    const authorName =
-        authorNames[userId] || "その他";
+
+    /* -------------------------
+       存在しない作者の場合
+    ------------------------- */
+
+    if (!authorNames[authorId]) {
+
+        galleryContainer.innerHTML = `
+
+            <p>
+                作者が見つかりません。
+            </p>
+
+        `;
+
+        return;
+
+    }
 
 
-    authorTitle.textContent =
-        authorName + "のギャラリー";
 
+    /* -------------------------
+       Supabaseから取得
+    ------------------------- */
 
-    const { data, error } =
+    const {
+        data,
+        error
+    } =
         await supabaseClient
             .from("gallery")
             .select("*")
-            .eq("user_id", userId)
-            .order("created_at", {
-                ascending: false
-            });
+            .eq(
+                "user_id",
+                authorId
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
 
 
     if (error) {
 
         console.error(
-            "作者ギャラリー取得エラー:",
+            "Author gallery load error:",
             error
         );
 
-        gallery.innerHTML =
-            "<p>作品を読み込めませんでした。</p>";
+
+        galleryContainer.innerHTML = `
+
+            <p>
+                ギャラリーを読み込めませんでした。
+            </p>
+
+        `;
 
         return;
 
     }
 
 
-    if (!data || data.length === 0) {
 
-        gallery.innerHTML =
-            "<p>まだ作品がありません。</p>";
+    /* -------------------------
+       作者セクション
+    ------------------------- */
 
-        return;
-
-    }
-
-
-    data.forEach(work => {
-
-        const button =
-            document.createElement("button");
-
-        button.className =
-            "gallery-work";
-
-        button.type =
-            "button";
-
-
-        const images =
-            Array.isArray(work.image_urls)
-                ? work.image_urls
-                : [];
-
-
-        if (images.length > 0) {
-
-            const img =
-                document.createElement("img");
-
-            img.src =
-                images[0];
-
-            img.alt =
-                work.title || "作品";
-
-            button.appendChild(img);
-
-        }
-
-
-        if (images.length > 1) {
-
-            const count =
-                document.createElement("span");
-
-            count.className =
-                "gallery-count";
-
-            count.textContent =
-                "[" + images.length + "]";
-
-            button.appendChild(count);
-
-        }
-
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                /*
-                 * 今回はまず作品を開くところまで。
-                 * 詳細表示は次の段階で追加する。
-                 */
-
-                console.log(
-                    "選択した作品:",
-                    work
-                );
-
-            }
+    const authorSection =
+        document.createElement(
+            "div"
         );
 
 
-        gallery.appendChild(button);
+    authorSection.className =
+        "gallery-author";
 
-    });
+
+
+    /* 作者タイトル */
+
+    const authorTitle =
+        document.createElement(
+            "div"
+        );
+
+
+    authorTitle.className =
+        "gallery-author-title";
+
+
+    authorTitle.innerHTML = `
+
+        <span>✽</span>
+
+        <span>
+            ${escapeHtml(authorName)}の作品
+        </span>
+
+    `;
+
+
+    authorSection.appendChild(
+        authorTitle
+    );
+
+
+
+    /* -------------------------
+       作品グリッド
+    ------------------------- */
+
+    const grid =
+        document.createElement(
+            "div"
+        );
+
+
+    grid.className =
+        "gallery-grid";
+
+
+
+    /* -------------------------
+       作品がない場合
+    ------------------------- */
+
+    if (!data || data.length === 0) {
+
+        const empty =
+            document.createElement(
+                "p"
+            );
+
+
+        empty.textContent =
+            "まだ作品はありません。";
+
+
+        grid.appendChild(
+            empty
+        );
+
+    }
+
+
+
+    /* -------------------------
+       作品表示
+    ------------------------- */
+
+    (data || []).forEach(
+        work => {
+
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.className =
+                "gallery-work";
+
+
+            button.type =
+                "button";
+
+
+
+            const images =
+                Array.isArray(
+                    work.image_urls
+                )
+                    ? work.image_urls
+                    : [];
+
+
+
+            /* 1枚目 */
+
+            if (
+                images.length > 0
+            ) {
+
+
+                const img =
+                    document.createElement(
+                        "img"
+                    );
+
+
+                img.src =
+                    images[0];
+
+
+                img.alt =
+                    work.title ||
+                    "作品";
+
+
+                button.appendChild(
+                    img
+                );
+
+            }
+
+
+
+            /* 枚数 */
+
+            if (
+                images.length > 1
+            ) {
+
+
+                const count =
+                    document.createElement(
+                        "span"
+                    );
+
+
+                count.className =
+                    "gallery-count";
+
+
+                count.textContent =
+                    "[" +
+                    images.length +
+                    "]";
+
+
+                button.appendChild(
+                    count
+                );
+
+            }
+
+
+
+            /* -------------------------
+               クリック
+            ------------------------- */
+
+            button.addEventListener(
+                "click",
+                async () => {
+
+
+                    currentGalleryWork =
+                        work;
+
+
+                    galleryImageArea.innerHTML =
+                        "";
+
+
+
+                    /* 全画像 */
+
+                    images.forEach(
+                        (
+                            image,
+                            index
+                        ) => {
+
+
+                            const img =
+                                document.createElement(
+                                    "img"
+                                );
+
+
+                            img.src =
+                                image;
+
+
+                            img.alt =
+                                (
+                                    work.title ||
+                                    "作品"
+                                ) +
+                                " " +
+                                (
+                                    index + 1
+                                );
+
+
+                            galleryImageArea.appendChild(
+                                img
+                            );
+
+                        }
+                    );
+
+
+
+                    /* タイトル */
+
+                    galleryTitle.textContent =
+                        work.title ||
+                        "";
+
+
+
+                    /* タグ */
+
+                    galleryTags.innerHTML =
+                        "";
+
+
+                    const tags =
+                        Array.isArray(
+                            work.tags
+                        )
+                            ? work.tags
+                            : [];
+
+
+                    tags.forEach(
+                        tag => {
+
+
+                            const span =
+                                document.createElement(
+                                    "span"
+                                );
+
+
+                            span.textContent =
+                                "#" +
+                                tag;
+
+
+                            galleryTags.appendChild(
+                                span
+                            );
+
+                        }
+                    );
+
+
+
+                    /* 説明 */
+
+                    galleryDescription.textContent =
+                        work.description ||
+                        "";
+
+
+
+                    /* -------------------------
+                       編集・削除表示
+                    ------------------------- */
+
+                    const {
+                        data
+                    } =
+                        await supabaseClient
+                            .auth
+                            .getUser();
+
+
+                    const user =
+                        data.user;
+
+
+                    if (
+                        user &&
+                        user.id === work.user_id
+                    ) {
+
+                        galleryActions.style.display =
+                            "flex";
+
+                    } else {
+
+                        galleryActions.style.display =
+                            "none";
+
+                    }
+
+
+
+                    /* 編集フォームを閉じる */
+
+                    galleryEditForm.style.display =
+                        "none";
+
+
+                    galleryImageArea.style.display =
+                        "";
+
+
+                    document.querySelector(
+                        ".gallery-info"
+                    ).style.display =
+                        "";
+
+
+
+                    /* モーダル表示 */
+
+                    galleryModal.showModal();
+
+
+                    galleryImageArea.scrollTop =
+                        0;
+
+                }
+            );
+
+
+
+            grid.appendChild(
+                button
+            );
+
+        }
+    );
+
+
+
+    authorSection.appendChild(
+        grid
+    );
+
+
+    galleryContainer.appendChild(
+        authorSection
+    );
 
 }
 
 
+
+/* ==================================================
+   起動
+================================================== */
+
 loadAuthorGallery();
 
+
 </script>
+
 
 </body>
 
