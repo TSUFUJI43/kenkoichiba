@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>作者のギャラリー - 健康市場 うにのきもち</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+<div class="site">
+
+    <header>
+        <div class="header-logo">
+            <a href="index.html">
+                <img src="images/logo.png" alt="健康市場 うにのきもち">
+            </a>
+        </div>
+
+        <p class="site-subtitle">
+            - kenkoichiba uninokimochi -
+        </p>
+    </header>
+
+
+    <div class="layout">
+
+        <nav class="menu">
+            <a href="index.html">トップ</a>
+            <a href="gallery.html">ギャラリー</a>
+            <a href="diary.html">雑記</a>
+            <a href="about.html">情報</a>
+            <a href="write.html">[管理者専用]</a>
+        </nav>
+
+
+        <main>
+
+            <section class="gallery-author-page">
+
+                <h1 id="author-title">
+                    作者のギャラリー
+                </h1>
+
+                <div id="author-gallery"
+                     class="gallery-grid">
+                </div>
+
+                <p class="gallery-back">
+                    ← <a href="gallery.html">ギャラリーへ戻る</a>
+                </p>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <footer>
+        <p>
+            © 健康市場 うにのきもち
+        </p>
+    </footer>
+
+</div>
+
+
+<script src="supabase.js"></script>
+
+<script>
+
+const params =
+    new URLSearchParams(window.location.search);
+
+const userId =
+    params.get("user");
+
+
+const authorNames = {
+
+    "0cb63a34-76a9-4f23-bc94-b8bc63d68050":
+        "つふじ",
+
+    "866f58f4-e493-4f62-999b-2aba99af71ef":
+        "健康法"
+
+};
+
+
+async function loadAuthorGallery() {
+
+    const authorTitle =
+        document.getElementById("author-title");
+
+    const gallery =
+        document.getElementById("author-gallery");
+
+
+    if (!userId) {
+
+        authorTitle.textContent =
+            "作者が指定されていません";
+
+        return;
+
+    }
+
+
+    const authorName =
+        authorNames[userId] || "その他";
+
+
+    authorTitle.textContent =
+        authorName + "のギャラリー";
+
+
+    const { data, error } =
+        await supabaseClient
+            .from("gallery")
+            .select("*")
+            .eq("user_id", userId)
+            .order("created_at", {
+                ascending: false
+            });
+
+
+    if (error) {
+
+        console.error(
+            "作者ギャラリー取得エラー:",
+            error
+        );
+
+        gallery.innerHTML =
+            "<p>作品を読み込めませんでした。</p>";
+
+        return;
+
+    }
+
+
+    if (!data || data.length === 0) {
+
+        gallery.innerHTML =
+            "<p>まだ作品がありません。</p>";
+
+        return;
+
+    }
+
+
+    data.forEach(work => {
+
+        const button =
+            document.createElement("button");
+
+        button.className =
+            "gallery-work";
+
+        button.type =
+            "button";
+
+
+        const images =
+            Array.isArray(work.image_urls)
+                ? work.image_urls
+                : [];
+
+
+        if (images.length > 0) {
+
+            const img =
+                document.createElement("img");
+
+            img.src =
+                images[0];
+
+            img.alt =
+                work.title || "作品";
+
+            button.appendChild(img);
+
+        }
+
+
+        if (images.length > 1) {
+
+            const count =
+                document.createElement("span");
+
+            count.className =
+                "gallery-count";
+
+            count.textContent =
+                "[" + images.length + "]";
+
+            button.appendChild(count);
+
+        }
+
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                /*
+                 * 今回はまず作品を開くところまで。
+                 * 詳細表示は次の段階で追加する。
+                 */
+
+                console.log(
+                    "選択した作品:",
+                    work
+                );
+
+            }
+        );
+
+
+        gallery.appendChild(button);
+
+    });
+
+}
+
+
+loadAuthorGallery();
+
+</script>
+
+</body>
+
+</html>
