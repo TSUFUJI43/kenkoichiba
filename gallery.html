@@ -865,13 +865,6 @@ if (deletedStoragePaths.length > 0) {
     }
 }
 
-if (error) {
-    throw error;
-}
-
-if (!updatedWork) {
-    throw new Error("作品の更新対象が見つかりませんでした。");
-}
 
         currentGalleryWork.title = title;
         currentGalleryWork.tags = tags;
