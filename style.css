@@ -2178,10 +2178,10 @@ main section p {
     display: none;
 }
 
-/* 6列にする */
+/* 5列にする */
 #gallery-author-container .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 18px;
     padding: 0;
 }
