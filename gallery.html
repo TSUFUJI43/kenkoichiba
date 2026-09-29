@@ -436,72 +436,16 @@ const galleryEditMessage =
     const galleryEditAddImageInput =
     document.getElementById("gallery-edit-add-image-input");
 
-let editNewImages = [];
+let editImages = [];
+let originalEditImages = [];
 
 const galleryEditNewImages =
     document.getElementById("gallery-edit-new-images");
 
 
-galleryEditAddImageInput.addEventListener(
-    "change",
-    event => {
-
-        const newFiles =
-            Array.from(event.target.files);
-
-        newFiles.forEach(file => {
-
-            const imageURL =
-                URL.createObjectURL(file);
-
-            editImages.push({
-                type: "new",
-                file: file,
-                url: imageURL
-            });
-
-        });
-
-        renderEditImages();
-
-        galleryEditAddImageInput.value = "";
-
-    }
-);
-
-    let editImages = [];
-
-    let originalEditImages = [];
-
-galleryEdit.addEventListener("click", () => {
-
-    if (!currentGalleryWork) return;
-
-    galleryEditTitle.value =
-        currentGalleryWork.title || "";
-
-    galleryEditTags.value =
-        Array.isArray(currentGalleryWork.tags)
-            ? currentGalleryWork.tags.join(", ")
-            : "";
-
-    galleryEditDescription.value =
-        currentGalleryWork.description || "";
-
-    galleryEditImages.innerHTML = "";
-
-editImages =
-    Array.isArray(currentGalleryWork.image_urls)
-        ? currentGalleryWork.image_urls.map(url => ({
-            type: "existing",
-            url: url
-        }))
-        : [];
-
-        originalEditImages = editImages.map(image => ({
-    type: image.type,
-    url: image.url
-}));
+/* =========================
+   編集画像を表示
+========================= */
 
 function renderEditImages() {
 
@@ -542,9 +486,7 @@ function renderEditImages() {
         `;
 
 
-        /* =========================
-           ドラッグ開始
-        ========================= */
+        /* ドラッグ開始 */
 
         item.addEventListener(
             "dragstart",
@@ -566,9 +508,7 @@ function renderEditImages() {
         );
 
 
-        /* =========================
-           ドラッグ終了
-        ========================= */
+        /* ドラッグ終了 */
 
         item.addEventListener(
             "dragend",
@@ -582,9 +522,7 @@ function renderEditImages() {
         );
 
 
-        /* =========================
-           ドラッグ中
-        ========================= */
+        /* ドラッグ中 */
 
         item.addEventListener(
             "dragover",
@@ -600,9 +538,7 @@ function renderEditImages() {
         );
 
 
-        /* =========================
-           ドラッグが外れた
-        ========================= */
+        /* ドラッグが外れた */
 
         item.addEventListener(
             "dragleave",
@@ -616,9 +552,7 @@ function renderEditImages() {
         );
 
 
-        /* =========================
-           ドロップ
-        ========================= */
+        /* ドロップ */
 
         item.addEventListener(
             "drop",
@@ -638,13 +572,9 @@ function renderEditImages() {
 
                 const toIndex = index;
 
-
-                if (
-                    fromIndex === toIndex
-                ) {
+                if (fromIndex === toIndex) {
                     return;
                 }
-
 
                 const movedImage =
                     editImages.splice(
@@ -652,13 +582,11 @@ function renderEditImages() {
                         1
                     )[0];
 
-
                 editImages.splice(
                     toIndex,
                     0,
                     movedImage
                 );
-
 
                 renderEditImages();
 
@@ -666,16 +594,12 @@ function renderEditImages() {
         );
 
 
-
-        /* =========================
-           削除
-        ========================= */
+        /* 削除 */
 
         const deleteButton =
             item.querySelector(
                 ".gallery-edit-image-delete"
             );
-
 
         deleteButton.addEventListener(
             "click",
@@ -690,12 +614,10 @@ function renderEditImages() {
                     return;
                 }
 
-
                 editImages.splice(
                     index,
                     1
                 );
-
 
                 renderEditImages();
 
@@ -709,22 +631,109 @@ function renderEditImages() {
 
     });
 
-
 }
 
-    renderEditImages();
 
-    galleryEditForm.style.display = "block";
+/* =========================
+   新しい画像を追加
+========================= */
 
-    galleryEditMessage.textContent = "";
+galleryEditAddImageInput.addEventListener(
+    "change",
+    event => {
 
-});
+        const newFiles =
+            Array.from(event.target.files);
 
-galleryEditCancel.addEventListener("click", () => {
+        newFiles.forEach(file => {
 
-    galleryEditForm.style.display = "none";
+            const imageURL =
+                URL.createObjectURL(file);
 
-});
+            editImages.push({
+                type: "new",
+                file: file,
+                url: imageURL
+            });
+
+        });
+
+        renderEditImages();
+
+        galleryEditAddImageInput.value = "";
+
+    }
+);
+
+
+/* =========================
+   編集ボタン
+========================= */
+
+galleryEdit.addEventListener(
+    "click",
+    () => {
+
+        if (!currentGalleryWork) return;
+
+        galleryEditTitle.value =
+            currentGalleryWork.title || "";
+
+        galleryEditTags.value =
+            Array.isArray(currentGalleryWork.tags)
+                ? currentGalleryWork.tags.join(", ")
+                : "";
+
+        galleryEditDescription.value =
+            currentGalleryWork.description || "";
+
+
+        editImages =
+            Array.isArray(
+                currentGalleryWork.image_urls
+            )
+                ? currentGalleryWork.image_urls.map(
+                    url => ({
+                        type: "existing",
+                        url: url
+                    })
+                )
+                : [];
+
+
+        originalEditImages =
+            editImages.map(image => ({
+                type: image.type,
+                url: image.url
+            }));
+
+
+        renderEditImages();
+
+
+        galleryEditForm.style.display =
+            "block";
+
+        galleryEditMessage.textContent =
+            "";
+
+    }
+);
+
+
+/* =========================
+   キャンセル
+========================= */
+
+galleryEditCancel.addEventListener(
+    "click",
+    () => {
+
+        galleryEditForm.style.display =
+            "none";
+
+    }
+);
 
 galleryEditSave.addEventListener("click", async () => {
 
@@ -808,7 +817,7 @@ console.log(
 
 const deletedImageUrls = originalEditImages
     .map(image => image.url)
-    .filter(url => !remainingImageUrls.includes(url));
+    .filter(url => !finalImageUrls.includes(url));
 
 console.log("残っている画像:", finalImageUrls);
 console.log("削除された画像:", deletedImageUrls);
