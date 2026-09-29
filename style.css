@@ -2160,3 +2160,76 @@ main section p {
     border: 1px solid #999;
     background: #fff;
 }
+
+/* =========================
+   作者別ギャラリー
+   6列・画像メイン表示
+========================= */
+
+/* 外側の作者枠を消す */
+#gallery-author-container .gallery-author {
+    border: none;
+    background: transparent;
+    padding: 0;
+}
+
+/* 「つふじの作品」の見出しを消す */
+#gallery-author-container .gallery-author-title {
+    display: none;
+}
+
+/* 6列にする */
+#gallery-author-container .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    padding: 0;
+}
+
+/* 作品ボタンの枠を消す */
+#gallery-author-container .gallery-work {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    padding: 0;
+    border: none;
+    background: transparent;
+    overflow: hidden;
+}
+
+/* サムネイル */
+#gallery-author-container .gallery-work img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #fff;
+}
+
+/* 複数画像の枚数表示 */
+#gallery-author-container .gallery-count {
+    position: absolute;
+}
+
+/* =========================
+   作者別ギャラリー
+   スマホ
+========================= */
+
+@media (max-width: 900px) {
+
+    #gallery-author-container .gallery-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    #gallery-author-container .gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+    }
+
+}
