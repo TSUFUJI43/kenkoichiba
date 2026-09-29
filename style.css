@@ -2344,7 +2344,7 @@ main section p {
     width: 100%;
     aspect-ratio: 4 / 3;
     overflow: hidden;
-    border: 2px solid #000;
+    border: 1px solid #9b9b9b;
     background: #fff;
 }
 
