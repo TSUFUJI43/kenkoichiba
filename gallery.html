@@ -1216,7 +1216,9 @@ more.className =
     "gallery-more";
 
 more.innerHTML = `
-    → <a href="#">${author}のギャラリーへ</a>
+    → <a href="gallery-author.html?user=${grouped[author][0].user_id}">
+        ${author}のギャラリーへ
+    </a>
 `;
 
 authorSection.appendChild(more);
