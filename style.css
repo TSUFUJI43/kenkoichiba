@@ -2163,8 +2163,18 @@ main section p {
 
 /* =========================
    作者別ギャラリー
-   6列・画像メイン表示
+   5列・画像メイン表示
 ========================= */
+
+/* =========================
+   作者ページは横幅いっぱい
+========================= */
+
+#gallery-author-container {
+    display: block;
+    width: 100%;
+    padding: 0;
+}
 
 /* 外側の作者枠を消す */
 #gallery-author-container .gallery-author {
