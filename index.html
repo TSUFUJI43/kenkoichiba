@@ -101,44 +101,22 @@
                 </section>
 
 
-                <!-- 最近のイラスト -->
-                <section>
+<!-- 最近のイラスト -->
+<section>
 
-                    <h2>✽ 最近のイラスト ✽</h2>
+    <h2>✽ 最近のイラスト ✽</h2>
 
-                    <div class="illust-list">
+    <div
+        class="illust-list"
+        id="latest-illust-list"
+    >
+    </div>
 
-                        <div class="illust">
-                            <div class="illust-placeholder">
-                                ILLUST
-                            </div>
-                        </div>
+    <p class="more">
+        → <a href="gallery.html">もっと見る</a>
+    </p>
 
-                        <div class="illust">
-                            <div class="illust-placeholder">
-                                ILLUST
-                            </div>
-                        </div>
-
-                        <div class="illust">
-                            <div class="illust-placeholder">
-                                ILLUST
-                            </div>
-                        </div>
-
-                        <div class="illust">
-                            <div class="illust-placeholder">
-                                ILLUST
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <p class="more">
-                        → <a href="gallery.html">もっと見る</a>
-                    </p>
-
-                </section>
+</section>
 
 
                 <!-- 日記 -->
@@ -339,8 +317,95 @@ article.innerHTML = `
 
 }
 
+/* =========================
+   最新のイラスト
+========================= */
+
+async function loadLatestIllust() {
+
+    const {
+        data,
+        error
+    } = await window.mySupabase
+
+        .from("gallery")
+
+        .select(
+            "id, title, image_urls, created_at"
+        )
+
+        .order("created_at", {
+            ascending: false
+        })
+
+        .limit(4);
+
+
+    if (error) {
+
+        console.error(
+            "Gallery load error:",
+            error
+        );
+
+        return;
+
+    }
+
+
+    const illustList =
+        document.getElementById(
+            "latest-illust-list"
+        );
+
+
+    illustList.innerHTML = "";
+
+
+    data.forEach(function(work) {
+
+        const images =
+            Array.isArray(work.image_urls)
+                ? work.image_urls
+                : [];
+
+
+        // 画像がない投稿は表示しない
+        if (images.length === 0) {
+            return;
+        }
+
+
+        const item =
+            document.createElement("div");
+
+
+        item.className = "illust";
+
+
+        item.innerHTML = `
+
+            <a href="gallery.html">
+
+                <img
+                    src="${images[0]}"
+                    alt="${work.title || "作品"}"
+                >
+
+            </a>
+
+        `;
+
+
+        illustList.appendChild(item);
+
+    });
+
+}
+
 
 loadLatestDiary();
+loadLatestIllust();
 
 </script>
 
