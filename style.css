@@ -2328,3 +2328,35 @@ main section p {
     }
 
 }
+
+/* =========================
+   トップページ：最近のイラスト
+========================= */
+
+#latest-illust-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding: 15px 0;
+}
+
+#latest-illust-list .illust {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border: 2px solid #000;
+    background: #fff;
+}
+
+#latest-illust-list .illust a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#latest-illust-list .illust img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
