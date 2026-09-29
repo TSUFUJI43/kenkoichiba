@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>管理者専用｜健康市場 うにのきもち</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="site">
+
+    <header class="header">
+        <a href="index.html">
+            <img src="images/logo.png" alt="健康市場 うにのきもち">
+        </a>
+
+        <p>- kenkoichiba uninokimochi -</p>
+    </header>
+
+    <div class="layout">
+
+        <nav class="menu">
+            <a href="index.html">トップ</a>
+            <a href="gallery.html">ギャラリー</a>
+            <a href="diary.html">雑記</a>
+            <a href="about.html">情報</a>
+        </nav>
+
+        <main>
+
+            <h1>管理者専用</h1>
+
+            <section class="admin-menu">
+
+                <h2>投稿するものを選んでください</h2>
+
+                <div class="admin-menu-buttons">
+
+                    <a href="write.html">
+                        📝 雑記を投稿
+                    </a>
+
+                    <a href="gallery-write.html">
+                        🖼 イラストを投稿
+                    </a>
+
+                </div>
+
+                <button id="logout-button">
+                    ログアウト
+                </button>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <footer>
+        © 健康市場 うにのきもち
+    </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<script>
+
+const supabaseClient = window.mySupabase;
+
+async function checkLogin() {
+
+    const { data, error } =
+        await supabaseClient.auth.getUser();
+
+    if (error || !data.user) {
+        location.href = "login.html";
+        return;
+    }
+
+}
+
+checkLogin();
+
+document.getElementById("logout-button")
+    .addEventListener("click", async () => {
+
+        await supabaseClient.auth.signOut();
+
+        location.href = "login.html";
+
+    });
+
+</script>
+
+</body>
+</html>
