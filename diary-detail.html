@@ -107,7 +107,7 @@ function linkifyText(text) {
     const escaped = escapeHtml(text);
 
     return escaped.replace(
-        /(https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[A-Za-z0-9_-]+(?:[&?][^\s<]*)?|https?:\/\/youtu\.be\/[A-Za-z0-9_-]+(?:\?[^\s<]*)?)/g,
+        /(https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[A-Za-z0-9_-]+(?:&[^\s<]*)?|https?:\/\/youtu\.be\/[A-Za-z0-9_-]+(?:\?[^\s<]*)?)/g,
         function(match) {
 
             let youtubeId = "";
@@ -117,8 +117,7 @@ function linkifyText(text) {
                     .split("youtu.be/")[1]
                     .split("?")[0];
             } else {
-                const params = new URL(match).searchParams;
-                youtubeId = params.get("v");
+                youtubeId = new URL(match).searchParams.get("v");
             }
 
             return `
@@ -135,9 +134,6 @@ function linkifyText(text) {
                 </a>
             `;
         }
-    ).replace(
-        /(https?:\/\/[^\s<]+)/g,
-        '<a href="$1" target="_blank" rel="noopener">$1</a>'
     );
 }
 
@@ -306,16 +302,12 @@ async function loadDiaryDetail() {
         ${imageHtml}
 
 
-        <div class="diary-detail-content">
-
-            <p>
-
-                ${linkifyText(diary.content)
-    .replace(/\n/g, "<br>")}
-
-            </p>
-
-        </div>
+<div class="diary-detail-content">
+    <p>
+        ${linkifyText(diary.content)
+            .replace(/\n/g, "<br>")}
+    </p>
+</div>
 
 
         ${buttons}
