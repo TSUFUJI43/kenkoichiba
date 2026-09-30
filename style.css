@@ -2371,6 +2371,7 @@ main section p {
     #latest-illust-list.illust-list {
         display: grid !important;
         grid-template-columns: repeat(3, 1fr) !important;
+width: 100% !important;
         gap: 8px !important;
         padding: 12px 0 !important;
     }
