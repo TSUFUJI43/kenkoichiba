@@ -2360,3 +2360,21 @@ main section p {
     height: 100%;
     object-fit: cover;
 }
+
+/* =========================
+   スマホ：最近のイラスト
+========================= */
+
+@media (max-width: 700px) {
+
+    #latest-illust-list {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 12px 0;
+    }
+
+    #latest-illust-list .illust {
+        aspect-ratio: 4 / 3;
+    }
+
+}
