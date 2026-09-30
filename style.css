@@ -2362,19 +2362,23 @@ main section p {
 }
 
 /* =========================
-   スマホ：最近のイラスト
+   トップ・最近のイラスト
+   スマホは3列
 ========================= */
 
 @media (max-width: 700px) {
 
-    #latest-illust-list {
-        grid-template-columns: 1fr;
-        gap: 10px;
-        padding: 12px 0;
+    #latest-illust-list.illust-list {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 8px !important;
+        padding: 12px 0 !important;
     }
 
-    #latest-illust-list .illust {
-        aspect-ratio: 4 / 3;
+    #latest-illust-list.illust-list .illust {
+        width: 100% !important;
+        aspect-ratio: 4 / 3 !important;
+        margin: 0 !important;
     }
 
 }
