@@ -103,6 +103,15 @@ function escapeHtml(text) {
 
 }
 
+function linkifyText(text) {
+
+    const escaped = escapeHtml(text);
+
+    return escaped.replace(
+        /(https?:\/\/[^\s<]+)/g,
+        '<a href="$1" target="_blank" rel="noopener">$1</a>'
+    );
+}
 
 function formatDate(dateString) {
 
@@ -273,8 +282,8 @@ async function loadDiaryDetail() {
 
             <p>
 
-                ${escapeHtml(diary.content)
-                    .replace(/\n/g, "<br>")}
+                ${linkifyText(diary.content)
+    .replace(/\n/g, "<br>")}
 
             </p>
 
