@@ -107,14 +107,23 @@ function linkifyText(text) {
     const escaped = escapeHtml(text);
 
     return escaped.replace(
-        /(https?:\/\/(?:www\.)?youtube\.com\/watch\?v=([A-Za-z0-9_-]+)|https?:\/\/youtu\.be\/([A-Za-z0-9_-]+))/g,
-        function(match, url, youtubeId1, youtubeId2) {
+        /(https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[A-Za-z0-9_-]+(?:[&?][^\s<]*)?|https?:\/\/youtu\.be\/[A-Za-z0-9_-]+(?:\?[^\s<]*)?)/g,
+        function(match) {
 
-            const youtubeId = youtubeId1 || youtubeId2;
+            let youtubeId = "";
+
+            if (match.includes("youtu.be/")) {
+                youtubeId = match
+                    .split("youtu.be/")[1]
+                    .split("?")[0];
+            } else {
+                const params = new URL(match).searchParams;
+                youtubeId = params.get("v");
+            }
 
             return `
                 <a
-                    href="${url}"
+                    href="${match}"
                     target="_blank"
                     rel="noopener"
                     class="youtube-thumbnail"
