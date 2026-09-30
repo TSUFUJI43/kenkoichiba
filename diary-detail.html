@@ -104,10 +104,29 @@ function escapeHtml(text) {
 }
 
 function linkifyText(text) {
-
     const escaped = escapeHtml(text);
 
     return escaped.replace(
+        /(https?:\/\/(?:www\.)?youtube\.com\/watch\?v=([A-Za-z0-9_-]+)|https?:\/\/youtu\.be\/([A-Za-z0-9_-]+))/g,
+        function(match, url, youtubeId1, youtubeId2) {
+
+            const youtubeId = youtubeId1 || youtubeId2;
+
+            return `
+                <a
+                    href="${url}"
+                    target="_blank"
+                    rel="noopener"
+                    class="youtube-thumbnail"
+                >
+                    <img
+                        src="https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg"
+                        alt="YouTube動画"
+                    >
+                </a>
+            `;
+        }
+    ).replace(
         /(https?:\/\/[^\s<]+)/g,
         '<a href="$1" target="_blank" rel="noopener">$1</a>'
     );

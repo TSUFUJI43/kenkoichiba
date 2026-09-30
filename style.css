@@ -2388,3 +2388,17 @@ main section p {
     }
 
 }
+
+.youtube-thumbnail {
+    display: block;
+    max-width: 500px;
+    margin: 15px 0;
+    border: 2px solid #000;
+    background: #fff;
+}
+
+.youtube-thumbnail img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
