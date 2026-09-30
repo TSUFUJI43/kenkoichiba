@@ -2402,3 +2402,7 @@ main section p {
     width: 100%;
     height: auto;
 }
+
+#diary-content-text {
+    white-space: pre-wrap;
+}

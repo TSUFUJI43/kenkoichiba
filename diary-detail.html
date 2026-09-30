@@ -103,39 +103,6 @@ function escapeHtml(text) {
 
 }
 
-function linkifyText(text) {
-    const escaped = escapeHtml(text);
-
-    return escaped.replace(
-        /(https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[A-Za-z0-9_-]+(?:&[^\s<]*)?|https?:\/\/youtu\.be\/[A-Za-z0-9_-]+(?:\?[^\s<]*)?)/g,
-        function(match) {
-
-            let youtubeId = "";
-
-            if (match.includes("youtu.be/")) {
-                youtubeId = match
-                    .split("youtu.be/")[1]
-                    .split("?")[0];
-            } else {
-                youtubeId = new URL(match).searchParams.get("v");
-            }
-
-            return `
-                <a
-                    href="${match}"
-                    target="_blank"
-                    rel="noopener"
-                    class="youtube-thumbnail"
-                >
-                    <img
-                        src="https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg"
-                        alt="YouTube動画"
-                    >
-                </a>
-            `;
-        }
-    );
-}
 
 function formatDate(dateString) {
 
@@ -301,12 +268,8 @@ async function loadDiaryDetail() {
 
         ${imageHtml}
 
-
 <div class="diary-detail-content">
-    <p>
-        ${linkifyText(diary.content)
-            .replace(/\n/g, "<br>")}
-    </p>
+    <p id="diary-content-text"></p>
 </div>
 
 
@@ -314,6 +277,72 @@ async function loadDiaryDetail() {
 
     `;
 
+const contentElement =
+    document.getElementById("diary-content-text");
+
+const contentText = diary.content || "";
+
+const youtubeRegex =
+    /https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[A-Za-z0-9_-]+(?:&[^\s]+)?|https?:\/\/youtu\.be\/[A-Za-z0-9_-]+(?:\?[^\s]+)?/g;
+
+let lastIndex = 0;
+let match;
+
+while ((match = youtubeRegex.exec(contentText)) !== null) {
+
+    const beforeText =
+        contentText.slice(lastIndex, match.index);
+
+    if (beforeText) {
+        contentElement.appendChild(
+            document.createTextNode(beforeText)
+        );
+    }
+
+    const url = match[0];
+
+    let youtubeId = "";
+
+    if (url.includes("youtu.be/")) {
+        youtubeId =
+            url.split("youtu.be/")[1]
+               .split("?")[0];
+    } else {
+        youtubeId =
+            new URL(url).searchParams.get("v");
+    }
+
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.className = "youtube-thumbnail";
+
+    const img = document.createElement("img");
+
+    img.src =
+        "https://img.youtube.com/vi/" +
+        youtubeId +
+        "/hqdefault.jpg";
+
+    img.alt = "YouTube動画";
+
+    link.appendChild(img);
+    contentElement.appendChild(link);
+
+    lastIndex =
+        match.index + match[0].length;
+}
+
+const remainingText =
+    contentText.slice(lastIndex);
+
+if (remainingText) {
+    contentElement.appendChild(
+        document.createTextNode(remainingText)
+    );
+}
 
     const editButton =
         document.getElementById("edit-button");
