@@ -2363,7 +2363,7 @@ main section p {
 
 /* =========================
    トップ・最近のイラスト
-   スマホは3列
+   スマホは3件・横一列
 ========================= */
 
 @media (max-width: 700px) {
@@ -2371,15 +2371,20 @@ main section p {
     #latest-illust-list.illust-list {
         display: grid !important;
         grid-template-columns: repeat(3, 1fr) !important;
-width: 100% !important;
+        width: 100% !important;
         gap: 8px !important;
         padding: 12px 0 !important;
+        overflow: hidden;
     }
 
     #latest-illust-list.illust-list .illust {
         width: 100% !important;
-        aspect-ratio: 4 / 3 !important;
+        aspect-ratio: 3 / 4 !important;
         margin: 0 !important;
+    }
+
+    #latest-illust-list.illust-list .illust:nth-child(n + 4) {
+        display: none;
     }
 
 }
