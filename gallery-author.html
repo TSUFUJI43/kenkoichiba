@@ -1779,21 +1779,23 @@ button.dataset.tags = JSON.stringify(workTags);
 
 
 
-                    /* タグ */
+/* タグ */
 
-                    galleryTags.innerHTML =
-                        "";
+galleryTags.innerHTML = "";
 
+let tags = [];
 
-                    const tags =
-                        Array.isArray(
-                            work.tags
-                        )
-                            ? work.tags
-                            : [];
+if (Array.isArray(work.tags)) {
+    tags = work.tags;
+} else if (typeof work.tags === "string") {
+    try {
+        tags = JSON.parse(work.tags);
+    } catch (e) {
+        tags = [];
+    }
+}
 
-
-                    tags.forEach(tag => {
+tags.forEach(tag => {
     const span = document.createElement("span");
 
     span.textContent = "#" + tag;
