@@ -1019,7 +1019,8 @@ async function loadGallery() {
 
 
     // 作者ごとの表示
-    Object.keys(grouped).forEach(author => {
+    ["健康法", "つふじ"].forEach(author => {
+    if (!grouped[author]) return;
 
 
         const authorSection =
