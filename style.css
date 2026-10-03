@@ -2406,3 +2406,19 @@ main section p {
 #diary-content-text {
     white-space: pre-wrap;
 }
+
+.gallery-modal-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.gallery-modal-tags span {
+    display: inline-block;
+    padding: 3px 8px;
+    background: #e3f0e3;
+    color: #4f6b4f;
+    border: 1px solid #b8cdb8;
+    font-size: 13px;
+}
