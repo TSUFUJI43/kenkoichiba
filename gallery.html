@@ -1082,9 +1082,17 @@ async function loadGallery() {
 
             button.type = "button";
 
-            const workTags = Array.isArray(work.tags)
-    ? work.tags
-    : [];
+let workTags = [];
+
+if (Array.isArray(work.tags)) {
+    workTags = work.tags;
+} else if (typeof work.tags === "string") {
+    try {
+        workTags = JSON.parse(work.tags);
+    } catch (e) {
+        workTags = [];
+    }
+}
 
 button.dataset.tags = JSON.stringify(workTags);
 
@@ -1171,16 +1179,19 @@ button.dataset.tags = JSON.stringify(workTags);
                         "";
 
 
-                    const tags =
-                        Array.isArray(work.tags)
-                            ? work.tags
-                            : [];
+let tags = [];
 
-                            console.log("この作品のタグ:", work.tags);
-console.log("タグ配列:", tags);
+if (Array.isArray(work.tags)) {
+    tags = work.tags;
+} else if (typeof work.tags === "string") {
+    try {
+        tags = JSON.parse(work.tags);
+    } catch (e) {
+        tags = [];
+    }
+}
 
-
-                    tags.forEach(tag => {
+tags.forEach(tag => {
     const span = document.createElement("span");
 
     span.textContent = "#" + tag;
