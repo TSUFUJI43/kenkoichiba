@@ -1067,6 +1067,12 @@ async function loadGallery() {
 
             button.type = "button";
 
+            const workTags = Array.isArray(work.tags)
+    ? work.tags
+    : [];
+
+button.dataset.tags = JSON.stringify(workTags);
+
 
             // 画像
             const images =
@@ -1160,19 +1166,19 @@ console.log("タグ配列:", tags);
 
 
                     tags.forEach(tag => {
+    const span = document.createElement("span");
 
-                        const span =
-                            document.createElement("span");
+    span.textContent = "#" + tag;
+    span.className = "gallery-tag";
+    span.dataset.tag = tag;
 
-                        span.textContent =
-                            "#" + tag;
+    span.addEventListener("click", () => {
+        filterGalleryByTag(tag);
+        galleryModal.close();
+    });
 
-
-                        galleryTags.appendChild(
-                            span
-                        );
-
-                    });
+    galleryTags.appendChild(span);
+});
 
 
                     galleryDescription.textContent =
@@ -1237,6 +1243,22 @@ galleryAuthors.appendChild(
 
 
 loadGallery();
+
+function filterGalleryByTag(tag) {
+    const works = document.querySelectorAll(".gallery-work");
+
+    works.forEach(workButton => {
+        const workTags = workButton.dataset.tags
+            ? JSON.parse(workButton.dataset.tags)
+            : [];
+
+        if (workTags.includes(tag)) {
+            workButton.style.display = "";
+        } else {
+            workButton.style.display = "none";
+        }
+    });
+}
 
 </script>
 

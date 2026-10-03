@@ -2414,11 +2414,16 @@ main section p {
     margin-top: 10px;
 }
 
-.gallery-modal-tags span {
+.gallery-tag {
     display: inline-block;
     padding: 3px 8px;
     background: #e3f0e3;
     color: #4f6b4f;
     border: 1px solid #b8cdb8;
     font-size: 13px;
+    cursor: pointer;
+}
+
+.gallery-tag:hover {
+    background: #cfe2cf;
 }
