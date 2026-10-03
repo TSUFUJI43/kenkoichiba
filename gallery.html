@@ -965,22 +965,6 @@ const authorNames = {
     "866f58f4-e493-4f62-999b-2aba99af71ef": "健康法"
 };
 
-function filterGalleryByTag(tag) {
-    const works = document.querySelectorAll(".gallery-work");
-
-    works.forEach(workButton => {
-        const workTags = workButton.dataset.tags
-            ? JSON.parse(workButton.dataset.tags)
-            : [];
-
-        if (workTags.includes(tag)) {
-            workButton.style.display = "";
-        } else {
-            workButton.style.display = "none";
-        }
-    });
-}
-
 async function loadGallery() {
 
     const { data, error } = await supabaseClient
@@ -1196,12 +1180,6 @@ tags.forEach(tag => {
 
     span.textContent = "#" + tag;
     span.className = "gallery-tag";
-    span.dataset.tag = tag;
-
-    span.addEventListener("click", () => {
-        filterGalleryByTag(tag);
-        galleryModal.close();
-    });
 
     galleryTags.appendChild(span);
 });
