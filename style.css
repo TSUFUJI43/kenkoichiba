@@ -2428,7 +2428,10 @@ main section p {
     background: #cfe2cf;
 }
 
-/* 更新情報＋今日のうに */
+/* =========================
+   更新情報 ＋ 今日のうに
+========================= */
+
 .top-info {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -2438,7 +2441,13 @@ main section p {
     position: relative;
 }
 
-/* 中央の縦線 */
+.top-info > section {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+/* 真ん中の縦線 */
 .top-info::after {
     content: "";
     position: absolute;
@@ -2447,13 +2456,6 @@ main section p {
     left: 50%;
     width: 1px;
     background: #222;
-}
-
-/* 左右のセクション */
-.top-info > section {
-    width: 100%;
-    box-sizing: border-box;
-    margin: 0;
 }
 
 /* 今日のうに側 */
@@ -2472,9 +2474,6 @@ main section p {
     gap: 12px;
 }
 
-#pet-message {
-    font-size: 14px;
-}
 
 #pet-character {
     font-size: 64px;
@@ -2494,6 +2493,55 @@ main section p {
     font-family: inherit;
     cursor: pointer;
 }
+.pet-count-box {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 120px;
+
+    border: 2px solid #000;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+.pet-count-title {
+    width: 100%;
+    padding: 4px 0;
+
+    border-bottom: 2px solid #000;
+
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+.pet-count-digits {
+    display: flex;
+    justify-content: center;
+}
+
+.pet-count-digits span {
+    width: 22px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-right: 1px solid #000;
+
+    font-size: 14px;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+.pet-count-digits span:last-child {
+    border-right: none;
+}
+
 
 .pet-buttons button:hover {
     background: #f0f5ef;
@@ -2512,5 +2560,63 @@ main section p {
 
     .pet-box {
         padding-left: 0;
+    }
+}
+
+
+/* =========================
+   今日のうに：ハートパーティクル
+========================= */
+
+.heart-particle {
+    position: absolute;
+    pointer-events: none;
+    font-size: 22px;
+    animation: heart-float 1.2s ease-out forwards;
+}
+
+@keyframes heart-float {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-70px);
+    }
+}
+
+#pet-character {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#uni-character {
+    width: 64px;
+    height: 64px;
+    image-rendering: pixelated;
+    display: block;
+    animation: uni-breathe 1.8s steps(1, end) infinite;
+}
+
+@keyframes uni-breathe {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-3px);
+    }
+
+    100% {
+        transform: translateY(0);
     }
 }
