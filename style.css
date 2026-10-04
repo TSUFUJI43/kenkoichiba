@@ -2432,22 +2432,36 @@ main section p {
 .top-info {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 0;
     width: 100%;
     box-sizing: border-box;
+    position: relative;
 }
 
+/* 中央の縦線 */
+.top-info::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: #222;
+}
+
+/* 左右のセクション */
 .top-info > section {
     width: 100%;
     box-sizing: border-box;
     margin: 0;
 }
 
-/* 今日のうに */
+/* 今日のうに側 */
 .pet-box {
     text-align: center;
 }
 
+/* うにのエリア */
 .pet-area {
     position: relative;
     min-height: 180px;
@@ -2487,7 +2501,16 @@ main section p {
 
 /* スマホ */
 @media (max-width: 700px) {
+
     .top-info {
         grid-template-columns: 1fr;
+    }
+
+    .top-info::after {
+        display: none;
+    }
+
+    .pet-box {
+        padding-left: 0;
     }
 }
