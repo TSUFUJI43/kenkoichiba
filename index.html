@@ -519,13 +519,16 @@ petPat.addEventListener("click", async function() {
 
     if (error) {
 
-        console.error(
-            "なでた回数の更新に失敗:",
-            error
-        );
+    console.error(
+        "なでた回数の更新に失敗:",
+        error.message,
+        error.details,
+        error.hint,
+        error.code
+    );
 
-        return;
-    }
+    return;
+}
 
 
     // 最新の回数を表示
