@@ -2433,21 +2433,22 @@ main section p {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
-    direction: ltr;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .top-info > section {
-    min-width: 0;
-    width: auto;
-    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
 }
 
 /* 今日のうに */
-.top-info .pet-box {
+.pet-box {
     text-align: center;
 }
 
-.top-info .pet-area {
+.pet-area {
     position: relative;
     min-height: 180px;
     display: flex;
@@ -2486,9 +2487,7 @@ main section p {
 
 /* スマホ */
 @media (max-width: 700px) {
-
     .top-info {
         grid-template-columns: 1fr;
     }
-
 }
