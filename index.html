@@ -468,9 +468,9 @@ async function loadLatestIllust() {
 loadLatestDiary();
 loadLatestIllust();
 
- /* =========================
+/* =========================
     今日のうに：なでなで
- ========================= */
+========================= */
 
 const petMessages = [
     "もじもじ",
@@ -489,44 +489,63 @@ const petPat =
 const uniCharacter =
     document.getElementById("uni-character");
 
-    const petArea =
+const petArea =
     document.querySelector(".pet-area");
+
 
 petPat.addEventListener("click", async function() {
 
-    
+    // 笑顔にする
+    uniCharacter.src =
+        "images/uni-smile.png";
 
-    uniCharacter.src = "images/uni-smile.png";
 
     // ランダムでセリフ変更
     const randomIndex =
-        Math.floor(Math.random() * petMessages.length);
+        Math.floor(
+            Math.random() * petMessages.length
+        );
 
     petMessage.textContent =
         petMessages[randomIndex];
 
+
     // Supabaseで全体のなでた回数を1増やす
     const { data, error } =
-        await mySupabase.rpc("increment_pet_count");
+        await mySupabase.rpc(
+            "increment_pet_count"
+        );
+
 
     if (error) {
-        console.error("なでた回数の更新に失敗:", error);
+
+        console.error(
+            "なでた回数の更新に失敗:",
+            error
+        );
+
         return;
     }
+
 
     // 最新の回数を表示
     const countString =
         String(data).padStart(5, "0");
+
 
     const digits =
         document.querySelectorAll(
             ".pet-count-digits span"
         );
 
+
     digits.forEach(function(digit, index) {
+
         digit.textContent =
             countString[index];
+
     });
+
 
     // ハートを4個出す
     for (let i = 0; i < 4; i++) {
@@ -534,43 +553,52 @@ petPat.addEventListener("click", async function() {
         const heart =
             document.createElement("span");
 
+
         heart.className =
             "heart-particle";
+
 
         heart.textContent =
             Math.random() > 0.5
                 ? "♡"
                 : "♥";
 
+
         heart.style.left =
             `calc(50% + ${(Math.random() - 0.5) * 60}px)`;
+
 
         heart.style.top =
             "45%";
 
+
         petArea.appendChild(heart);
 
+
         setTimeout(function() {
+
             heart.remove();
+
         }, 1200);
+
     }
+
 
     // 1.2秒後に通常の顔へ
     setTimeout(function() {
+
         uniCharacter.src =
             "images/uni-normal.png";
+
     }, 1200);
 
 });
 
-petPat.addEventListener("click", async function() {
 
-    // ここは今までのなでなで処理
+// =========================
+// ページを開いたときに累計を読み込む
+// =========================
 
-});
-
-
-// ここから④
 async function loadPetCount() {
 
     const { data, error } =
@@ -580,26 +608,37 @@ async function loadPetCount() {
             .eq("id", 1)
             .single();
 
+
     if (error) {
+
         console.error(
             "なでた回数の取得に失敗:",
             error
         );
+
         return;
     }
 
+
     const countString =
         String(data.count).padStart(5, "0");
+
 
     const digits =
         document.querySelectorAll(
             ".pet-count-digits span"
         );
 
+
     digits.forEach(function(digit, index) {
-        digit.textContent = countString[index];
+
+        digit.textContent =
+            countString[index];
+
     });
+
 }
+
 
 loadPetCount();
 
