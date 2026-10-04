@@ -2427,3 +2427,67 @@ main section p {
 .gallery-tag:hover {
     background: #cfe2cf;
 }
+
+/* 更新情報＋今日のうに */
+.top-info {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 20px;
+}
+
+.top-info > section {
+min-width: 0;
+}
+
+/* 今日のうに */
+.pet-box {
+text-align: center;
+}
+
+.pet-area {
+position: relative;
+min-height: 180px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 12px;
+}
+
+#pet-message {
+font-size: 14px;
+}
+
+#pet-character {
+font-size: 64px;
+line-height: 1;
+}
+
+.pet-buttons {
+display: flex;
+gap: 8px;
+justify-content: center;
+}
+
+.pet-buttons button {
+padding: 8px 12px;
+background: #fff;
+border: 2px solid #000;
+font-family: inherit;
+cursor: pointer;
+}
+
+.pet-buttons button:hover {
+background: #f0f5ef;
+}
+
+/* スマホ */
+@media (max-width: 700px) {
+
+```
+.top-info {
+    grid-template-columns: 1fr;
+}
+```
+
+}
