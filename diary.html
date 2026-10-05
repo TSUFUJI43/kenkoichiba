@@ -348,11 +348,12 @@ article.innerHTML = `
 
 <div class="diary-content-row">
 
-    <div class="diary-preview">
-        <p>
-            ${escapeHtml(diary.content).replace(/\n/g, "<br>")}
-        </p>
-
+<div class="diary-preview">
+    <p>
+        ${escapeHtml(diary.content)
+            .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+            .replace(/\n/g, "<br>")}
+    </p>
         <a
             href="diary-detail.html?id=${diary.id}"
             class="diary-read-more"
