@@ -282,14 +282,16 @@ const contentElement =
 
 const contentText = diary.content || "";
 
-const youtubeRegex =
-    /https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[A-Za-z0-9_-]+(?:&[^\s]+)?|https?:\/\/youtu\.be\/[A-Za-z0-9_-]+(?:\?[^\s]+)?/g;
+// YouTube と普通のURL、両方を拾う
+const urlRegex =
+    /https?:\/\/[^\s<]+/g;
 
 let lastIndex = 0;
 let match;
 
-while ((match = youtubeRegex.exec(contentText)) !== null) {
+while ((match = urlRegex.exec(contentText)) !== null) {
 
+    // URLより前の普通の文章
     const beforeText =
         contentText.slice(lastIndex, match.index);
 
@@ -299,42 +301,78 @@ while ((match = youtubeRegex.exec(contentText)) !== null) {
         );
     }
 
-    const url = match[0];
+    let url = match[0];
 
-    let youtubeId = "";
+    // 文末の「。」や「、」などをURLから外す
+    let trailing = "";
 
-    if (url.includes("youtu.be/")) {
-        youtubeId =
-            url.split("youtu.be/")[1]
-               .split("?")[0];
-    } else {
-        youtubeId =
-            new URL(url).searchParams.get("v");
+    while (/[。、！？）」』】〉》）\]}>]$/.test(url)) {
+        trailing = url.slice(-1) + trailing;
+        url = url.slice(0, -1);
     }
 
-    const link = document.createElement("a");
+    // YouTubeかどうか判定
+    const isYouTube =
+        /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\//.test(url);
 
-    link.href = url;
-    link.target = "_blank";
-    link.rel = "noopener";
-    link.className = "youtube-thumbnail";
+    if (isYouTube) {
 
-    const img = document.createElement("img");
+        let youtubeId = "";
 
-img.src =
-    "https://img.youtube.com/vi/" +
-    youtubeId +
-    "/maxresdefault.jpg";
+        if (url.includes("youtu.be/")) {
+            youtubeId =
+                url.split("youtu.be/")[1]
+                   .split("?")[0];
+        } else {
+            youtubeId =
+                new URL(url).searchParams.get("v");
+        }
 
-    img.alt = "YouTube動画";
+        const link = document.createElement("a");
 
-    link.appendChild(img);
-    contentElement.appendChild(link);
+        link.href = url;
+        link.target = "_blank";
+        link.rel = "noopener";
+        link.className = "youtube-thumbnail";
+
+        const img = document.createElement("img");
+
+        img.src =
+            "https://img.youtube.com/vi/" +
+            youtubeId +
+            "/maxresdefault.jpg";
+
+        img.alt = "YouTube動画";
+
+        link.appendChild(img);
+        contentElement.appendChild(link);
+
+    } else {
+
+        // YouTube以外のURL
+        const link = document.createElement("a");
+
+        link.href = url;
+        link.target = "_blank";
+        link.rel = "noopener";
+
+        link.textContent = url;
+
+        contentElement.appendChild(link);
+    }
+
+    // URLの後ろにあった「。」などを戻す
+    if (trailing) {
+        contentElement.appendChild(
+            document.createTextNode(trailing)
+        );
+    }
 
     lastIndex =
         match.index + match[0].length;
 }
 
+// 最後に残った文章
 const remainingText =
     contentText.slice(lastIndex);
 
