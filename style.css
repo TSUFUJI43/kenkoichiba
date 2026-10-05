@@ -2589,3 +2589,15 @@ main section p {
     }
 }
 
+.back-to-top {
+    display: block;
+    width: fit-content;
+    margin: 20px auto 0;
+
+    color: #4f6b4f;
+    text-decoration: none;
+}
+
+.back-to-top:hover {
+    text-decoration: underline;
+}
