@@ -282,60 +282,117 @@ const contentElement =
 
 const contentText = diary.content || "";
 
-// YouTube と普通のURL、両方を拾う
+// URLを探す
 const urlRegex =
     /https?:\/\/[^\s<]+/g;
 
 let lastIndex = 0;
 let match;
 
+
+// 太字と普通の文章をDOMに追加する関数
+function appendFormattedText(parent, text) {
+
+    const boldRegex = /\*\*(.+?)\*\*/g;
+
+    let last = 0;
+    let boldMatch;
+
+    while ((boldMatch = boldRegex.exec(text)) !== null) {
+
+        // 太字の前の普通の文章
+        if (boldMatch.index > last) {
+            parent.appendChild(
+                document.createTextNode(
+                    text.slice(last, boldMatch.index)
+                )
+            );
+        }
+
+        // 太字部分
+        const strong =
+            document.createElement("strong");
+
+        strong.textContent = boldMatch[1];
+
+        parent.appendChild(strong);
+
+        last =
+            boldMatch.index +
+            boldMatch[0].length;
+    }
+
+    // 最後に残った文章
+    if (last < text.length) {
+        parent.appendChild(
+            document.createTextNode(
+                text.slice(last)
+            )
+        );
+    }
+}
+
+
 while ((match = urlRegex.exec(contentText)) !== null) {
 
-    // URLより前の普通の文章
+    // URLより前の文章
     const beforeText =
         contentText.slice(lastIndex, match.index);
 
     if (beforeText) {
-        contentElement.appendChild(
-            document.createTextNode(beforeText)
+        appendFormattedText(
+            contentElement,
+            beforeText
         );
     }
 
     let url = match[0];
 
-    // 文末の「。」や「、」などをURLから外す
+    // 文末の記号をURLから外す
     let trailing = "";
 
     while (/[。、！？）」』】〉》）\]}>]$/.test(url)) {
-        trailing = url.slice(-1) + trailing;
-        url = url.slice(0, -1);
+        trailing =
+            url.slice(-1) + trailing;
+
+        url =
+            url.slice(0, -1);
     }
 
-    // YouTubeかどうか判定
+    // YouTubeか判定
     const isYouTube =
         /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\//.test(url);
+
 
     if (isYouTube) {
 
         let youtubeId = "";
 
         if (url.includes("youtu.be/")) {
+
             youtubeId =
                 url.split("youtu.be/")[1]
                    .split("?")[0];
+
         } else {
+
             youtubeId =
-                new URL(url).searchParams.get("v");
+                new URL(url)
+                    .searchParams
+                    .get("v");
         }
 
-        const link = document.createElement("a");
+        const link =
+            document.createElement("a");
 
         link.href = url;
         link.target = "_blank";
         link.rel = "noopener";
-        link.className = "youtube-thumbnail";
+        link.className =
+            "youtube-thumbnail";
 
-        const img = document.createElement("img");
+        const img =
+            document.createElement("img");
 
         img.src =
             "https://img.youtube.com/vi/" +
@@ -345,12 +402,14 @@ while ((match = urlRegex.exec(contentText)) !== null) {
         img.alt = "YouTube動画";
 
         link.appendChild(img);
+
         contentElement.appendChild(link);
 
     } else {
 
         // YouTube以外のURL
-        const link = document.createElement("a");
+        const link =
+            document.createElement("a");
 
         link.href = url;
         link.target = "_blank";
@@ -361,24 +420,31 @@ while ((match = urlRegex.exec(contentText)) !== null) {
         contentElement.appendChild(link);
     }
 
-    // URLの後ろにあった「。」などを戻す
+
+    // URLの後ろの「。」など
     if (trailing) {
-        contentElement.appendChild(
-            document.createTextNode(trailing)
+
+        appendFormattedText(
+            contentElement,
+            trailing
         );
     }
 
     lastIndex =
-        match.index + match[0].length;
+        match.index +
+        match[0].length;
 }
 
-// 最後に残った文章
+
+// URLより後ろに残った文章
 const remainingText =
     contentText.slice(lastIndex);
 
 if (remainingText) {
-    contentElement.appendChild(
-        document.createTextNode(remainingText)
+
+    appendFormattedText(
+        contentElement,
+        remainingText
     );
 }
 
