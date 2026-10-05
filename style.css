@@ -2620,3 +2620,24 @@ main section p {
         transform: translateY(0);
     }
 }
+
+.latest-diary {
+    padding: 25px 40px;
+    min-height: 0;
+}
+
+.latest-diary h3 {
+    margin: 8px 0;
+}
+
+.latest-diary p {
+    margin: 8px 0;
+}
+
+.latest-diary .diary-date {
+    margin: 4px 0;
+}
+
+.latest-diary .more {
+    margin-top: 15px;
+}
