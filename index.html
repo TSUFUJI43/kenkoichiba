@@ -485,8 +485,15 @@ const petMessages = [
     "ｸﾈｸﾈ",
     "くすぐったい",
     "ウ～ン",
-    "へへっ"
+    "へへっ",
+    "ウオ～"
 ];
+
+const specialMessages = [
+    "こりゃすげぇ…",
+    "たまんね"
+];
+
 
 const petMessage =
     document.getElementById("pet-message");
@@ -501,24 +508,99 @@ const petArea =
     document.querySelector(".pet-area");
 
 
+// =========================
+// 連続なでなで用
+// =========================
+
+let consecutivePets = 0;
+let consecutiveTimer = null;
+
+
+// =========================
+// なでなで
+// =========================
+
 petPat.addEventListener("click", async function() {
 
-    // 笑顔にする
-    uniCharacter.src =
-        "images/uni-smile.png";
+    // -------------------------
+    // 連続なでなでを数える
+    // -------------------------
+
+    consecutivePets++;
+
+    clearTimeout(consecutiveTimer);
+
+    consecutiveTimer = setTimeout(function() {
+
+        consecutivePets = 0;
+
+    }, 5000);
 
 
-    // ランダムでセリフ変更
-    const randomIndex =
-        Math.floor(
-            Math.random() * petMessages.length
-        );
+    // -------------------------
+    // 今回が特殊なでなでか判定
+    // -------------------------
 
-    petMessage.textContent =
-        petMessages[randomIndex];
+    let isSpecial = false;
+
+    if (consecutivePets === 3) {
+
+        isSpecial = true;
+
+    }
 
 
-    // Supabaseで全体のなでた回数を1増やす
+    // -------------------------
+    // 顔とセリフ
+    // -------------------------
+
+    if (isSpecial) {
+
+        // 特殊顔
+        uniCharacter.src =
+            "images/uni-special.png";
+
+
+        // 特殊セリフ
+        const specialIndex =
+            Math.floor(
+                Math.random() *
+                specialMessages.length
+            );
+
+        petMessage.textContent =
+            specialMessages[specialIndex];
+
+
+        // 連続回数をリセット
+        consecutivePets = 0;
+
+        clearTimeout(consecutiveTimer);
+
+    } else {
+
+        // 普通の笑顔
+        uniCharacter.src =
+            "images/uni-smile.png";
+
+
+        // 普通のランダムセリフ
+        const randomIndex =
+            Math.floor(
+                Math.random() *
+                petMessages.length
+            );
+
+        petMessage.textContent =
+            petMessages[randomIndex];
+
+    }
+
+
+    // =========================
+    // Supabaseで累計を＋1
+    // =========================
+
     const { data, error } =
         await mySupabase.rpc(
             "increment_pet_count"
@@ -527,19 +609,22 @@ petPat.addEventListener("click", async function() {
 
     if (error) {
 
-    console.error(
-        "なでた回数の更新に失敗:",
-        error.message,
-        error.details,
-        error.hint,
-        error.code
-    );
+        console.error(
+            "なでた回数の更新に失敗:",
+            error.message,
+            error.details,
+            error.hint,
+            error.code
+        );
 
-    return;
-}
+        return;
+    }
 
 
+    // =========================
     // 最新の回数を表示
+    // =========================
+
     const countString =
         String(data).padStart(5, "0");
 
@@ -558,7 +643,10 @@ petPat.addEventListener("click", async function() {
     });
 
 
-    // ハートを4個出す
+    // =========================
+    // ハート・キラキラを4個出す
+    // =========================
+
     for (let i = 0; i < 4; i++) {
 
         const heart =
@@ -569,10 +657,22 @@ petPat.addEventListener("click", async function() {
             "heart-particle";
 
 
-        heart.textContent =
-            Math.random() > 0.5
-                ? "♡"
-                : "♥";
+        // 3回目だけキラキラ
+        if (isSpecial) {
+
+            heart.textContent =
+                Math.random() > 0.5
+                    ? "✦"
+                    : "✧";
+
+        } else {
+
+            heart.textContent =
+                Math.random() > 0.5
+                    ? "♡"
+                    : "♥";
+
+        }
 
 
         heart.style.left =
@@ -595,15 +695,67 @@ petPat.addEventListener("click", async function() {
     }
 
 
+    // =========================
     // 1.2秒後に通常の顔へ
+    // =========================
+
     setTimeout(function() {
 
         uniCharacter.src =
             "images/uni-normal.png";
 
-    }, 1200);
+    }, 2000);
 
 });
+
+
+// =========================
+// ページを開いたときに
+// 累計なでなで回数を読み込む
+// =========================
+
+async function loadPetCount() {
+
+    const { data, error } =
+        await mySupabase
+            .from("pet_stats")
+            .select("count")
+            .eq("id", 1)
+            .single();
+
+
+    if (error) {
+
+        console.error(
+            "なでた回数の取得に失敗:",
+            error
+        );
+
+        return;
+    }
+
+
+    const countString =
+        String(data.count).padStart(5, "0");
+
+
+    const digits =
+        document.querySelectorAll(
+            ".pet-count-digits span"
+        );
+
+
+    digits.forEach(function(digit, index) {
+
+        digit.textContent =
+            countString[index];
+
+    });
+
+}
+
+
+loadPetCount();
 
 
 // =========================

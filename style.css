@@ -2611,3 +2611,15 @@ main section p {
     transform: translate(2px, 2px);
     box-shadow: 2px 2px 0 #000;
 }
+
+#image-preview {
+    margin-top: 10px;
+}
+
+#image-preview img {
+    display: block;
+    width: 180px;
+    height: 120px;
+    object-fit: cover;
+    border: 1px solid #777;
+}

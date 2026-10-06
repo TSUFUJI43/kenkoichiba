@@ -65,8 +65,8 @@
 
                 <form id="diary-form">
 <label>
-                    **を左右に置くと文字を太くできる。例：**あああ**<br>
-                    リンクを貼ると雑記開いたとき押せるようになった。<br>
+                    **を左右に置くと文字を太くできます。例：**ああ**<br>
+                    リンクを貼ると雑記開いたとき押せるようになりました。<br>
                     youtubeはサムネが出ます。
                     </label>
                     
@@ -119,15 +119,17 @@
 
                     <p>
 
-    <label>
-        記事の画像<br>
+<label>
+    記事の画像<br>
 
-        <input
-            type="file"
-            id="image"
-            accept="image/*"
-        >
-    </label>
+    <input
+        type="file"
+        id="image"
+        accept="image/*"
+    >
+</label>
+
+<div id="image-preview"></div>
 
 </p>
 
@@ -307,6 +309,27 @@ setTimeout(() => {
     window.location.replace("./diary.html");
 }, 1000);
 
+});
+
+const imageInput = document.getElementById("image");
+const imagePreview = document.getElementById("image-preview");
+
+imageInput.addEventListener("change", () => {
+
+    imagePreview.innerHTML = "";
+
+    const file = imageInput.files[0];
+
+    if (!file) {
+        return;
+    }
+
+    const img = document.createElement("img");
+
+    img.src = URL.createObjectURL(file);
+    img.alt = "選択した画像";
+
+    imagePreview.appendChild(img);
 });
 
 </script>
