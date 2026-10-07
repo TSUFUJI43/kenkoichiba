@@ -2623,3 +2623,26 @@ main section p {
     object-fit: cover;
     border: 1px solid #777;
 }
+
+#content-toolbar {
+    margin: 8px 0;
+}
+
+#insert-image-button {
+    padding: 8px 12px;
+    background: #f8faf7;
+    border: 1px solid #555;
+    cursor: pointer;
+}
+
+#insert-image-button:hover {
+    background: #dfe9df;
+}
+
+.diary-content-image {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    margin: 15px 0;
+}

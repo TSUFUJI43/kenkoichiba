@@ -282,14 +282,6 @@ const contentElement =
 
 const contentText = diary.content || "";
 
-// URLを探す
-const urlRegex =
-    /https?:\/\/[^\s<]+/g;
-
-let lastIndex = 0;
-let match;
-
-
 // 太字と普通の文章をDOMに追加する関数
 function appendFormattedText(parent, text) {
 
@@ -309,7 +301,7 @@ function appendFormattedText(parent, text) {
             );
         }
 
-        // 太字部分
+        // 太字
         const strong =
             document.createElement("strong");
 
@@ -322,7 +314,7 @@ function appendFormattedText(parent, text) {
             boldMatch[0].length;
     }
 
-    // 最後に残った文章
+    // 残りの文章
     if (last < text.length) {
         parent.appendChild(
             document.createTextNode(
@@ -333,11 +325,23 @@ function appendFormattedText(parent, text) {
 }
 
 
-while ((match = urlRegex.exec(contentText)) !== null) {
+// 本文を「画像」と「文章」に分ける
+const imageRegex =
+    /\[IMAGE:(https?:\/\/[^\]\s]+)\]/g;
 
-    // URLより前の文章
+let lastIndex = 0;
+let imageMatch;
+
+
+// 画像を探す
+while ((imageMatch = imageRegex.exec(contentText)) !== null) {
+
+    // 画像より前の文章
     const beforeText =
-        contentText.slice(lastIndex, match.index);
+        contentText.slice(
+            lastIndex,
+            imageMatch.index
+        );
 
     if (beforeText) {
         appendFormattedText(
@@ -346,125 +350,190 @@ while ((match = urlRegex.exec(contentText)) !== null) {
         );
     }
 
-    let url = match[0];
 
-    // 文末の記号をURLから外す
-    let trailing = "";
+    // 画像を作る
+    const img =
+        document.createElement("img");
 
-    while (/[。、！？）」』】〉》）\]}>]$/.test(url)) {
-        trailing =
-            url.slice(-1) + trailing;
+    img.src = imageMatch[1];
 
-        url =
-            url.slice(0, -1);
-    }
+    img.alt = "本文画像";
 
-    // YouTubeか判定
-    const isYouTube =
-        /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\//.test(url);
+    img.className = "diary-content-image";
+
+    contentElement.appendChild(img);
 
 
-    if (isYouTube) {
-
-        let youtubeId = "";
-
-        if (url.includes("youtu.be/")) {
-
-            youtubeId =
-                url.split("youtu.be/")[1]
-                   .split("?")[0];
-
-        } else {
-
-            youtubeId =
-                new URL(url)
-                    .searchParams
-                    .get("v");
-        }
-
-        const link =
-            document.createElement("a");
-
-        link.href = url;
-        link.target = "_blank";
-        link.rel = "noopener";
-        link.className =
-            "youtube-thumbnail";
-
-        const img =
-            document.createElement("img");
-
-        img.src =
-            "https://img.youtube.com/vi/" +
-            youtubeId +
-            "/maxresdefault.jpg";
-
-        img.alt = "YouTube動画";
-
-        link.appendChild(img);
-
-        contentElement.appendChild(link);
-
-    } else {
-
-        // YouTube以外のURL
-        const link =
-            document.createElement("a");
-
-        link.href = url;
-        link.target = "_blank";
-        link.rel = "noopener";
-
-        link.textContent = url;
-
-        contentElement.appendChild(link);
-    }
-
-
-    // URLの後ろの「。」など
-    if (trailing) {
-
-        appendFormattedText(
-            contentElement,
-            trailing
-        );
-    }
-
+    // 次の位置
     lastIndex =
-        match.index +
-        match[0].length;
+        imageMatch.index +
+        imageMatch[0].length;
 }
 
 
-// URLより後ろに残った文章
+// 最後に残った文章
 const remainingText =
     contentText.slice(lastIndex);
 
+
+// URLを処理するための関数
+function appendTextWithUrls(parent, text) {
+
+    const urlRegex =
+        /https?:\/\/[^\s<]+/g;
+
+    let last = 0;
+    let match;
+
+    while ((match = urlRegex.exec(text)) !== null) {
+
+        // URLより前
+        if (match.index > last) {
+
+            appendFormattedText(
+                parent,
+                text.slice(last, match.index)
+            );
+        }
+
+
+        let url = match[0];
+
+        // URL末尾の記号を分離
+        let trailing = "";
+
+        while (
+            /[。、！？）」』】〉》）\]}>]$/.test(url)
+        ) {
+
+            trailing =
+                url.slice(-1) + trailing;
+
+            url =
+                url.slice(0, -1);
+        }
+
+
+        // YouTubeか判定
+        const isYouTube =
+            /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\//
+                .test(url);
+
+
+        if (isYouTube) {
+
+            let youtubeId = "";
+
+            if (url.includes("youtu.be/")) {
+
+                youtubeId =
+                    url.split("youtu.be/")[1]
+                       .split("?")[0];
+
+            } else {
+
+                youtubeId =
+                    new URL(url)
+                        .searchParams
+                        .get("v");
+            }
+
+
+            const link =
+                document.createElement("a");
+
+            link.href = url;
+            link.target = "_blank";
+            link.rel = "noopener";
+            link.className =
+                "youtube-thumbnail";
+
+
+            const img =
+                document.createElement("img");
+
+            img.src =
+                "https://img.youtube.com/vi/" +
+                youtubeId +
+                "/maxresdefault.jpg";
+
+            img.alt = "YouTube動画";
+
+
+            link.appendChild(img);
+
+            parent.appendChild(link);
+
+        } else {
+
+            // 普通のURL
+            const link =
+                document.createElement("a");
+
+            link.href = url;
+            link.target = "_blank";
+            link.rel = "noopener";
+
+            link.textContent = url;
+
+            parent.appendChild(link);
+        }
+
+
+        // URL後ろの記号
+        if (trailing) {
+
+            appendFormattedText(
+                parent,
+                trailing
+            );
+        }
+
+
+        last =
+            match.index +
+            match[0].length;
+    }
+
+
+    // 残った文章
+    if (last < text.length) {
+
+        appendFormattedText(
+            parent,
+            text.slice(last)
+        );
+    }
+}
+
+
+// 残りの文章にURL処理を適用
 if (remainingText) {
 
-    appendFormattedText(
+    appendTextWithUrls(
         contentElement,
         remainingText
     );
 }
 
-    const editButton =
-        document.getElementById("edit-button");
+
+const editButton =
+    document.getElementById("edit-button");
 
 
-    if (editButton) {
+if (editButton) {
 
-        editButton.addEventListener(
-            "click",
-            function() {
+    editButton.addEventListener(
+        "click",
+        function() {
 
-                window.location.href =
-                    "edit.html?id=" + diary.id;
+            window.location.href =
+                "edit.html?id=" + diary.id;
 
-            }
-        );
+        }
+    );
 
-    }
+}
 
 
     const deleteButton =

@@ -107,31 +107,48 @@
     </label>
 </p>
 
-                    <p>
-                        <label for="content">本文</label><br>
-                        <textarea
-                            id="content"
-                            name="content"
-                            rows="12"
-                            required
-                        ></textarea>
-                    </p>
+<p>
+    <label>
+        記事の画像<br>
 
-                    <p>
+        <input
+            type="file"
+            id="image"
+            accept="image/*"
+        >
+    </label>
 
-<label>
-    記事の画像<br>
-
-    <input
-        type="file"
-        id="image"
-        accept="image/*"
-    >
-</label>
-
-<div id="image-preview"></div>
-
+    <div id="image-preview"></div>
 </p>
+
+    <p>
+    <label for="content">本文</label><br>
+
+    <textarea
+        id="content"
+        name="content"
+        rows="12"
+        required
+    ></textarea>
+
+    <div id="content-toolbar">
+        <button
+            type="button"
+            id="insert-image-button"
+        >
+            ＋画像を本文に入れる
+        </button>
+
+        <input
+            type="file"
+            id="content-image"
+            accept="image/*"
+            multiple
+            hidden
+        >
+    </div>
+</p>
+
 
                     <button type="submit">
                         記事を投稿する
@@ -330,6 +347,106 @@ imageInput.addEventListener("change", () => {
     img.alt = "選択した画像";
 
     imagePreview.appendChild(img);
+});
+
+const contentImageInput =
+    document.getElementById("content-image");
+
+const contentTextarea =
+    document.getElementById("content");
+
+contentImageInput.addEventListener("change", async () => {
+
+const {
+    data: { user }
+} = await window.mySupabase.auth.getUser();
+
+if (!user) {
+    alert("ログインしてないよ！");
+    return;
+}
+
+    const files =
+        Array.from(contentImageInput.files);
+
+    if (files.length === 0) {
+        return;
+    }
+
+    for (const file of files) {
+
+        const fileExt =
+            file.name.split(".").pop();
+
+        const filePath =
+            `${user.id}/content-${crypto.randomUUID()}.${fileExt}`;
+
+        const { error: uploadError } =
+            await window.mySupabase
+                .storage
+                .from("diary-images")
+                .upload(filePath, file);
+
+        if (uploadError) {
+            console.error(uploadError);
+            alert("本文画像をアップロードできなかったみたい…");
+            continue;
+        }
+
+        const { data: publicUrlData } =
+            window.mySupabase
+                .storage
+                .from("diary-images")
+                .getPublicUrl(filePath);
+
+        const imageUrl =
+            publicUrlData.publicUrl;
+
+        const start =
+            contentTextarea.selectionStart;
+
+        const end =
+            contentTextarea.selectionEnd;
+
+        const before =
+            contentTextarea.value.slice(0, start);
+
+        const after =
+            contentTextarea.value.slice(end);
+
+        const imageText =
+            `\n[IMAGE:${imageUrl}]\n`;
+
+        contentTextarea.value =
+            before +
+            imageText +
+            after;
+
+        const newPosition =
+            start + imageText.length;
+
+        contentTextarea.focus();
+
+        contentTextarea.setSelectionRange(
+            newPosition,
+            newPosition
+        );
+    }
+
+    contentImageInput.value = "";
+});
+
+const content =
+    document.getElementById("content");
+
+const insertImageButton =
+    document.getElementById("insert-image-button");
+
+const contentImage =
+    document.getElementById("content-image");
+
+insertImageButton.addEventListener("click", () => {
+    contentImage.click();
 });
 
 </script>
