@@ -2646,3 +2646,31 @@ main section p {
     height: auto;
     margin: 15px 0;
 }
+
+#content-image-preview {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.content-image-item {
+    width: 100%;
+}
+
+.content-image-item img {
+    display: block;
+    width: 100% !important;
+    height: 70px !important;
+    object-fit: cover;
+    border: 2px solid #000000;
+    box-sizing: border-box;
+}
+
+@media (max-width: 700px) {
+
+    #content-image-preview {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+}
