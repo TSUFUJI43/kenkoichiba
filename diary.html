@@ -309,6 +309,7 @@ article.dataset.category = diary.category;
     }
 
 
+
 article.innerHTML = `
 
     <div class="diary-author">
@@ -346,13 +347,20 @@ article.innerHTML = `
     </h3>
 </a>
 
+
+
 <div class="diary-content-row">
 
 <div class="diary-preview">
     <p>
-        ${escapeHtml(diary.content)
-            .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-            .replace(/\n/g, "<br>")}
+        ${escapeHtml(
+    (diary.content || "").replace(
+        /\[IMAGE:https?:\/\/[^\]\s]+\]/g,
+        "[画像]"
+    )
+)
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\n/g, "<br>")}
     </p>
         <a
             href="diary-detail.html?id=${diary.id}"

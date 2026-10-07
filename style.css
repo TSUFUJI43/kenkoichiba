@@ -2642,7 +2642,7 @@ main section p {
 .diary-content-image {
     display: block;
     width: auto;
-    max-width: 100%;
+    max-width: 60%;
     height: auto;
     margin: 15px 0;
 }
