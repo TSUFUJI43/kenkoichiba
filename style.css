@@ -2674,3 +2674,8 @@ main section p {
     }
 
 }
+
+#content-image-preview p {
+    grid-column: 1 / -1;
+    margin: 0;
+}
