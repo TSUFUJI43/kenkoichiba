@@ -147,6 +147,11 @@
             hidden
         >
     </div>
+
+<div id="content-image-preview">
+    <p>本文画像</p>
+</div>
+
 </p>
 
 
@@ -355,16 +360,20 @@ const contentImageInput =
 const contentTextarea =
     document.getElementById("content");
 
+const contentImagePreview =
+    document.getElementById("content-image-preview");
+
+
 contentImageInput.addEventListener("change", async () => {
 
-const {
-    data: { user }
-} = await window.mySupabase.auth.getUser();
+    const {
+        data: { user }
+    } = await window.mySupabase.auth.getUser();
 
-if (!user) {
-    alert("ログインしてないよ！");
-    return;
-}
+    if (!user) {
+        alert("ログインしてないよ！");
+        return;
+    }
 
     const files =
         Array.from(contentImageInput.files);
@@ -372,6 +381,7 @@ if (!user) {
     if (files.length === 0) {
         return;
     }
+
 
     for (const file of files) {
 
@@ -381,17 +391,25 @@ if (!user) {
         const filePath =
             `${user.id}/content-${crypto.randomUUID()}.${fileExt}`;
 
+
         const { error: uploadError } =
             await window.mySupabase
                 .storage
                 .from("diary-images")
                 .upload(filePath, file);
 
+
         if (uploadError) {
+
             console.error(uploadError);
-            alert("本文画像をアップロードできなかったみたい…");
+
+            alert(
+                "本文画像をアップロードできなかったみたい…"
+            );
+
             continue;
         }
+
 
         const { data: publicUrlData } =
             window.mySupabase
@@ -399,9 +417,12 @@ if (!user) {
                 .from("diary-images")
                 .getPublicUrl(filePath);
 
+
         const imageUrl =
             publicUrlData.publicUrl;
 
+
+        // 本文のカーソル位置に画像URLを入れる
         const start =
             contentTextarea.selectionStart;
 
@@ -414,14 +435,54 @@ if (!user) {
         const after =
             contentTextarea.value.slice(end);
 
+
         const imageText =
             `\n[IMAGE:${imageUrl}]\n`;
+
 
         contentTextarea.value =
             before +
             imageText +
             after;
 
+
+        // プレビューを追加
+        const previewItem =
+            document.createElement("div");
+
+        previewItem.className =
+            "content-image-item";
+
+        previewItem.dataset.url =
+            imageUrl;
+
+
+        const img =
+            document.createElement("img");
+
+        img.src = imageUrl;
+
+        img.alt = "本文画像";
+
+        img.style.width = "120px";
+
+        img.style.height = "90px";
+
+        img.style.objectFit = "cover";
+
+        img.style.border =
+            "2px solid #000000";
+
+
+        previewItem.appendChild(img);
+
+        contentImagePreview.appendChild(
+            previewItem
+        );
+
+
+        // 次の画像を同じ場所ではなく
+        // 今入れた画像の後ろへ入れる
         const newPosition =
             start + imageText.length;
 
@@ -433,7 +494,9 @@ if (!user) {
         );
     }
 
+
     contentImageInput.value = "";
+
 });
 
 const content =
