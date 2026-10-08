@@ -332,12 +332,27 @@ for (const imageText of imageMatches) {
 
     const img =
         document.createElement("img");
+        
 
     img.src = imageUrl;
 
     img.alt = "本文画像";
 
     previewItem.appendChild(img);
+
+    const deleteButton =
+    document.createElement("button");
+
+deleteButton.type = "button";
+
+deleteButton.textContent = "×";
+
+deleteButton.className =
+    "content-image-delete";
+
+previewItem.appendChild(
+    deleteButton
+);
 
     contentImagePreview.appendChild(
         previewItem
@@ -604,6 +619,19 @@ img.style.boxSizing = "border-box";
 
 previewItem.appendChild(img);
 
+const deleteButton =
+    document.createElement("button");
+
+deleteButton.type = "button";
+
+deleteButton.textContent = "×";
+
+deleteButton.className =
+    "content-image-delete";
+
+previewItem.appendChild(
+    deleteButton
+);
 
 // プレビュー欄を取得し直す
 const previewArea =
