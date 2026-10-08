@@ -1121,8 +1121,6 @@ main section p {
 
 .diary-category {
     display: inline-block;
-    padding: 2px 8px;
-    border: 1px solid #000000;
     background: #f8faf7;
     font-size: 0.8em;
     font-weight: bold;
@@ -2678,4 +2676,22 @@ main section p {
 #content-image-preview p {
     grid-column: 1 / -1;
     margin: 0;
+}
+
+#diary-form button[type="submit"] {
+    margin-top: 80px;
+}
+
+.diary-category-label,
+.diary-private {
+    display: inline-block;
+    border: 2px solid #515151;
+    padding: 2px 7px;
+    line-height: 1.2;
+}
+
+.diary-private {
+    margin-left: 6px;
+    font-size: 0.8em;
+    opacity: 0.65;
 }
