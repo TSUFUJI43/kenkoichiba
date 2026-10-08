@@ -441,6 +441,9 @@ const imageFile = imageInput.files[0];
 const shouldDeleteImage =
     deleteImage.checked;
 
+    const isPublic =
+    isPublicInput.checked;
+
 message.textContent = "保存中……";
 
 let imageUrl = null;
@@ -487,7 +490,7 @@ if (imageFile) {
     title: title,
     category: category,
     content: content,
-
+    is_public: isPublic,
     ...(imageUrl
         ? { image_url: imageUrl }
         : shouldDeleteImage
