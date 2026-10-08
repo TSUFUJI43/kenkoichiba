@@ -111,6 +111,23 @@
                         </label>
 
                     </p>
+<div id="content-image-preview">
+    <p>本文画像</p>
+</div>
+
+<p>
+    <button type="button" id="insert-content-image-button">
+        ＋本文画像を追加
+    </button>
+
+    <input
+        type="file"
+        id="edit-content-image"
+        accept="image/*"
+        multiple
+        hidden
+    >
+</p>
 
                     <p>
     <label>
@@ -283,14 +300,53 @@ async function loadDiary() {
         return;
     }
 
+// フォームに現在の内容を入れる
+titleInput.value = data.title;
+document.getElementById("category").value =
+    data.category || "日記";
 
-    // フォームに現在の内容を入れる
-    titleInput.value = data.title;
-    document.getElementById("category").value = data.category || "日記";
-    contentInput.value = data.content;
+contentInput.value = data.content;
 
 
-    currentImageUrl = data.image_url;
+// 記事の画像
+currentImageUrl = data.image_url;
+
+
+// 本文画像をプレビュー表示
+const contentImagePreview =
+    document.getElementById("content-image-preview");
+
+const imageMatches =
+    data.content.match(/\[IMAGE:(.*?)\]/g) || [];
+
+for (const imageText of imageMatches) {
+
+    const imageUrl =
+        imageText.replace("[IMAGE:", "").replace("]", "");
+
+    const previewItem =
+        document.createElement("div");
+
+    previewItem.className =
+        "content-image-item";
+
+    const img =
+        document.createElement("img");
+
+    img.src = imageUrl;
+
+    img.alt = "本文画像";
+
+    previewItem.appendChild(img);
+
+    contentImagePreview.appendChild(
+        previewItem
+    );
+
+}
+
+
+// 記事の画像を表示
 if (data.image_url) {
 
     currentImage.innerHTML = `
@@ -310,7 +366,6 @@ if (data.image_url) {
 }
 
 }
-
 
 // 保存
 editForm.addEventListener("submit", async function(event) {
@@ -441,6 +496,109 @@ if ((imageUrl || shouldDeleteImage) && currentImageUrl) {
 
 });
 
+// 本文画像を追加
+const insertContentImageButton =
+    document.getElementById("insert-content-image-button");
+
+const editContentImage =
+    document.getElementById("edit-content-image");
+
+insertContentImageButton.addEventListener("click", () => {
+
+    editContentImage.click();
+
+});
+
+
+editContentImage.addEventListener("change", async () => {
+
+    const {
+        data: { user }
+    } = await window.mySupabase.auth.getUser();
+
+    if (!user) {
+        alert("ログインしてないよ！");
+        return;
+    }
+
+    const files =
+        Array.from(editContentImage.files);
+
+    if (files.length === 0) {
+        return;
+    }
+
+
+    for (const file of files) {
+
+        const fileExt =
+            file.name.split(".").pop();
+
+        const filePath =
+            `${user.id}/content-${crypto.randomUUID()}.${fileExt}`;
+
+
+        const { error: uploadError } =
+            await window.mySupabase
+                .storage
+                .from("diary-images")
+                .upload(filePath, file);
+
+
+        if (uploadError) {
+
+            console.error(uploadError);
+
+            alert(
+                "本文画像をアップロードできなかったみたい…"
+            );
+
+            continue;
+        }
+
+
+        const { data: publicUrlData } =
+            window.mySupabase
+                .storage
+                .from("diary-images")
+                .getPublicUrl(filePath);
+
+
+        const imageUrl =
+            publicUrlData.publicUrl;
+
+
+        // 本文の末尾に画像URLを追加
+        contentInput.value +=
+            `\n[IMAGE:${imageUrl}]\n`;
+
+
+        // プレビューにも追加
+        const previewItem =
+            document.createElement("div");
+
+        previewItem.className =
+            "content-image-item";
+
+        const img =
+            document.createElement("img");
+
+        img.src = imageUrl;
+
+        img.alt = "本文画像";
+
+        previewItem.appendChild(img);
+
+        contentImagePreview.appendChild(
+            previewItem
+        );
+    }
+
+
+    // ファイル選択をリセット
+    editContentImage.value = "";
+
+});
 
 // 実行
 loadDiary();
