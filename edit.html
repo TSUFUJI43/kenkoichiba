@@ -612,7 +612,7 @@ const previewItem =
 
 previewItem.className =
     "content-image-item";
-    
+
 previewItem.draggable = true;
 
 previewItem.dataset.url =
@@ -682,6 +682,82 @@ previewArea.appendChild(
     editContentImage.value = "";
 
 });
+
+let draggedItem = null;
+
+
+contentImagePreview.addEventListener(
+    "dragstart",
+    (event) => {
+
+        const item =
+            event.target.closest(".content-image-item");
+            
+        if (!item) {
+            return;
+        }
+
+        draggedItem = item;
+
+        item.style.opacity = "0.5";
+    }
+);
+
+
+contentImagePreview.addEventListener(
+    "dragend",
+    (event) => {
+
+        const item =
+            event.target.closest(".content-image-item");
+
+        if (!item) {
+            return;
+        }
+
+        item.style.opacity = "1";
+
+        draggedItem = null;
+    }
+);
+
+
+contentImagePreview.addEventListener(
+    "dragover",
+    (event) => {
+
+        event.preventDefault();
+
+        const target =
+            event.target.closest(".content-image-item");
+
+        if (!target || target === draggedItem) {
+            return;
+        }
+
+        const rect =
+            target.getBoundingClientRect();
+
+        const middle =
+            rect.left + rect.width / 2;
+
+        if (event.clientX < middle) {
+
+            contentImagePreview.insertBefore(
+                draggedItem,
+                target
+            );
+
+        } else {
+
+            contentImagePreview.insertBefore(
+                draggedItem,
+                target.nextSibling
+            );
+
+        }
+    }
+);
 
 // 実行
 loadDiary();
