@@ -574,24 +574,44 @@ editContentImage.addEventListener("change", async () => {
 
 
         // プレビューにも追加
-        const previewItem =
-            document.createElement("div");
+const previewItem =
+    document.createElement("div");
 
-        previewItem.className =
-            "content-image-item";
+previewItem.className =
+    "content-image-item";
 
-        const img =
-            document.createElement("img");
+previewItem.dataset.url =
+    imageUrl;
 
-        img.src = imageUrl;
 
-        img.alt = "本文画像";
+const img =
+    document.createElement("img");
 
-        previewItem.appendChild(img);
+img.src = imageUrl;
 
-        contentImagePreview.appendChild(
-            previewItem
-        );
+img.alt = "本文画像";
+
+img.style.width = "100%";
+
+img.style.height = "70px";
+
+img.style.objectFit = "cover";
+
+img.style.border = "2px solid #000000";
+
+img.style.boxSizing = "border-box";
+
+
+previewItem.appendChild(img);
+
+
+// プレビュー欄を取得し直す
+const previewArea =
+    document.getElementById("content-image-preview");
+
+previewArea.appendChild(
+    previewItem
+);
     }
 
 
