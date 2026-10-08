@@ -608,9 +608,12 @@ editContentImage.addEventListener("change", async () => {
         // プレビューにも追加
 const previewItem =
     document.createElement("div");
+    
 
 previewItem.className =
     "content-image-item";
+    
+previewItem.draggable = true;
 
 previewItem.dataset.url =
     imageUrl;
