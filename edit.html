@@ -350,6 +350,12 @@ deleteButton.textContent = "×";
 deleteButton.className =
     "content-image-delete";
 
+    deleteButton.addEventListener("click", () => {
+
+    previewItem.remove();
+
+});
+
 previewItem.appendChild(
     deleteButton
 );
