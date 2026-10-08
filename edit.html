@@ -332,6 +332,9 @@ for (const imageText of imageMatches) {
     previewItem.className =
         "content-image-item";
 
+        previewItem.dataset.url =
+    imageUrl;
+
     const img =
         document.createElement("img");
         
@@ -605,20 +608,17 @@ editContentImage.addEventListener("change", async () => {
             `\n[IMAGE:${imageUrl}]\n`;
 
 
-        // プレビューにも追加
+      // プレビューにも追加
 const previewItem =
     document.createElement("div");
-    
 
 previewItem.className =
     "content-image-item";
 
-previewItem.draggable = true;
-
 previewItem.dataset.url =
     imageUrl;
 
-
+previewItem.draggable = true;
 const img =
     document.createElement("img");
 
@@ -716,6 +716,31 @@ contentImagePreview.addEventListener(
         }
 
         item.style.opacity = "1";
+
+        // プレビューの並び順を取得
+        const imageItems =
+            contentImagePreview.querySelectorAll(
+                ".content-image-item"
+            );
+
+        const imageUrls =
+            Array.from(imageItems).map(
+                item => item.dataset.url
+            );
+
+        // 本文内の画像URLの順番を入れ替える
+        let index = 0;
+
+        contentInput.value =
+            contentInput.value.replace(
+                /\[IMAGE:(.*?)\]/g,
+                () => {
+                    const url = imageUrls[index];
+                    index++;
+
+                    return `[IMAGE:${url}]`;
+                }
+            );
 
         draggedItem = null;
     }
