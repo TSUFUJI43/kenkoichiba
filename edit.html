@@ -211,6 +211,9 @@ const currentImage =
 
 const message = document.getElementById("message");
 
+const contentImagePreview =
+    document.getElementById("content-image-preview");
+
 let currentImageUrl = null;
 
 function getStoragePath(imageUrl) {
@@ -313,9 +316,6 @@ currentImageUrl = data.image_url;
 
 
 // 本文画像をプレビュー表示
-const contentImagePreview =
-    document.getElementById("content-image-preview");
-
 const imageMatches =
     data.content.match(/\[IMAGE:(.*?)\]/g) || [];
 
@@ -692,7 +692,7 @@ contentImagePreview.addEventListener(
 
         const item =
             event.target.closest(".content-image-item");
-            
+
         if (!item) {
             return;
         }
