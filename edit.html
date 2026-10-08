@@ -352,6 +352,15 @@ deleteButton.className =
 
     deleteButton.addEventListener("click", () => {
 
+    const imageText =
+        `[IMAGE:${imageUrl}]`;
+
+    contentInput.value =
+        contentInput.value.replace(
+            imageText,
+            ""
+        );
+
     previewItem.remove();
 
 });
@@ -634,6 +643,21 @@ deleteButton.textContent = "×";
 
 deleteButton.className =
     "content-image-delete";
+
+    deleteButton.addEventListener("click", () => {
+
+    const imageText =
+        `[IMAGE:${imageUrl}]`;
+
+    contentInput.value =
+        contentInput.value.replace(
+            imageText,
+            ""
+        );
+
+    previewItem.remove();
+
+});
 
 previewItem.appendChild(
     deleteButton
