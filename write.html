@@ -134,27 +134,6 @@
         required
     ></textarea>
 
-    <div id="content-toolbar">
-        <button
-            type="button"
-            id="insert-image-button"
-        >
-            ＋画像を本文に入れる
-        </button>
-
-        <input
-            type="file"
-            id="content-image"
-            accept="image/*"
-            multiple
-            hidden
-        >
-    </div>
-
-<div id="content-image-preview">
-    <p>本文画像</p>
-</div>
-
 </p>
 
 
@@ -401,17 +380,6 @@ contentImageInput.addEventListener("change", async () => {
                 .from("diary-images")
                 .upload(filePath, file);
 
-
-        if (uploadError) {
-
-            console.error(uploadError);
-
-            alert(
-                "本文画像をアップロードできなかったみたい…"
-            );
-
-            continue;
-        }
 
 
         const { data: publicUrlData } =
